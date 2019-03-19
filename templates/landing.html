@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="hero is-medium">
+  <div class="hero-body">
+    <div class="container">
+      <img src="{{ url_for('static', filename='lukas-blazek-261682-unsplash.jpg') }}">
+      <div class="overlay">
+        <div id="typed-strings">
+            <p><strong>Hangry?</strong></p>
+            <p>Find a recipe</p>
+            <p>Or add your own</p>
+            <p>Satisfy your hunger</p>
+        </div>
+        <span id="typed"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="about">
+  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur voluptatum aperiam eligendi? Nobis officia laboriosam sapiente quis fuga sint nesciunt accusantium eos, eum ex aliquid nulla natus soluta mollitia. Eveniet.</p>
+</div>
+
+{% endblock %}
