@@ -5,8 +5,8 @@ from flask_bcrypt import generate_password_hash
 import datetime
 from peewee import *
 
-
 DATABASE = SqliteDatabase('hangry.db')
+
 
 # inmport gravatar 
 from hashlib import md5
@@ -71,5 +71,3 @@ def initialize():
     DATABASE.create_tables([User, Recipe, SavedRecipes], safe=True)
     DATABASE.close()
 
-if __name__ == 'models':
-    db.create_all()

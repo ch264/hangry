@@ -1,0 +1,29 @@
+{
+    "user": "Ronni", 
+    "email": "ronni@gmail.com",
+    "password": "password",
+    "location": "san francisco", 
+    "id": 0
+},
+
+{   "user": "Christina",
+    "email": "christina@gmail.com",
+    "password": "password",
+    "location": "san francisco",
+    "id": 1
+},
+
+{   "user": "Nicolette",
+    "email": "nicolette@gmail.com",
+    "password": "password",
+    "location": "oakland",
+    "id": 2
+},
+
+{   "user": "Brandon",
+    "email": "brandon@gmai.com",
+    "password": "password",
+    "location": "vallejo",
+    "id": 3
+}
+
