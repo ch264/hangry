@@ -5,7 +5,9 @@ from flask_bcrypt import generate_password_hash
 import datetime
 from peewee import *
 
+
 DATABASE = SqliteDatabase('hangry.db')
+
 # inmport gravatar 
 from hashlib import md5
 
@@ -57,6 +59,7 @@ class SavedRecipes(Model):
     user = ForeignKeyField(User)
     recipe = ForeignKeyField(Recipe)
     timestamp = DateTimeField(default=datetime.datetime.now())
+
 
     class Meta:
         database = DATABASE
