@@ -18,10 +18,8 @@ import models
 
 app = Flask(__name__, static_url_path='/static')
 
-
 DEBUG = True
 PORT = 8000
-
 
 app = Flask(__name__)
 app.secret_key = 'pickle'
@@ -45,7 +43,6 @@ def index():
 @app.route('/about')
 def about():
     return render_template('about.html')
-
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
