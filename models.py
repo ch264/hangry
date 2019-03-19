@@ -14,6 +14,7 @@ class User(UserMixin, Model):
     location = TextField(max_length=100)
     class Meta:
         database = DATABASE
+        db_table = 'user'
 
     # Sign Up POST request
     @classmethod
@@ -38,6 +39,7 @@ class Recipe(Model):
   user = ForeignKeyField(User, backref="profile")
   class Meta:
     database = DATABASE
+    db_table = 'recipe'
     order_by = ('-timestamp',)
 
 class SavedRecipes(Model):
@@ -47,11 +49,12 @@ class SavedRecipes(Model):
 
     class Meta:
         database = DATABASE
+        db_table = 'savedrecipes'
         order_by = ('-timestamp',)
             
 def initialize():
     DATABASE.connect()
-    DATABASE.create_tables([User, Recipe], safe=True)
+    DATABASE.create_tables([User, Recipe, SavedRecipes], safe=True)
     DATABASE.close()
 
 if __name__ == 'models':
