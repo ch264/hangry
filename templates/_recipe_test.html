@@ -1,12 +1,8 @@
 <!-- subtemplate that renders one receipe and is referenced from both, the user.html and receipees.html -->
-{% extends 'profile.html' %}
 
-{% block content %}
 <table>
 	<tr valign="top">
-		<td>this is a recipe</td>
+		<!-- <td><img src="{{ recipe.user.avatar(36) }}"></td>
+		<td>{{ receipe.user.username }} posted:<br>{{ recipe.content }}</td> -->
 	</tr>
 </table>
-{{ super() }}
-
-{% endblock %}
