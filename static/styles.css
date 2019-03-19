@@ -4,6 +4,10 @@ body {
   font-family: 'Montserrat', sans-serif;
 }
 
+section {
+  padding-bottom: 20px;
+}
+
 .overlay {
   font-size: 40px;
   left: -10vw;
@@ -16,4 +20,25 @@ body {
 
 .hero-body {
   padding: 0;
+}
+
+.about {
+  padding: 0 10vw;
+}
+
+h2 {
+  text-align: center;
+}
+
+.about-team {
+  padding: 5vw 10vw;
+}
+
+.columns {
+  padding-top: 20px;
+}
+
+.footer {
+  padding-bottom: 48px;
+  text-align: center;
 }

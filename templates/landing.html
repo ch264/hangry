@@ -1,7 +1,7 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div class="hero is-medium">
+<div class="hero is-fullheight-with-navbar">
   <div class="hero-body">
     <div class="container">
       <img src="{{ url_for('static', filename='lukas-blazek-261682-unsplash.jpg') }}">
@@ -10,7 +10,7 @@
             <p><strong>Hangry?</strong></p>
             <p>Find a recipe</p>
             <p>Or add your own</p>
-            <p>Satisfy your hunger</p>
+            <p>Satisfy your hanger</p>
         </div>
         <span id="typed"></span>
       </div>
@@ -19,7 +19,8 @@
 </div>
 
 <div class="about">
-  <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur voluptatum aperiam eligendi? Nobis officia laboriosam sapiente quis fuga sint nesciunt accusantium eos, eum ex aliquid nulla natus soluta mollitia. Eveniet.</p>
+  <h2 class="subtitle is-2">Welcome to Hangry!</h2>
+  <p>Join your fellow hangry eaters and find recipes that will calm your hanger!  Or share a recipe or two that helped you satisfy your hanger in a crucial moment.  Just sign up for an account to get started.</p>
 </div>
 
 {% endblock %}

@@ -33,8 +33,9 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 def index():
     return render_template('landing.html')
 
-# @app.route('/about')
-# def about():
+@app.route('/about')
+def about():
+    return render_template('about.html')
 
 # @app.route('/login', methods=['POST'])
 # def login():
