@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Hangry</title>
+
+    <!-- Bulma CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.css">
+
+    <!-- Our CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  </head>
+  <body class="has-navbar-fixed-top">
+    <nav class="navbar is-dark is-fixed-top" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand">
+        <!-- Logo -->
+        <a href="/" class="navbar-item"><img src="#" alt="logo"></a>
+        <!-- Hamburger bar for responsive nav -->
+        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+
+      <div id="navbarBasicExample" class="navbar-menu">
+        <div class="navbar-end">
+          <a href="/about" class="navbar-item">About</a>
+
+          <!-- If user is not logged in, show Login/Signup button -->
+          <div class="navbar-item">
+            <div class="buttons">
+              <a href="#" class="button is-light" title="login">Login</a>
+
+              <a href="#" class="button is-primary" title="register">Sign Up</a>
+
+            </div>
+          </div>
+          <!-- If user is logged in, show other pages -->
+          <a href="#" class="navbar-item">Recipes</a>
+
+          <a href="#" class="navbar-item">Profile</a>
+
+          <a href="#" class="navbar-item">Logout</a>
+
+        </div>
+      </div>
+    </nav>
+
+    <section>
+      {% block content %}
+
+      {% endblock %}
+    </section>
+
+    <footer class="footer">
+      <p>&copy; Hangry 2019. Made with &hearts; by Nicolette, Brandon, Christina, Ronni.</p>
+    </footer>
+
+    <!-- Vendor Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.9"></script>
+    <script>
+        var typed = new Typed('#typed', {
+          stringsElement: '#typed-strings',
+          typeSpeed: 70,
+          backSpeed: 40,
+          smartBackspace: true,
+          loop: true,
+          loopCount: Infinity,
+        });
+      </script>
+  </body>
+
+</html>
