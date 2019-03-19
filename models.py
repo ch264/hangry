@@ -7,9 +7,6 @@ from peewee import *
 
 DATABASE = SqliteDatabase('hangry.db')
 
-<<<<<<< HEAD
-=======
-DATABASE = SqliteDatabase('hangry.db')
 
 # inmport gravatar 
 from hashlib import md5
@@ -23,38 +20,11 @@ class User(UserMixin, db.Model):
             digest, size)
 
 
->>>>>>> master
 class User(UserMixin, Model):
     username = CharField(unique=True)
     email = CharField(unique=True)
     password = CharField(max_length=100)
     location = TextField(max_length=100)
-<<<<<<< HEAD
-    
-    class Meta:
-        database = DATABASE
-        
-    @classmethod
-    def create_user(cls, username, email, password, location):
-        try:
-            cls.create(
-                username=username,
-                email=email,
-                password=generate_password_hash(password),
-                location=location)
-        except IntegrityError:
-            raise ValueError("User already exists")
-
-    @classmethod
-    def login_user(cls, email, password):
-        try:
-            cls.login(
-                email=email,
-                password=generate_password_hash(password)
-            )
-        except IntegrityError:
-            raise ValueError("Invalid email/password")
-=======
     class Meta:
         database = DATABASE
         db_table = 'user'
@@ -100,5 +70,4 @@ def initialize():
     DATABASE.connect()
     DATABASE.create_tables([User, Recipe, SavedRecipes], safe=True)
     DATABASE.close()
->>>>>>> master
 

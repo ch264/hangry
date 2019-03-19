@@ -2,13 +2,10 @@ import os
 from flask import Flask, g
 from flask import Flask, request
 
-<<<<<<< HEAD
-=======
 from flask import render_template, flash, redirect, url_for, session, escape
 
 # User login
 from flask_login import current_user, login_user
->>>>>>> master
 
 # User logout
 from flask_login import logout_user
@@ -16,8 +13,6 @@ from flask_login import logout_user
 # Redirect user when not logged in
 from werkzeug.urls import url_parse
 
-<<<<<<< HEAD
-=======
 import models
 
 
@@ -34,7 +29,6 @@ def before_request():
 # Connect to the DB before each request
   g.db = models.DATABASE
   g.db.connect()
->>>>>>> master
 
 @app.after_request
 def after_request(response):
