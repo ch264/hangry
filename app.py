@@ -1,24 +1,27 @@
 import os
+from flask import Flask, g
 from flask import Flask, request
 from flask import render_template, flash, redirect, url_for
-
-from flask_sqlalchemy import SQLAlchemy
-from flask_marshmallow import Marshmallow
-
-
-app = Flask(__name__)
 
 DEBUG = True
 PORT = 8000
 
-basedir = os.path.abspath(os.path.dirname(__file__))
+app = Flask(__name__)
+app.secret_key = 'pickle'
 
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + \
-    os.path.join(basedir, 'db.hangry')
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+@app.before_request
+def before_request():
+# Connect to the DB before each request
+  g.db = models.DATABASE
+  g.db.connect()
 
-db = SQLAlchemy(app)
-marshmallow = Marshmallow(app)
+@app.after_request
+def after_request(response):
+# Close the database connection after each request
+  g.db.close()
+  return response
+
+
 
 
 
@@ -42,7 +45,7 @@ def loguout():
 def profile():
 
 @app.route('/recipes', methods=['GET', 'POST'])
-@app.route('/recipes/<id>', methods=['GET', 'PUT', 'POST'])
+@app.route('/recipes/<id>', methods=['GET', 'PUT', 'POST', 'DELETE'])
 def get_all_recipes():
 
 
@@ -55,7 +58,7 @@ def get_all_recipes():
 
 @app.route('/')
 def hello_world():
-    return 'Hello World'
+    return render_template('/index.html')
 
 
 if __name__ == '__main__':
