@@ -7,8 +7,11 @@ from flask_bcrypt import check_password_hash
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 # Redirect user when not logged in
 from werkzeug.urls import url_parse
+
 import models
 import forms
+
+
 
 app = Flask(__name__, static_url_path='/static')
 
@@ -39,6 +42,8 @@ def before_request():
 def after_request(response):
   g.db.close()
   return response
+
+
 
 @app.route('/')
 def index():
@@ -122,19 +127,43 @@ def profile(username=None):
         return repr(user)
 
 
+@app.route('/recipe', methods=['GET', 'POST'])
+@app.route('/recipe/<user>', methods=['GET', 'PUT', 'POST', 'DELETE'])
+  
 
-# @app.route('/recipe', methods=['GET', 'POST'])
-# @app.route('/recipe/<user>', methods=['GET', 'PUT', 'POST', 'DELETE'])
+@login_required
+def post():
+    form = forms.RecipeForm()
+    if form.validate_on_submit():
+        flash("Recipe Created!", "success") 
+        models.Recipe.create(
+            user=g.user._get_current_object(), #create new post.
+                           content=form.content.data.strip()) 
+        
+        
+        return redirect(url_for('index')) #redirect user
+    return render_template('profile.html', form=form)
 
-    # else: 
-    #     user = models.Recipe.select().where(models.Recipe.title == title).get()
-    #     user.delete_instance()
-    #     return repr(user)
 
-
-
-
-
+    if form.validate_on_submit():
+        try:
+            user = models.User.get(models.User.email == form.email.data)
+        except models.DoesNotExist:
+            flash("Email or password does not match", "error")
+        else:
+            if check_password_hash(user.password, form.password.data):
+                ## creates session
+                login_user(user)
+                flash("You successfully logged in", "success")
+                return redirect(url_for('index'))
+            else:
+                flash("your email or password doesn't match", "error")
+    return render_template('landing.html', form=form)
+#  will change 
+        # else: 
+        #     user = models.Recipe.select().where(models.Recipe.title == title).get()
+        #     user.delete_instance()
+        #     return repr(user)
 
 
 if __name__ == '__main__':

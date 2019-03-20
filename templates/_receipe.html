@@ -1,8 +1,26 @@
-<!-- subtemplate that renders one receipe and is referenced from both, the user.html and receipees.html -->
 
-<table>
-	<tr valign="top">
-		<td><img src="{{ recipe.user.avatar(36) }}"></td>
-		<td>{{ receipe.user.username }} posted:<br>{{ recipe.content }}</td>
-	</tr>
-</table>
+
+<div class="row columns">
+	<div class="column is-one-third">
+		<div class="card large">
+			<div class="card-image">
+				<figure class="image is-80x80">
+				<img src="static/klara-avsenik-1365422-unsplash.jpg" alt="Sushi Image">
+				</figure>
+			</div>
+			<div class="card-content">
+				<div class="content">
+					<div class="media-content">
+						<h1>Makilicious</h1>
+						<p class="title is-4 no-padding">Ray Anderson</p>
+						<p class="subtitle is-6">from: San Franciscio</p>
+						<p><span class="title is-6"><a href="http://twitter.com/#">Save to Favorite</a></span></p>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+
