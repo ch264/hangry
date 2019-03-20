@@ -146,13 +146,18 @@ def post():
         
         return redirect(url_for('index')) #redirect user
     return render_template('profile.html', form=form)
-
-
 #  will change 
         # else: 
         #     user = models.Recipe.select().where(models.Recipe.title == title).get()
         #     user.delete_instance()
         #     return repr(user)
+
+# [] TEMPORARY ROUTE
+@app.route('/create-recipe', methods=['GET', 'POST'])
+def create_recipe():
+    form = forms.RecipeForm()
+    return render_template('create-recipe.html', form=form)
+    
 
 
 if __name__ == '__main__':

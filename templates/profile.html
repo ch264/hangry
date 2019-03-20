@@ -3,29 +3,32 @@
 {% block content %}
 
 	<div class="columns">
-		<div class="column">
+		<div class="column is-one-quarter">
 			<div class="image is1by1">
 				<img src="#">
 			</div>
 		</div>
 
-		<div class="column is-two-thirds content">
+		<div class="column">
 			<p><span class="title is-bold">{{ user.username }}</span></p> 
 			<p><span class="location"><small>I live in {{ user.location }}</small></span></p>
 			<button class="button is-light">Edit profile</button>
 		</div>
-
-
-		<div>
-				{% include '_recipe.html' %}
-		</div>
-
 	</div>
 
-
-		
-
-		
+	<div class="columns">
+		<div class="column is-half">
+				<h4>Your Recipes</h4>
+				<a href="{{ url_for('create_recipe') }}" class="button is-light">Add a Recipe</a>
+				{% include '_receipe.html' %}
+			</div>
+	
+			<div class="column is-half">
+				<h4>Saved Recipes</h4>
+				{% include '_receipe.html' %}
+			</div>
+	</div>
+	
 {% endblock %}
 
 

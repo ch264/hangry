@@ -37,7 +37,7 @@ class User(UserMixin, Model):
     # Sign Up POST request
     @classmethod
     def create_user(cls, username, email, password, location='sf'):
-        print(location)
+        # print(location)
         try:
             cls.create(
                 username = username,
