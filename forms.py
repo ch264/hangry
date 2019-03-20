@@ -1,33 +1,60 @@
 from flask_wtf import FlaskForm as Form
-from wtforms import TextField, TextAreaField, SubmitField, StringField, PasswordField
+from models import User, Recipe
+from wtforms import StringField, PasswordField, TextAreaField
+from wtforms.validators import DataRequired, Regexp, ValidationError, Length, EqualTo, Email
 
-# from models import user
+def name_exists(form, field):
+    if User.select().where(User.username == field.data).exists():
+        raise ValidationError("User with this username already exists")
 
-class UserForm(Form):
-    username = TextField("Username:")
-    email = TextField()
-    password = TextField()
-    location = TextField("Location")
-    # submit = SubmitField("Create Post")
+def email_exists(form, field):
+    if User.select().where(User.email == field.data).exists():
+        raise ValidationError("User with this email already exists")
+
+class SignUpForm(Form):
+    username = StringField(
+        'Username:',
+        validators=[
+            DataRequired(),
+            Regexp(
+                r'^[a-zA-Z0-9_]+$',
+                message=("Username should be one word, letters, "
+                         "numbers, and underscores only.")),
+            name_exists
+        ])
+    email = StringField(
+        'Email:',
+        validators=[
+            DataRequired(),
+            Email(),
+            email_exists
+        ])
+    password = PasswordField(
+        'Password:',
+        validators=[
+            DataRequired(),
+            Length(min=2),
+            EqualTo('password2', message='Passwords must match')
+        ])
+    password2 = PasswordField(
+        'Confirm Password',
+        validators=[DataRequired()
+        ])
+    location = StringField(
+        'Location',
+        validators=[
+            DataRequired(),
+        ])
 
 class LoginForm(Form):
-    email = StringField('Email')
-    password = PasswordField('Password')
+    email = StringField('Email', [DataRequired(), Email()])
+    password = PasswordField('Password', validators=[DataRequired()])
 
-<<<<<<< HEAD
-# class UserForm(Form):
-#     username = TextField("Username:", validators=[DataRequired()])
-#     email = TextField("Email:", validators=[DataRequired])
-#     password = TextField("Password:", validators=[DataRequired()])
-#     location = TextField("Location")
-#     submit = SubmitField("Create Post")
-=======
->>>>>>> dbb142e639e2c23428c5d05af598d140fc494469
+
 
 class RecipeForm(Form):
-    category = TextAreaField("Category", validators=[DataRequired()])
-    title = TextField("Title", validators=[DataRequired()])
-    content = TextAreaField("Content", validators=[DataRequired()])
-    ingredient_tag = TextField("Ingredient_tag")
-    user = TextField("By:", validators=[DataRequired()])
-    submit = SubmitField("Post")
+    category = TextAreaField("Content")
+    title = StringField("Title")
+    content = TextAreaField("Content")
+    ingredient_tag = StringField("Ingredient_tag")
+
