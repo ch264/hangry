@@ -66,7 +66,7 @@ def login():
                 ## creates session
                 login_user(user)
                 flash("You successfully logged in", "success")
-                return redirect(url_for('profile'))
+                return redirect(url_for('profile', username=user.username))
             else:
                 flash("your email or password doesn't match", "error")
     return render_template('login.html', form=form)
@@ -85,7 +85,8 @@ def register():
             )
         user = models.User.get(models.User.username == form.username.data)
         login_user(user)
-        return redirect(url_for('profile'))
+        name = user.username
+        return render_template('profile.html', username=name)
     return render_template('signup.html', form=form)
 
 @app.route('/logout')
@@ -96,11 +97,11 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/profile', methods=['GET', 'POST'])
+@app.route('/profile')
 @app.route('/profile/<username>', methods=['GET', 'DELETE', 'PUT'])
 def profile(username=None):
     if username == None and request.method == 'GET':
-        return repr(models.User.select().get())
+        return render_template('profile.html')
     elif username != None and request.method == 'PUT':
         email = request.json['email']
         location = request.json['location']
@@ -111,7 +112,8 @@ def profile(username=None):
         user.save()
         return repr(user)
     elif username != None and request.method == 'GET':
-        return repr(models.User.select().where(models.User.username==username).get())
+        user = models.User.select().where(models.User.username == username).get()
+        return render_template('profile.html', user=user)
     elif username == None and request.method == 'POST':
         created = models.User.create(
             username = request.json['username'],
@@ -130,7 +132,6 @@ def profile(username=None):
 @app.route('/recipe', methods=['GET', 'POST'])
 @app.route('/recipe/<user>', methods=['GET', 'PUT', 'POST', 'DELETE'])
   
-
 @login_required
 def post():
     form = forms.RecipeForm()
@@ -145,20 +146,6 @@ def post():
     return render_template('profile.html', form=form)
 
 
-    if form.validate_on_submit():
-        try:
-            user = models.User.get(models.User.email == form.email.data)
-        except models.DoesNotExist:
-            flash("Email or password does not match", "error")
-        else:
-            if check_password_hash(user.password, form.password.data):
-                ## creates session
-                login_user(user)
-                flash("You successfully logged in", "success")
-                return redirect(url_for('index'))
-            else:
-                flash("your email or password doesn't match", "error")
-    return render_template('landing.html', form=form)
 #  will change 
         # else: 
         #     user = models.Recipe.select().where(models.Recipe.title == title).get()

@@ -35,7 +35,7 @@
             <div class="buttons">
               <a href="{{ url_for('login') }}" class="button is-light" title="login">Login</a>
 
-              <a href="{{ url_for('signup') }}" class="button is-primary" title="register">Sign Up</a>
+              <a href="{{ url_for('register') }}" class="button is-primary" title="register">Sign Up</a>
 
             </div>
           </div>
@@ -44,7 +44,7 @@
 
           <a href="{{ url_for('profile') }}" class="navbar-item">Profile</a>
 
-          <a href="#" class="navbar-item">Logout</a>
+          <a href="{{ url_for('logout') }}" class="navbar-item">Logout</a>
 
         </div>
       </div>
