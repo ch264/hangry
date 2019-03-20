@@ -2,29 +2,32 @@
 
 {% block content %}
 
-<div class="column is-1"></div>
-<div class="column">
-	<div class="image is1by1">
-		<img src="#"></div>
+	<div class="columns">
+		<div class="column is-one-quarter">
+			<div class="image is1by1">
+				<img src="#">
+			</div>
+		</div>
+
+		<div class="column">
+			<p><span class="title is-bold">{{ user.username }}</span></p> 
+			<p><span class="location"><small>I live in {{ user.location }}</small></span></p>
+			<button class="button is-light">Edit profile</button>
+		</div>
 	</div>
-</div>
-<div class="column is-1"></div>
-<div class="column is-two-thirds content">
-	<p><span class="title is-bold">{{ user.username }}</span></p> 
-	<p><span class="location"><small>I live in {{ user.location }}</small></span></p>
-	<button class="button is-light">Edit profile</button>
-</div>
 
-
-	<table>
-		<tr valign="top">
-			<td>this will be a post</td>
-		</tr>
-	</table>
-
-	{% include '_receipe.html' %}
+	<div class="columns">
+		<div class="column is-half">
+				<h4>Your Recipes</h4>
+				
+				{% include '_receipe.html' %}
+			</div>
 	
-	
+			<div class="column is-half">
+				<h4>Saved Recipes</h4>
+				{% include '_receipe.html' %}
+			</div>
+	</div>
 	
 {% endblock %}
 
