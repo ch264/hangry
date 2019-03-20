@@ -12,14 +12,11 @@ import models
 import forms
 
 
-
 app = Flask(__name__, static_url_path='/static')
+app.secret_key = 'pickle'
 
 DEBUG = True
 PORT = 8000
-
-app = Flask(__name__)
-app.secret_key = 'pickle'
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -68,7 +65,7 @@ def login():
                 flash("You successfully logged in", "success")
                 return redirect(url_for('profile', username=user.username))
             else:
-                flash("your email or password doesn't match", "error")
+                flash("Your email or password doesn't match", "error")
     return render_template('login.html', form=form)
 #  will change 
 
