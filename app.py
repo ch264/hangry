@@ -129,7 +129,11 @@ def profile(username=None):
         user = models.User.select().where(models.User.username == username).get()
         user.delete_instance()
         return repr(user)
-    
+
+@app.route('/edit-profile', methods=['GET', 'PUT'])
+def edit_profile():
+    form = forms.EditUserForm()
+    return render_template('edit-profile.html', form=form)
 
 
 @app.route('/recipe', methods=['GET', 'POST'])

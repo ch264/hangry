@@ -12,7 +12,7 @@
 		<div class="column">
 			<p><span class="title is-bold">{{ user.username }}</span></p> 
 			<p><span class="location"><small>I live in {{ user.location }}</small></span></p>
-			<button class="button is-light">Edit profile</button>
+			<a href="{{ url_for('edit_profile') }}" class="button is-light">Edit profile</a>
 		</div>
 	</div>
 
@@ -20,12 +20,12 @@
 		<div class="column is-half">
 				<h4>Your Recipes</h4>
 				<a href="{{ url_for('create_recipe') }}" class="button is-light">Add a Recipe</a>
-				{% include '_receipe.html' %}
+				{% include '_recipe.html' %}
 			</div>
 	
 			<div class="column is-half">
 				<h4>Saved Recipes</h4>
-				{% include '_receipe.html' %}
+				{% include '_recipe.html' %}
 			</div>
 	</div>
 	
