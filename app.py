@@ -101,7 +101,7 @@ def logout():
 @app.route('/profile/<username>', methods=['GET', 'DELETE', 'PUT'])
 def profile(username=None):
     if username == None and request.method == 'GET':
-        return repr(models.User.select().get())
+        return render_template('profile.html')
     elif username != None and request.method == 'PUT':
         email = request.json['email']
         location = request.json['location']
@@ -126,6 +126,7 @@ def profile(username=None):
         user = models.User.select().where(models.User.username == username).get()
         user.delete_instance()
         return repr(user)
+    
 
 
 # @app.route('/recipe', methods=['GET', 'POST'])
