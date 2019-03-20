@@ -16,6 +16,7 @@ from werkzeug.urls import url_parse
 # import models
 import forms
 
+
 app = Flask(__name__, static_url_path='/static')
 
 DEBUG = True
@@ -44,7 +45,6 @@ def index():
 def about():
     return render_template('about.html')
 
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = forms.LoginForm()
@@ -56,18 +56,18 @@ def signup():
     form = forms.UserForm()
     return render_template('signup.html', form=form)
 
+
 # @app.route('/logout')
 # def logout():
 
 
-@app.route('/profile', methods=['GET', 'PUT'])
+# @app.route('/profile', methods=['GET', 'PUT'])
 # @app.route('/profile/<id>', methods=['GET'])
-def profile():
-    return render_template('test-profile.html')
 
 
 # @app.route('/recipes', methods=['GET', 'POST'])
 # @app.route('/recipes/<id>', methods=['GET', 'PUT', 'POST', 'DELETE'])
+
 
 
 if __name__ == '__main__':
