@@ -43,17 +43,29 @@ class SignUpForm(Form):
     location = StringField(
         'Location',
         validators=[
-            DataRequired(),
+            DataRequired()
         ])
 
 class LoginForm(Form):
     email = StringField('Email', [DataRequired(), Email()])
     password = PasswordField('Password', validators=[DataRequired()])
 
-
 class RecipeForm(Form):
     category = TextAreaField("Content")
     title = StringField("Title")
     content = TextAreaField("Content")
     ingredient_tag = StringField("Ingredient_tag")
+
+class EditRecipeForm(Form):
+    category = TextAreaField("Content")
+    title = StringField("Title")
+    content = TextAreaField("Content")
+    ingredient_tag = StringField("Ingredient_tag")
+
+class EditUserForm(Form):
+    username =  StringField("Username")
+    email = StringField("Email")
+    password = PasswordField("Password")
+    loction =  StringField("Location")
+   
     

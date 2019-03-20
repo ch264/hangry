@@ -18,7 +18,7 @@ class User(UserMixin, Model):
     username = CharField(unique=True)
     email = CharField(unique=True)
     password = CharField(max_length=100)
-    location = CharField(max_length=100)
+    location = TextField()
     class Meta:
         database = DATABASE
         db_table = 'user'
@@ -27,16 +27,17 @@ class User(UserMixin, Model):
     def get_recipes(self):
         return Recipe.select().where(Recipe.user == self)
     # Repr returns object so we can view it
-    def __repr__(self):
-        return "{}, {}, {}, {}".format(
-            self.id,
-            self.username,
-            self.email,
-            self.location
-        )
+    # def __repr__(self):
+    #     return "{}, {}, {}, {}".format(
+    #         self.id,
+    #         self.username,
+    #         self.email,
+    #         self.location
+    #     )
     # Sign Up POST request
     @classmethod
-    def create_user(cls, username, email, password, location):
+    def create_user(cls, username, email, password, location='sf'):
+        print(location)
         try:
             cls.create(
                 username = username,
@@ -44,7 +45,7 @@ class User(UserMixin, Model):
                 password = generate_password_hash(password),
                 location = location)
         except IntegrityError:
-            raise ValueError("User already exists")
+            raise ValueError("create error")
 class Recipe(Model):
   timestamp = DateTimeField(default=datetime.datetime.now())
   category = CharField()

@@ -56,7 +56,6 @@ def about():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = forms.LoginForm()
-
     if form.validate_on_submit():
         try:
             user = models.User.get(models.User.email == form.email.data)
@@ -67,10 +66,10 @@ def login():
                 ## creates session
                 login_user(user)
                 flash("You successfully logged in", "success")
-                return redirect(url_for('index'))
+                return redirect(url_for('profile', username=user.username))
             else:
                 flash("your email or password doesn't match", "error")
-    return render_template('landing.html', form=form)
+    return render_template('login.html', form=form)
 #  will change 
 
 @app.route('/signup', methods=('GET', 'POST'))
@@ -86,8 +85,9 @@ def register():
             )
         user = models.User.get(models.User.username == form.username.data)
         login_user(user)
-        return redirect(url_for('profile'))
-    return render_template('landing.html', form=form)
+        name = user.username
+        return redirect(url_for('profile', username=name))
+    return render_template('signup.html', form=form)
 
 @app.route('/logout')
 @login_required
@@ -97,10 +97,11 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/profile', methods=['GET', 'POST'])
+@app.route('/profile')
 @app.route('/profile/<username>', methods=['GET', 'DELETE', 'PUT'])
 def profile(username=None):
     if username == None and request.method == 'GET':
+        # return repr(models.User.select().get())
         return render_template('profile.html')
     elif username != None and request.method == 'PUT':
         email = request.json['email']
@@ -112,7 +113,9 @@ def profile(username=None):
         user.save()
         return repr(user)
     elif username != None and request.method == 'GET':
-        return repr(models.User.select().where(models.User.username==username).get())
+        user = models.User.select().where(models.User.username==username).get()
+        return render_template('profile.html', user=user)
+        # return repr(models.User.select().where(models.User.username==username).get())
     elif username == None and request.method == 'POST':
         created = models.User.create(
             username = request.json['username'],
@@ -129,13 +132,28 @@ def profile(username=None):
     
 
 
-# @app.route('/recipe', methods=['GET', 'POST'])
-# @app.route('/recipe/<user>', methods=['GET', 'PUT', 'POST', 'DELETE'])
-    # else: 
-    #     user = models.Recipe.select().where(models.Recipe.title == title).get()
-    #     user.delete_instance()
-    #     return repr(user)
+@app.route('/recipe', methods=['GET', 'POST'])
+@app.route('/recipe/<user>', methods=['GET', 'PUT', 'POST', 'DELETE'])
+  
+@login_required
+def post():
+    form = forms.RecipeForm()
+    if form.validate_on_submit():
+        flash("Recipe Created!", "success") 
+        models.Recipe.create(
+            user=g.user._get_current_object(), #create new post.
+                           content=form.content.data.strip()) 
+        
+        
+        return redirect(url_for('index')) #redirect user
+    return render_template('profile.html', form=form)
 
+
+#  will change 
+        # else: 
+        #     user = models.Recipe.select().where(models.Recipe.title == title).get()
+        #     user.delete_instance()
+        #     return repr(user)
 
 
 if __name__ == '__main__':
@@ -164,7 +182,7 @@ if __name__ == '__main__':
         email="ronni@gmail.com",
         password='password',
         location="San Francisco"
-        ),
+        )
     except ValueError:
         pass
 
