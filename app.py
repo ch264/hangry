@@ -10,6 +10,7 @@ from werkzeug.urls import url_parse
 import models
 import forms
 
+
 app = Flask(__name__, static_url_path='/static')
 
 DEBUG = True
@@ -17,6 +18,7 @@ PORT = 8000
 
 app = Flask(__name__)
 app.secret_key = 'pickle'
+
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -40,6 +42,7 @@ def after_request(response):
   g.db.close()
   return response
 
+
 @app.route('/')
 def index():
     return render_template('landing.html')
@@ -51,6 +54,7 @@ def about():
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = forms.LoginForm()
+
     if form.validate_on_submit():
         try:
             user = models.User.get(models.User.email == form.email.data)
@@ -123,6 +127,9 @@ def profile(username=None):
 
 
 
+
+
+
 # @app.route('/recipe', methods=['GET', 'POST'])
 # @app.route('/recipe/<user>', methods=['GET', 'PUT', 'POST', 'DELETE'])
 
@@ -130,7 +137,6 @@ def profile(username=None):
     #     user = models.Recipe.select().where(models.Recipe.title == title).get()
     #     user.delete_instance()
     #     return repr(user)
-
 
 
 

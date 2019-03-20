@@ -1,0 +1,16 @@
+<!-- Defining a macro called render_field() that accepts a form field as an argument -->
+{% macro render_field(field) %}
+  <div class="form-input">
+    {% if field.errors %}
+      {% for error in field.errors %}
+        <div>
+          {{ error }}
+        </div>
+      {% endfor %}
+    {% endif %}
+  
+    {{ field.label(class="label") }}
+    {{ field(class="control", placeholder=field.label.text) }}
+  </div>
+{% endmacro %}
+
