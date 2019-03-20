@@ -7,8 +7,10 @@ from flask_bcrypt import check_password_hash
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 # Redirect user when not logged in
 from werkzeug.urls import url_parse
+
 import models
 import forms
+
 
 
 app = Flask(__name__, static_url_path='/static')
@@ -18,7 +20,6 @@ PORT = 8000
 
 app = Flask(__name__)
 app.secret_key = 'pickle'
-
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -41,6 +42,7 @@ def before_request():
 def after_request(response):
   g.db.close()
   return response
+
 
 
 @app.route('/')
@@ -126,20 +128,12 @@ def profile(username=None):
         return repr(user)
 
 
-
-
-
-
 # @app.route('/recipe', methods=['GET', 'POST'])
 # @app.route('/recipe/<user>', methods=['GET', 'PUT', 'POST', 'DELETE'])
-
     # else: 
     #     user = models.Recipe.select().where(models.Recipe.title == title).get()
     #     user.delete_instance()
     #     return repr(user)
-
-
-
 
 
 
