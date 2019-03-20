@@ -155,6 +155,8 @@ def post():
         #     user.delete_instance()
         #     return repr(user)
 
+@app.route('/recipe', methods=['GET', 'PUT'])
+
 # [] TEMPORARY ROUTE
 @app.route('/create-recipe', methods=['GET', 'POST'])
 def create_recipe():
