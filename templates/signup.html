@@ -9,6 +9,14 @@
       {{ render_field(field) }}
     {% endfor %}
 
+    {% with messages = get_flashed_messages(with_categories=True) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class={{category}}>{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
     <button type="submit" class="button is-primary">Sign Up</button>
   </form>
 {% endblock %}
