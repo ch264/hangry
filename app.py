@@ -128,30 +128,30 @@ def profile(username=None):
         return repr(user)
 
 
-@app.route('/recipe', methods=['GET', 'POST'])
-@app.route('/recipe/<user>', methods=['GET', 'PUT', 'POST', 'DELETE'])
+@app.route('/recipe', methods=['GET'])
+@app.route('/recipe/<recipe_id>', methods=['GET', 'DELETE'])
 @login_required
-def post():
-    form = forms.RecipeForm()
-    if form.validate_on_submit():
-        flash("Recipe Created!", "success") 
-        models.Recipe.create(
-            user=g.user._get_current_object(), #create new post.
-                           content=form.content.data.strip()) 
-        
-        
-        return redirect(url_for('index')) #redirect user
-    return render_template('profile.html', form=form)
-#  will change 
-        # else: 
-        #     user = models.Recipe.select().where(models.Recipe.title == title).get()
-        #     user.delete_instance()
-        #     return repr(user)
+def get_recipe():
+    if recipe_id != None:
+        return render_template('receipe.html')
+    
+    return render_template('recipes.html')
+
 
 # [] TEMPORARY ROUTE
 @app.route('/create-recipe', methods=['GET', 'POST'])
 def create_recipe():
     form = forms.RecipeForm()
+
+    # [] TO BE TESTED
+    if form.validate_on_submit():
+        flash("Recipe Created!", "success") 
+        models.Recipe.create(
+            user=g.user._get_current_object(), #create new post.
+            content=form.content.data.strip()) 
+        
+        return redirect(url_for('index')) #redirect user
+
     return render_template('create-recipe.html', form=form)
     
 
