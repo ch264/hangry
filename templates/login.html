@@ -3,7 +3,7 @@
 {% from "macros.html" import render_field %}
 
 {% block content %}
-  <form method="POST" action="" class="field">
+  <form method="POST" action="">
     {{ form.hidden_tag() }}
     {% for field in form %}
       {{ render_field(field) }}

@@ -44,9 +44,12 @@ def index():
 def about():
     return render_template('about.html')
 
-# @app.route('/login', methods=['GET', 'POST'])
-# def login():
- 
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = forms.LoginForm()
+    return render_template('login.html', form=form)
+
 
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
@@ -57,8 +60,10 @@ def signup():
 # def logout():
 
 
-# @app.route('/profile', methods=['GET', 'PUT'])
+@app.route('/profile', methods=['GET', 'PUT'])
 # @app.route('/profile/<id>', methods=['GET'])
+def profile():
+    return render_template('test-profile.html')
 
 
 # @app.route('/recipes', methods=['GET', 'POST'])
