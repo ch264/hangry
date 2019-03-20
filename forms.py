@@ -1,6 +1,6 @@
 from flask_wtf import FlaskForm as Form
 from models import User, Recipe
-from wtforms import StringField, PasswordField, TextAreaField
+from wtforms import StringField, PasswordField, TextAreaField, SelectField
 from wtforms.validators import DataRequired, Regexp, ValidationError, Length, EqualTo, Email
 
 def name_exists(form, field):
@@ -51,13 +51,13 @@ class LoginForm(Form):
     password = PasswordField('Password', validators=[DataRequired()])
 
 class RecipeForm(Form):
-    category = TextAreaField("Content")
+    category = SelectField("Category", choices=[('mexican', 'Mexican'), ('italian', 'Italian'), ('chinese', 'Chinese'), ('asian', 'Asian'), ('indian', 'Indian'), ('southern', 'Southern')])
     title = StringField("Title")
-    content = TextAreaField("Content")
-    ingredient_tag = StringField("Ingredient_tag")
+    content = TextAreaField("Ingredients and Instructions")
+    ingredient_tag = StringField("Main Ingredient")
 
 class EditRecipeForm(Form):
-    category = TextAreaField("Content")
+    category = SelectField("Category", choices=[('mexican', 'Mexican'), ('italian', 'Italian'), ('chinese', 'Chinese'), ('asian', 'Asian'), ('indian', 'Indian'), ('southern', 'Southern')])
     title = StringField("Title")
     content = TextAreaField("Content")
     ingredient_tag = StringField("Ingredient_tag")
