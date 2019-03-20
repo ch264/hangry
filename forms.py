@@ -58,3 +58,6 @@ class RecipeForm(Form):
     content = TextAreaField("Content")
     ingredient_tag = StringField("Ingredient_tag")
 
+    # Edit User
+    # Edit Recipe
+    
