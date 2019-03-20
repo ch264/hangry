@@ -61,10 +61,10 @@ def login():
                 ## creates session
                 login_user(user)
                 flash("You successfully logged in", "success")
-                return redirect(url_for('index'))
+                return redirect(url_for('profile'))
             else:
                 flash("your email or password doesn't match", "error")
-    return render_template('landing.html', form=form)
+    return render_template('login.html', form=form)
 #  will change 
 
 @app.route('/signup', methods=('GET', 'POST'))
@@ -81,7 +81,7 @@ def register():
         user = models.User.get(models.User.username == form.username.data)
         login_user(user)
         return redirect(url_for('profile'))
-    return render_template('landing.html', form=form)
+    return render_template('signup.html', form=form)
 
 @app.route('/logout')
 @login_required
@@ -163,7 +163,7 @@ if __name__ == '__main__':
         email="ronni@gmail.com",
         password='password',
         location="San Francisco"
-        ),
+        )
     except ValueError:
         pass
 
