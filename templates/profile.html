@@ -2,31 +2,30 @@
 
 {% block content %}
 
-<div class="column is-1"></div>
-<div class="column">
-	<div class="image is1by1">
-		<img src="#"></div>
-	</div>
-</div>
-<div class="column is-1"></div>
-<div class="column is-two-thirds content">
-	<p><span class="title is-bold">{{ user.username }}</span></p> 
-	<p><span class="location"><small>I live in {{ user.location }}</small></span></p>
-	<button class="button is-light">Edit profile</button>
-</div>
+	<div class="columns">
+		<div class="column">
+			<div class="image is1by1">
+				<img src="#">
+			</div>
+		</div>
 
-<!-- <div class="columns">
-	<div class="column own-recipe"> -->
-		<!-- for own receipes push them here -->
-		<!-- {% include '_receipe.html' %} -->
-	<!-- </div>
+		<div class="column is-two-thirds content">
+			<p><span class="title is-bold">{{ user.username }}</span></p> 
+			<p><span class="location"><small>I live in {{ user.location }}</small></span></p>
+			<button class="button is-light">Edit profile</button>
+		</div>
 
-	<div class=" column saved-recipe"> -->
-		<!-- push saved receipes here -->
-	<!-- {% include '_receipe.html' %}
+
+		<div>
+				{% include '_recipe.html' %}
+		</div>
+
 	</div>
-</div>	 -->
-	
+
+
+		
+
+		
 {% endblock %}
 
 

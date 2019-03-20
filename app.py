@@ -134,7 +134,6 @@ def profile(username=None):
 
 @app.route('/recipe', methods=['GET', 'POST'])
 @app.route('/recipe/<user>', methods=['GET', 'PUT', 'POST', 'DELETE'])
-  
 @login_required
 def post():
     form = forms.RecipeForm()
@@ -142,7 +141,7 @@ def post():
         flash("Recipe Created!", "success") 
         models.Recipe.create(
             user=g.user._get_current_object(), #create new post.
-                           content=form.content.data.strip()) 
+            content=form.content.data.strip()) 
         
         
         return redirect(url_for('index')) #redirect user
