@@ -51,7 +51,7 @@ class Recipe(Model):
   title = CharField()
   content = TextField()
   ingredient_tag = TextField()
-  user = ForeignKeyField(User, backref="profile")
+  user = ForeignKeyField(User, backref="recipes")
   class Meta:
     database = DATABASE
     db_table = 'recipe'

@@ -123,8 +123,15 @@ def profile(username=None):
 
 
 
-@app.route('/recipes', methods=['GET', 'POST'])
-@app.route('/recipes/<id>', methods=['GET', 'PUT', 'POST', 'DELETE'])
+# @app.route('/recipe', methods=['GET', 'POST'])
+# @app.route('/recipe/<user>', methods=['GET', 'PUT', 'POST', 'DELETE'])
+
+    # else: 
+    #     user = models.Recipe.select().where(models.Recipe.title == title).get()
+    #     user.delete_instance()
+    #     return repr(user)
+
+
 
 
 
