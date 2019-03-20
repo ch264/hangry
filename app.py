@@ -58,10 +58,22 @@ def logout():
 @app.route('/profile', methods=['GET', 'PUT'])
 @app.route('/profile/<id>', methods=['GET'])
 
-
+###
 @app.route('/recipes', methods=['GET', 'POST'])
 @app.route('/recipes/<id>', methods=['GET', 'PUT', 'POST', 'DELETE'])
 
+@login_required
+def post():
+    form = forms.RecipeForm()
+    if form.validate_on_submit():
+        flash("Recipe Created!", "success") 
+        models.Recipe.create(
+            user=g.user._get_current_object(), #create new post.
+                           content=form.content.data.strip()) 
+        
+        
+        return redirect(url_for('index')) #redirect user
+    return render_template('profile.html', form=form)
 
 # @app.route('/logout')
 # def loguout():
