@@ -51,9 +51,13 @@ class LoginForm(Form):
     password = PasswordField('Password', validators=[DataRequired()])
 
 
+
 class RecipeForm(Form):
     category = TextAreaField("Content")
     title = StringField("Title")
     content = TextAreaField("Content")
     ingredient_tag = StringField("Ingredient_tag")
+
+    # Edit User
+    # Edit Recipe
     
