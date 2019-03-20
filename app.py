@@ -128,9 +128,11 @@ def profile(username=None):
         return repr(user)
 
 @app.route('/edit-profile', methods=['GET', 'PUT'])
+@login_required
 def edit_profile():
+    user = current_user
     form = forms.EditUserForm()
-    return render_template('edit-profile.html', form=form)
+    return render_template('edit-profile.html', form=form, user=user)
 
 
 @app.route('/recipe', methods=['GET', 'POST'])
