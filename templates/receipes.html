@@ -1,0 +1,10 @@
+<!-- loop through receipe cards and print out all of them -->
+
+{% block content %}
+	<h1>All Receipes</h1>
+	{% for receipe in receipes %}
+	<section>
+		{% include 'receipe.html' %}
+	</section>>
+{% endfor %}
+{% endblock %}

@@ -1,20 +1,17 @@
 import os
 from flask import Flask, g
 from flask import Flask, request
-
 from flask import render_template, flash, redirect, url_for, session, escape
-
+from flask_bcrypt import check_password_hash
 # User login
-from flask_login import current_user, login_user
-
-# User logout
-from flask_login import logout_user
-
+from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 # Redirect user when not logged in
 from werkzeug.urls import url_parse
 
-# import models
+import models
 import forms
+
+
 
 app = Flask(__name__, static_url_path='/static')
 
@@ -24,17 +21,29 @@ PORT = 8000
 app = Flask(__name__)
 app.secret_key = 'pickle'
 
-# @app.before_request
-# def before_request():
-# # Connect to the DB before each request
-#   g.db = models.DATABASE
-#   g.db.connect()
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'
 
-# @app.after_request
-# def after_request(response):
-# # Close the database connection after each request
-#   g.db.close()
-#   return response
+@login_manager.user_loader
+def load_user(userid):
+    try: 
+        return models.User.get(models.User.id == userid)
+    except models.DoesNotExist:
+        return None
+
+@app.before_request
+def before_request():
+  g.db = models.DATABASE
+  g.db.connect()
+  g.user = current_user
+
+@app.after_request
+def after_request(response):
+  g.db.close()
+  return response
+
+
 
 @app.route('/')
 def index():
@@ -45,30 +54,127 @@ def about():
     return render_template('about.html')
 
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    form = forms.LoginForm()
-    return render_template('login.html', form=form)
+@app.route('/signup', methods=('GET', 'POST'))
+def register():
+    form = forms.SignUpForm()
+    if form.validate_on_submit():
+        flash('Thank you for signing up', 'success')
+        models.User.create_user(
+            username=form.username.data,
+            email=form.email.data,
+            password=form.password.data,
+            location=form.location.data
+            )
+        user = models.User.get(models.User.username == form.username.data)
+        login_user(user)
+        return redirect(url_for('profile'))
+    return render_template('landing.html', form=form)
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash("You've been logged out", "success")
+    return redirect(url_for('index'))
 
 
-@app.route('/signup', methods=['POST', 'GET'])
-def signup():
-    form = forms.UserForm()
-    return render_template('signup.html', form=form)
+@app.route('/profile', methods=['GET', 'POST'])
+@app.route('/profile/<username>', methods=['GET', 'DELETE', 'PUT'])
+def profile(username=None):
+    if username == None and request.method == 'GET':
+        return repr(models.User.select().get())
+    elif username != None and request.method == 'PUT':
+        email = request.json['email']
+        location = request.json['location']
+        user = models.User.select().where(models.User.username == username).get()
+        # User can change their email or location
+        user.email = email
+        user.location = location
+        user.save()
+        return repr(user)
+    elif username != None and request.method == 'GET':
+        return repr(models.User.select().where(models.User.username==username).get())
+    elif username == None and request.method == 'POST':
+        created = models.User.create(
+            username = request.json['username'],
+            email = request.json['email'],
+            password=request.json['password'],
+            location = request.json['location']
+            )
+        user = models.User.select().where(models.User.username == created.username).get()
+        return repr(user)
+    else: 
+        user = models.User.select().where(models.User.username == username).get()
+        user.delete_instance()
+        return repr(user)
 
-# @app.route('/logout')
-# def logout():
+
+@app.route('/recipe', methods=['GET', 'POST'])
+@app.route('/recipe/<user>', methods=['GET', 'PUT', 'POST', 'DELETE'])
+  
+
+@login_required
+def post():
+    form = forms.RecipeForm()
+    if form.validate_on_submit():
+        flash("Recipe Created!", "success") 
+        models.Recipe.create(
+            user=g.user._get_current_object(), #create new post.
+                           content=form.content.data.strip()) 
+        
+        
+        return redirect(url_for('index')) #redirect user
+    return render_template('profile.html', form=form)
 
 
-@app.route('/profile', methods=['GET', 'PUT'])
-# @app.route('/profile/<id>', methods=['GET'])
-def profile():
-    return render_template('test-profile.html')
-
-
-# @app.route('/recipes', methods=['GET', 'POST'])
-# @app.route('/recipes/<id>', methods=['GET', 'PUT', 'POST', 'DELETE'])
-
+    if form.validate_on_submit():
+        try:
+            user = models.User.get(models.User.email == form.email.data)
+        except models.DoesNotExist:
+            flash("Email or password does not match", "error")
+        else:
+            if check_password_hash(user.password, form.password.data):
+                ## creates session
+                login_user(user)
+                flash("You successfully logged in", "success")
+                return redirect(url_for('index'))
+            else:
+                flash("your email or password doesn't match", "error")
+    return render_template('landing.html', form=form)
+#  will change 
+  else: 
+        user = models.Recipe.select().where(models.Recipe.title == title).get()
+        user.delete_instance()
+        return repr(user)
 
 if __name__ == '__main__':
-    app.run(debug=DEBUG, port=PORT)
+    models.initialize()
+    try:
+        models.User.create_user(
+        username='brandon',
+        email="brandon@gmail.com",
+        password='password',
+        location="San Francisco"
+        ),
+        models.User.create_user(
+        username='christina',
+        email="christina@gmail.com",
+        password='password',
+        location="San Francisco"
+        ),
+        models.User.create_user(
+        username='nicolette',
+        email="nicolette@gmail.com",
+        password='password',
+        location="San Francisco"
+        ),
+        models.User.create_user(
+        username='ronni',
+        email="ronni@gmail.com",
+        password='password',
+        location="San Francisco"
+        ),
+    except ValueError:
+        pass
+
+app.run(debug=DEBUG, port=PORT)
