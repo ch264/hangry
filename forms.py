@@ -1,14 +1,14 @@
 from flask_wtf import FlaskForm as Form
 from wtforms import TextField, TextAreaField,SubmitField
 
-from models import user
+# from models import user
 
-# #class UserForm(Form):
-#     username = TextField("Username:")
-#     email = TextField("Email:")
-#     password = TextField("Password:")
-#     location = TextField("Location")
-#     submit = SubmitField("Create Post")
+class UserForm(Form):
+    username = TextField("Username:")
+    email = TextField("Email:")
+    password = TextField("Password:")
+    location = TextField("Location")
+    # submit = SubmitField("Create Post")
 
 class RecipeForm(Form):
     timestamp = TextField("Timestamp")
