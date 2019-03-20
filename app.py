@@ -14,6 +14,7 @@ from flask_login import logout_user
 from werkzeug.urls import url_parse
 
 # import models
+import forms
 
 
 app = Flask(__name__, static_url_path='/static')
@@ -44,12 +45,17 @@ def index():
 def about():
     return render_template('about.html')
 
-# @app.route('/login', methods=['GET', 'POST'])
-# def login():
- 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = forms.LoginForm()
+    return render_template('login.html', form=form)
 
-# @app.route('/signup', methods=['POST'])
-# def signup():
+
+@app.route('/signup', methods=['POST', 'GET'])
+def signup():
+    form = forms.UserForm()
+    return render_template('signup.html', form=form)
+
 
 # @app.route('/logout')
 # def logout():
