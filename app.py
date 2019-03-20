@@ -86,7 +86,7 @@ def register():
         user = models.User.get(models.User.username == form.username.data)
         login_user(user)
         name = user.username
-        return render_template('profile.html', username=name)
+        return redirect(url_for('profile', username=name))
     return render_template('signup.html', form=form)
 
 @app.route('/logout')
@@ -101,6 +101,7 @@ def logout():
 @app.route('/profile/<username>', methods=['GET', 'DELETE', 'PUT'])
 def profile(username=None):
     if username == None and request.method == 'GET':
+        # return repr(models.User.select().get())
         return render_template('profile.html')
     elif username != None and request.method == 'PUT':
         email = request.json['email']
@@ -112,8 +113,9 @@ def profile(username=None):
         user.save()
         return repr(user)
     elif username != None and request.method == 'GET':
-        user = models.User.select().where(models.User.username == username).get()
+        user = models.User.select().where(models.User.username==username).get()
         return render_template('profile.html', user=user)
+        # return repr(models.User.select().where(models.User.username==username).get())
     elif username == None and request.method == 'POST':
         created = models.User.create(
             username = request.json['username'],
