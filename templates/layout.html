@@ -17,7 +17,7 @@
     <nav class="navbar is-dark is-fixed-top" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <!-- Logo -->
-        <a href="/" class="navbar-item"><img src="#" alt="logo"></a>
+        <a href="{{ url_for('index') }}" class="navbar-item"><img src="#" alt="logo"></a>
         <!-- Hamburger bar for responsive nav -->
         <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
           <span aria-hidden="true"></span>
@@ -28,21 +28,21 @@
 
       <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-end">
-          <a href="/about" class="navbar-item">About</a>
+          <a href="{{ url_for('about') }}" class="navbar-item">About</a>
 
           <!-- If user is not logged in, show Login/Signup button -->
           <div class="navbar-item">
             <div class="buttons">
-              <a href="#" class="button is-light" title="login">Login</a>
+              <a href="{{ url_for('login') }}" class="button is-light" title="login">Login</a>
 
-              <a href="#" class="button is-primary" title="register">Sign Up</a>
+              <a href="{{ url_for('signup') }}" class="button is-primary" title="register">Sign Up</a>
 
             </div>
           </div>
           <!-- If user is logged in, show other pages -->
           <a href="#" class="navbar-item">Recipes</a>
 
-          <a href="#" class="navbar-item">Profile</a>
+          <a href="{{ url_for('profile') }}" class="navbar-item">Profile</a>
 
           <a href="#" class="navbar-item">Logout</a>
 
@@ -63,15 +63,18 @@
     <!-- Vendor Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.9"></script>
     <script>
-        var typed = new Typed('#typed', {
-          stringsElement: '#typed-strings',
-          typeSpeed: 70,
-          backSpeed: 40,
-          smartBackspace: true,
-          loop: true,
-          loopCount: Infinity,
-        });
-      </script>
+      var typed = new Typed('#typed', {
+        stringsElement: '#typed-strings',
+        typeSpeed: 70,
+        backSpeed: 40,
+        smartBackspace: true,
+        loop: true,
+        loopCount: Infinity,
+      });
+    </script>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='app.js') }}"></script>
   </body>
 
 </html>
