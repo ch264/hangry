@@ -1,22 +1,23 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-	<div class="profile">
-		<div class="columns">
-			<div class="column is-one-quarter">
-				<div class="image is1by1">
-					<img src="../static/{{user.username}}.jpeg">
-				</div>
-			</div>
-	
-			<div class="column">
-				<p><span class="title is-bold">{{ user.username }}</span></p> 
-				<p><span class="location"><small>I live in {{ user.location }}</small></span></p>
-				<a href="{{ url_for('edit_profile') }}" class="button is-light">Edit profile</a>
+
+	<div class="columns">
+		<div class="column is-one-quarter">
+			<div class="image is1by1">
+				<img src="../static/{{user.username}}.jpeg">
 			</div>
 		</div>
-	
-		<div class="columns">
+
+		<div class="column">
+			<p><span class="title is-bold">{{ user.username }}</span></p> 
+			<p><span class="location"><small>I live in {{ user.location }}</small></span></p>
+			<a href="{{ url_for('edit_profile', username=current_user.username) }}" class="button is-light">Edit profile</a>
+		</div>
+	</div>
+
+	<div class="columns">
+
 			<div class="column is-half">
 					<h4>Your Recipes</h4>
 					<a href="{{ url_for('add_recipe') }}" class="button is-light">Add a Recipe</a>
