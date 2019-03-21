@@ -146,12 +146,28 @@ def profile(username=None):
     #     return repr(user)
     return redirect(url_for('index'))
 
-@app.route('/edit-profile', methods=['GET', 'PUT'])
+
+
+@app.route('/edit-profile', methods=['GET', 'PUT', 'POST'])
 @login_required
 def edit_profile():
     user = current_user
     form = forms.EditUserForm()
     # [] TO BE TESTED
+    if request.method == 'POST':
+        def upload():
+            form = forms.UploadForm()
+            if form.validate_on_submit():
+                f = form.file.data
+                filename = secure_filename(str(current_user.username) + '.' + 'jpg' )
+                f.save(os.path.join(
+                    app.instance_path, 'uploads', filename
+                ))
+                
+                # filename = secure_filename(f.filename)
+                # form.file.data.save('uploads')
+                # return redirect(url_for('upload'))
+            return render_template('upload.html', form=form)
     if request.method == 'PUT':
         username = request.json['username']
         email = request.json['email']
@@ -166,8 +182,8 @@ def edit_profile():
 
         user.save()
         return redirect(url_for('profile', username=user.username))
-
     return render_template('edit-profile.html', form=form, user=user)
+
 
 
 @app.route('/recipe', methods=['GET'])

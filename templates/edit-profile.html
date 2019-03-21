@@ -33,6 +33,13 @@
       {{ form.location(class="control", placeholder=user.location) }}
     </div>
 
+    <!-- debug form field for uploading picture later. the picture is not saving -->
+    <!-- <div class="form-input">
+        {{ field_error(form.file) }}
+        {{ form.file.label(class="label") }}
+        {{ form.file(class="control") }} 
+    </div> -->
+
     {% with messages = get_flashed_messages(with_categories=True) %}
       {% if messages %}
         {% for category, message in messages %}
@@ -40,6 +47,9 @@
         {% endfor %}
       {% endif %}
     {% endwith %}
+
+    <a class="button" href="{{ url_for('upload')}}">Upload a new profile picture</a>
+    <hr>
 
     <button type="submit" class="button is-primary">Save my changes</button>
   </form>
