@@ -201,7 +201,6 @@ def recipe(recipe_id=None):
     if recipe_id != None and request.method == 'GET':
         recipe = models.Recipe.select().where(models.Recipe.id == recipe_id).get()
         return render_template('recipe.html', recipe=recipe)
-
     recipes = models.Recipe.select().limit(20)
     return render_template('recipes.html', recipes=recipes)
 
@@ -262,43 +261,43 @@ if __name__ == '__main__':
         category='Asian',
         title="Dumplings",
         content='Delicious',
-        ingredient_tag="Pork. Cabbage.",
+        ingredient_tag="Pork",
         user = 1
         ),
         models.Recipe.create_recipe(
         category='Italian',
         title="Spaghetti",
         content='Yummy Pasta',
-        ingredient_tag="Pasta. Meat. Sauce.",
+        ingredient_tag="Noodles",
         user = 2
         ),
         models.Recipe.create_recipe(
         category='Mexican',
         title="Enchaladas",
         content='Quick and easy',
-        ingredient_tag="Meat. Cheese. Tortillas",
+        ingredient_tag="Meat",
         user = 3
         ),
         models.Recipe.create_recipe(
         category='Chinese',
         title="Orange Chicken",
-        content='Crispy Chicken',
-        ingredient_tag="Chicken. Oranges.",
+        content='Fiery. Hot. Nice.',
+        ingredient_tag="Chicken",
         user = 3
         ),
         models.Recipe.create_recipe(
         category='Indian',
         title="Tofu Tikka Marsala",
         content='Taste Authentic',
-        ingredient_tag="Tofu. Sauce.",
+        ingredient_tag="Sauce",
         user = 2
         ),
         models.Recipe.create_recipe(
         category='Southern',
         title="Gumbo",
         content='Simple and Quick',
-        ingredient_tag="Meat. Seafood. Rice. Veggies.",
-        user = 1
+        ingredient_tag="Seafood",
+        user = 4
         )
 
     
