@@ -94,52 +94,51 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/profile')
-@app.route('/profile/<username>', methods=['GET', 'DELETE', 'PUT'])
+# @app.route('/profile')
+@app.route('/profile/<username>', methods=['GET', 'DELETE'])
 def profile(username=None):
-    if username == None and request.method == 'GET':
-        # return repr(models.User.select().get())
-        image_file = url_for('static', filename='profile_pics')
-        return render_template('profile.html')
-    elif username != None and request.method == 'PUT':
-        email = request.json['email']
-        location = request.json['location']
-        user = models.User.select().where(models.User.username == username).get()
-        # User can change their email or location
-        user.email = email
-        user.location = location
-        user.save()
-        return repr(user)
-    elif username != None and request.method == 'GET':
+    # if username == None and request.method == 'GET':
+    #     # return repr(models.User.select().get())
+    #     image_file = url_for('static', filename='profile_pics')
+    #     return render_template('profile.html')
+    if username != None and request.method == 'GET':
         user = models.User.select().where(models.User.username==username).get()
         return render_template('profile.html', user=user)
         # return repr(models.User.select().where(models.User.username==username).get())
-    elif username == None and request.method == 'POST':
-        created = models.User.create(
-            username = request.json['username'],
-            email = request.json['email'],
-            password=request.json['password'],
-            location = request.json['location']
-            )
-        user = models.User.select().where(models.User.username == created.username).get()
-        return repr(user)
-    else: 
-        user = models.User.select().where(models.User.username == username).get()
-        user.delete_instance()
-        return repr(user)
+    # else: 
+    #     user = models.User.select().where(models.User.username == username).get()
+    #     user.delete_instance()
+    #     return repr(user)
+    return redirect(url_for('index'))
 
 @app.route('/edit-profile', methods=['GET', 'PUT'])
 @login_required
 def edit_profile():
     user = current_user
     form = forms.EditUserForm()
+    # [] TO BE TESTED
+    if request.method == 'PUT':
+        username = request.json['username']
+        email = request.json['email']
+        password = request.json['password']
+        location = request.json['location']
+
+        # User can change their email or location
+        user.username = username
+        user.email = email
+        user.password = password
+        user.location = location
+
+        user.save()
+        return redirect(url_for('profile', username=user.username))
+
     return render_template('edit-profile.html', form=form, user=user)
 
 
 @app.route('/recipe', methods=['GET'])
-@app.route('/recipe/<recipe_id>', methods=['GET'])
+@app.route('/recipe/<recipe_id>', methods=['GET', 'PUT'])
 @login_required
-def post(recipe_id=None):
+def recipe(recipe_id=None):
     form = forms.RecipeForm()
     if recipe_id != None and request.method == 'GET':
         return render_template('recipe.html')
@@ -151,7 +150,8 @@ def post(recipe_id=None):
         
 
     #     return redirect(url_for('index')) #redirect user
-    return render_template('recipes.html', form=form)
+    recipes = models.Recipe.select().limit(20)
+    return render_template('recipes.html', recipes=recipes)
 #  will change 
         # else: 
         #     user = models.Recipe.select().where(models.Recipe.title == title).get()
@@ -159,10 +159,10 @@ def post(recipe_id=None):
         #     return repr(user)
 
 
-# [] TEMPORARY ROUTE
 @app.route('/create-recipe', methods=['GET', 'POST'])
 def add_recipe():
     form = forms.RecipeForm()
+    # [] TO BE TESTED
     if request.method == 'POST':
         flash("Recipe Created!", "success")
         models.Recipe.create(
@@ -174,13 +174,14 @@ def add_recipe():
         return render_template('profile.html', form=form)
     else:
         return render_template('create-recipe.html', form=form)
+
+# [] TO BE TESTED
+@app.route('/edit-recipe/<recipe_id>', methods=['GET', 'PUT'])
+def edit_recipe(recipe_id=None):
+    form = forms.EditRecipeForm()
+    recipe = models.Recipe.select().where(models.Recipe.id==recipe_id).get()
+    return render_template('edit-recipe.html', form=form, recipe=recipe)
         
-
-  
-    
-    
-    
-
 
 if __name__ == '__main__':
     models.initialize()

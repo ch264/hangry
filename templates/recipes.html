@@ -1,7 +1,10 @@
 <!-- loop through receipe cards and print out all of them -->
+{% extends 'layout.html' %}
+
 
 {% block content %}
-	<h1>All Receipes</h1>
-	{% include '_recipe.html' %}
-
+	<h1>All Recipes</h1>
+	<div class="columns">
+		{% include '_recipe.html' %}
+	</div>
 {% endblock %}
