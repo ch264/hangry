@@ -3,34 +3,28 @@
 {% from "macros.html" import field_error %}
 
 {% block content %}
-  <form method="PUT" action="">
+  <form method="POST" action="">
     {{ form.hidden_tag() }}
     <div class="form-input">
       {{ field_error(form.username) }}
 
       {{ form.username.label(class="label") }}
-      {{ form.username(class="control", placeholder=user.username) }}
+      {{ form.username(class="control", value=user.username) }}
     </div>
 
     <div class="form-input">
       {{ field_error(form.email) }}
 
       {{ form.email.label(class="label") }}
-      {{ form.email(class="control", placeholder=user.email) }}
+      {{ form.email(class="control", value=user.email) }}
     </div>
 
-    <div class="form-input">
-      {{ field_error(form.password) }}
-
-      {{ form.password.label(class="label") }}
-      {{ form.password(class="control") }}
-    </div>
 
     <div class="form-input">
       {{ field_error(form.location) }}
 
       {{ form.location.label(class="label") }}
-      {{ form.location(class="control", placeholder=user.location) }}
+      {{ form.location(class="control", value=user.location) }}
     </div>
 
     {% with messages = get_flashed_messages(with_categories=True) %}
