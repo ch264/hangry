@@ -11,7 +11,7 @@
 					<div class="media-content">
 						<p class="title is-4"><a href="{{ url_for('recipe', recipe_id=recipe.id) }}" class="has-text-primary">{{ recipe.title }}</a></p>
 						<p class="title is-6 no-padding">by {{ recipe.user.username }}</p>
-						<a href="#" class="button is-primary is-small">Save</a>
+						<a href="{{ url_for('save_to_favorite', recipe_id=recipe.id) }}" class="button is-primary is-small">Save</a>
 					</div>
 				</div>
 			</div>

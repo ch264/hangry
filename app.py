@@ -106,6 +106,7 @@ def profile(username=None):
 
     return redirect(url_for('index'))
 
+
 @app.route('/edit-profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
@@ -122,6 +123,14 @@ def edit_profile():
     return render_template('edit-profile.html', form=form, user=user)
 
     
+@app.route('/save/<recipe_id>')
+def save_to_favorite(recipe_id=None):
+    user = g.user._get_current_object()
+    recipe = models.Recipe.get(models.Recipe.id == recipe_id)
+
+    models.SavedRecipes.create(user=user.id, recipe=recipe.id)
+
+    return redirect(url_for('recipe'))
 
 
 @app.route('/recipe', methods=['GET'])
@@ -134,7 +143,6 @@ def recipe(recipe_id=None):
 
     recipes = models.Recipe.select().limit(20)
     return render_template('recipes.html', recipes=recipes)
-
 
 @app.route('/create-recipe', methods=['GET', 'POST'])
 @login_required
