@@ -138,6 +138,7 @@ def profile(username=None):
     #     return render_template('profile.html')
     if username != None and request.method == 'GET':
         user = models.User.select().where(models.User.username==username).get()
+
         return render_template('profile.html', user=user)
         # return repr(models.User.select().where(models.User.username==username).get())
     # else: 
