@@ -4,12 +4,15 @@
 <div class="about-team">
   <h2 class="subtitle is-2">About the Hangry Team</h2>
   <div class="columns">
-    <div class="column">
+
+    <div class="column is-half">
       <div class="card">
         <div class="card-content">
           <div class="media">
-            <div class="media-left">
-              <img src="#" alt="Nicolette">
+            <div class="media-left"> 
+              <figure class="image is-128x128">
+              <img src="{{ url_for('static', filename='../static/nicolette.jpeg') }}" alt="Nicolette">
+              </figure>
             </div>
             <div class="media-content">
               <h4 class="subtitle is-4">Meet Nicolette</h4>
@@ -18,12 +21,16 @@
           </div>
         </div>
       </div>
+    </div>
 
+    <div class="column is-half">
       <div class="card">
         <div class="card-content">
           <div class="media">
             <div class="media-left">
-              <img src="#" alt="Christina">
+              <figure class="image is-128x128">
+                <img src="{{ url_for('static', filename='../static/christina.jpeg') }}" alt="Christina">
+              </figure>
             </div>
             <div class="media-content">
               <h4 class="subtitle is-4">Meet Christina</h4>
@@ -33,13 +40,16 @@
         </div>
       </div>
     </div>
-
-    <div class="column">
+  </div>
+  <div class="columns">
+    <div class="column is-half">
       <div class="card">
         <div class="card-content">
           <div class="media">
             <div class="media-left">
-              <img src="#" alt="Brandon">
+              <figure class="image is-128x128">
+              <img src="{{ url_for('static', filename='../static/brandon.jpeg') }}" alt="Brandon">
+              </figure>
             </div>
             <div class="media-content">
               <h4 class="subtitle is-4">Meet Brandon</h4>
@@ -48,12 +58,16 @@
           </div>
         </div>
       </div>
+    </div>
 
+    <div class="column is-half">
       <div class="card">
         <div class="card-content">
           <div class="media">
             <div class="media-left">
-              <img src="#" alt="Ronni">
+              <figure class="image is-128x128">
+                <img src="{{ url_for('static', filename='../static/ronni.jpeg') }}" alt="Ronni">
+              </figure>
             </div>
             <div class="media-content">
               <h4 class="subtitle is-4">Meet Ronni</h4>
@@ -64,6 +78,7 @@
       </div>
     </div>
   </div>
+
 </div>
 
 {% endblock %}
