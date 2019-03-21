@@ -100,7 +100,9 @@ def logout():
 def profile(username=None):
     if username != None and request.method == 'GET':
         user = models.User.select().where(models.User.username==username).get()
-        return render_template('profile.html', user=user)
+        recipes = models.Recipe.select().where(models.Recipe.user == user.id)
+        # saved_recipes = models.SavedRecipes.select().where(models.SavedRecipes.user == user.id)
+        return render_template('profile.html', user=user, recipes=recipes)
 
     return redirect(url_for('index'))
 
