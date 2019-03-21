@@ -101,7 +101,15 @@ def profile(username=None):
     if username != None and request.method == 'GET':
         user = models.User.select().where(models.User.username==username).get()
         recipes = models.Recipe.select().where(models.Recipe.user == user.id)
-        saved_recipes = models.SavedRecipes.select().where(models.SavedRecipes.user == user.id)
+
+        # saved_recipes = models.SavedRecipes.select().where(models.SavedRecipes.user == user.id)
+        Owner = user.alias()
+        saved_recipes = (models.SavedRecipes.select(models.SavedRecipes, models.Recipe.content, models.User.username, Owner.username)
+        .join(Owner) 
+        .switch(models.SavedRecipes)
+        .join(models.Recipe)  
+        .join(models.User))
+
         return render_template('profile.html', user=user, recipes=recipes, saved_recipes=saved_recipes)
 
     return redirect(url_for('index'))

@@ -30,8 +30,8 @@
 				<div class="column is-half">
 					<h4>Saved Recipes</h4>
 					<div class="columns is-multiline">
-						{% for recipe in saved_recipes %}
-							{% include '_recipe.html' %}
+						{% for fave in saved_recipes %}
+							{% include '_savedrecipe.html' %}
 						{% endfor %}	
 					</div>
 				</div>
