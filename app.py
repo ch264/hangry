@@ -135,31 +135,32 @@ def edit_profile():
     return render_template('edit-profile.html', form=form, user=user)
 
 
-@app.route('/recipe', methods=['GET', 'POST'])
-@app.route('/recipe/<user>', methods=['GET', 'PUT', 'POST', 'DELETE'])
+@app.route('/recipe', methods=['GET'])
+@app.route('/recipe/<recipe_id>', methods=['GET'])
 @login_required
-def post():
+def post(recipe_id=None):
     form = forms.RecipeForm()
-    if form.validate_on_submit():
-        flash("Recipe Created!", "success") 
-        models.Recipe.create(
-            user=g.user._get_current_object(), #create new post.
-            content=form.content.data.strip()) 
+    if recipe_id != None and request.method == 'GET':
+        return render_template('recipe.html')
+    # if form.validate_on_submit():
+    #     flash("Recipe Created!", "success") 
+    #     models.Recipe.create(
+    #         user=g.user._get_current_object(), #create new post.
+    #         content=form.content.data.strip()) 
         
-        
-        return redirect(url_for('index')) #redirect user
-    return render_template('profile.html', form=form)
+
+    #     return redirect(url_for('index')) #redirect user
+    return render_template('recipes.html', form=form)
 #  will change 
         # else: 
         #     user = models.Recipe.select().where(models.Recipe.title == title).get()
         #     user.delete_instance()
         #     return repr(user)
 
-@app.route('/recipe', methods=['GET', 'PUT'])
 
 # [] TEMPORARY ROUTE
 @app.route('/create-recipe', methods=['GET', 'POST'])
-def create_recipe():
+def add_recipe():
     form = forms.RecipeForm()
     return render_template('create-recipe.html', form=form)
     
@@ -191,6 +192,13 @@ if __name__ == '__main__':
         email="ronni@gmail.com",
         password='password',
         location="San Francisco"
+        ),
+        models.Recipe.create_recipe(
+        category='Asian',
+        title='Ramen',
+        content='cook noodles, add Kimchi',
+        ingredient_tag='noodles',
+        user='1'
         )
     except ValueError:
         pass
