@@ -9,6 +9,7 @@
       {{ field_error(form.category) }}
 
       {{ form.category.label(class="label") }}
+      <!-- [] FIX THIS -->
       {{ form.category(class="control", placeholder=recipe.category) }}
     </div>
 
@@ -23,7 +24,7 @@
       {{ field_error(form.content) }}
 
       {{ form.content.label(class="label") }}
-      {{ form.content(class="control", placeholder=recipe.content) }}
+      {{ form.content(class="control", placeholder=recipe.content, cols="35", rows="20") }}
     </div>
 
     <div class="form-input">
