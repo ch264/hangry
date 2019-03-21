@@ -96,19 +96,12 @@ def logout():
 
 # @app.route('/profile')
 @app.route('/profile/<username>', methods=['GET', 'DELETE'])
+@login_required
 def profile(username=None):
-    # if username == None and request.method == 'GET':
-    #     # return repr(models.User.select().get())
-    #     image_file = url_for('static', filename='profile_pics')
-    #     return render_template('profile.html')
     if username != None and request.method == 'GET':
         user = models.User.select().where(models.User.username==username).get()
         return render_template('profile.html', user=user)
-        # return repr(models.User.select().where(models.User.username==username).get())
-    # else: 
-    #     user = models.User.select().where(models.User.username == username).get()
-    #     user.delete_instance()
-    #     return repr(user)
+
     return redirect(url_for('index'))
 
 @app.route('/edit-profile', methods=['GET', 'PUT'])
@@ -137,32 +130,19 @@ def edit_profile():
 
 @app.route('/recipe', methods=['GET'])
 @app.route('/recipe/<recipe_id>', methods=['GET', 'PUT'])
-@login_required
 def recipe(recipe_id=None):
     form = forms.RecipeForm()
     if recipe_id != None and request.method == 'GET':
-        return render_template('recipe.html')
-    # if form.validate_on_submit():
-    #     flash("Recipe Created!", "success") 
-    #     models.Recipe.create(
-    #         user=g.user._get_current_object(), #create new post.
-    #         content=form.content.data.strip()) 
-        
+        recipe = models.Recipe.select().where(models.Recipe.id == recipe_id).get()
+        return render_template('recipe.html', recipe=recipe)
 
-    #     return redirect(url_for('index')) #redirect user
     recipes = models.Recipe.select().limit(20)
     return render_template('recipes.html', recipes=recipes)
-#  will change 
-        # else: 
-        #     user = models.Recipe.select().where(models.Recipe.title == title).get()
-        #     user.delete_instance()
-        #     return repr(user)
 
 
 @app.route('/create-recipe', methods=['GET', 'POST'])
 def add_recipe():
     form = forms.RecipeForm()
-    # [] TO BE TESTED
     if request.method == 'POST':
         flash("Recipe Created!", "success")
         models.Recipe.create(
@@ -171,7 +151,8 @@ def add_recipe():
             content = form.content.data,
             ingredient_tag = form.ingredient_tag.data,
             user = g.user._get_current_object())
-        return render_template('profile.html', form=form)
+        recipe = models.Recipe.get(models.Recipe.title == form.title.data)
+        return redirect(url_for('recipe', recipe_id=recipe.id))
     else:
         return render_template('create-recipe.html', form=form)
 
