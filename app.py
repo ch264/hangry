@@ -59,17 +59,25 @@ def after_request(response):
 def index():
     return render_template('landing.html')
 
-class UploadForm(Form):
-        file = FileField()
+
+
+# def allowed_file(filename):
+#     return '.' in filename and \
+#         filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
     form = forms.UploadForm()
     if form.validate_on_submit():
         f = form.file.data
-        filename = secure_filename(f.filename)
-        form.file.data.save('uploads')
-        return redirect(url_for('upload'))
-
+        filename = secure_filename(f.filename + '<username>')
+        f.save(os.path.join(
+            app.instance_path, 'uploads', filename
+        ))
+        
+        # filename = secure_filename(f.filename)
+        # form.file.data.save('uploads')
+        # return redirect(url_for('upload'))
     return render_template('upload.html', form=form)
     
 

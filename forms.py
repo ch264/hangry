@@ -3,10 +3,10 @@ from models import User, Recipe
 from wtforms import StringField, PasswordField, TextAreaField, SelectField
 from wtforms.validators import DataRequired, Regexp, ValidationError, Length, EqualTo, Email
 
-from flask_wtf.file import FileField
+from flask_wtf.file import FileField, FileRequired
 
 class UploadForm(Form):
-    file = FileField()
+    file = FileField(validators=[FileRequired()])
 
 def name_exists(form, field):
     if User.select().where(User.username == field.data).exists():

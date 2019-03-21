@@ -3,11 +3,13 @@
 {% from "macros.html" import render_field %}
 
 {% block content %}
-  <form method="POST" enctype="multipart/form-data">
-    {{ form.hidden_tag() }}
+  <form method="POST" enctype="multipart/form-data" action="">
+		{{ form.hidden_tag() }}
+		<p>
     {% for field in form %}
       {{ render_field(field) }}
-    {% endfor %}
+		{% endfor %}
+		</p>
 
     {% with messages = get_flashed_messages(with_categories=True) %}
       {% if messages %}
