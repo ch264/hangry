@@ -12,7 +12,7 @@
 		<div class="column">
 			<p><span class="title is-bold">{{ user.username }}</span></p> 
 			<p><span class="location"><small>I live in {{ user.location }}</small></span></p>
-			<a href="{{ url_for('edit_profile') }}" class="button is-light">Edit profile</a>
+			<a href="{{ url_for('edit_profile', username=current_user.username) }}" class="button is-light">Edit profile</a>
 		</div>
 	</div>
 
