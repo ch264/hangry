@@ -36,7 +36,18 @@ class User(UserMixin, Model):
     #     )
     # Sign Up POST request
     @classmethod
-    def create_user(cls, username, email, password, location='sf'):
+    def create_user(cls, username, email, password, location):
+        # print(location)
+        try:
+            cls.create(
+                username = username,
+                email = email,
+                password = generate_password_hash(password),
+                location = location)
+        except IntegrityError:
+            raise ValueError("create error")
+
+    def edit_user(cls, username, email, password, location):
         # print(location)
         try:
             cls.create(

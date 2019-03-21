@@ -131,99 +131,61 @@ def logout():
 
 # @app.route('/profile')
 @app.route('/profile/<username>', methods=['GET', 'DELETE'])
+@login_required
 def profile(username=None):
-    # if username == None and request.method == 'GET':
-    #     # return repr(models.User.select().get())
-    #     image_file = url_for('static', filename='profile_pics')
-    #     return render_template('profile.html')
     if username != None and request.method == 'GET':
         user = models.User.select().where(models.User.username==username).get()
+        recipes = models.Recipe.select().where(models.Recipe.user == user.id)
+        # saved_recipes = models.SavedRecipes.select().where(models.SavedRecipes.user == user.id)
+        return render_template('profile.html', user=user, recipes=recipes)
 
-        return render_template('profile.html', user=user)
-        # return repr(models.User.select().where(models.User.username==username).get())
-    # else: 
-    #     user = models.User.select().where(models.User.username == username).get()
-    #     user.delete_instance()
-    #     return repr(user)
     return redirect(url_for('index'))
 
-
-
-@app.route('/edit-profile', methods=['GET', 'PUT', 'POST'])
+@app.route('/edit-profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
-    user = current_user
+    user = models.User.get(current_user.id)
     form = forms.EditUserForm()
-    # [] TO BE TESTED
-    if request.method == 'POST':
-        def upload():
-            form = forms.UploadForm()
-            if form.validate_on_submit():
-                f = form.file.data
-                filename = secure_filename(str(current_user.username) + '.' + 'jpg' )
-                f.save(os.path.join(
-                    app.instance_path, 'uploads', filename
-                ))
-                
-                # filename = secure_filename(f.filename)
-                # form.file.data.save('uploads')
-                # return redirect(url_for('upload'))
-            return render_template('upload.html', form=form)
-    if request.method == 'PUT':
-        username = request.json['username']
-        email = request.json['email']
-        password = request.json['password']
-        location = request.json['location']
-
-        # User can change their email or location
-        user.username = username
-        user.email = email
-        user.password = password
-        user.location = location
-
+    if form.validate_on_submit():
+        user.username = form.username.data
+        user.email = form.email.data
+        # user.password = form.password.data
+        user.location = form.location.data
         user.save()
-        return redirect(url_for('profile', username=user.username))
+        flash('Your changes have been saved.')
+        return render_template('edit-profile.html', form=form, user=user)
     return render_template('edit-profile.html', form=form, user=user)
+
+    
 
 
 
 @app.route('/recipe', methods=['GET'])
 @app.route('/recipe/<recipe_id>', methods=['GET', 'PUT'])
-@login_required
 def recipe(recipe_id=None):
     form = forms.RecipeForm()
     if recipe_id != None and request.method == 'GET':
-        return render_template('recipe.html')
-    # if form.validate_on_submit():
-    #     flash("Recipe Created!", "success") 
-    #     models.Recipe.create(
-    #         user=g.user._get_current_object(), #create new post.
-    #         content=form.content.data.strip()) 
-        
+        recipe = models.Recipe.select().where(models.Recipe.id == recipe_id).get()
+        return render_template('recipe.html', recipe=recipe)
 
-    #     return redirect(url_for('index')) #redirect user
     recipes = models.Recipe.select().limit(20)
     return render_template('recipes.html', recipes=recipes)
-#  will change 
-        # else: 
-        #     user = models.Recipe.select().where(models.Recipe.title == title).get()
-        #     user.delete_instance()
-        #     return repr(user)
 
 
 @app.route('/create-recipe', methods=['GET', 'POST'])
+@login_required
 def add_recipe():
     form = forms.RecipeForm()
-    # [] TO BE TESTED
+    user = g.user._get_current_object()
     if request.method == 'POST':
-        flash("Recipe Created!", "success")
         models.Recipe.create(
             category = form.category.data, #SelectField -use form instead of json
             title = form.title.data,
             content = form.content.data,
             ingredient_tag = form.ingredient_tag.data,
             user = g.user._get_current_object())
-        return render_template('profile.html', form=form)
+        recipe = models.Recipe.get(models.Recipe.title == form.title.data)
+        return redirect(url_for('recipe', recipe_id=recipe.id))
     else:
         return render_template('create-recipe.html', form=form)
 

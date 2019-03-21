@@ -1,23 +1,23 @@
-{% for recipe in recipes %}
+
 	<div class="column is-one-third-desktop is-half-tablet">
-		<div class="card large">
+		<div class="card">
 			<div class="card-image">
-				<figure class="image is-80x80">
-				<img src="{{ url_for('static', filename='klara-avsenik-1365422-unsplash.jpg') }}" alt="Sushi Image">
+				<figure class="image">
+					<a href="{{ url_for('recipe', recipe_id=recipe.id) }}"><img src="{{ url_for('static', filename='klara-avsenik-1365422-unsplash.jpg') }}" alt="Sushi Image"></a>
 				</figure>
 			</div>
 			<div class="card-content">
 				<div class="content">
 					<div class="media-content">
-						<p class="title is-4">{{ recipe.title }}</p>
-						<p class="title is-6 no-padding">{{ recipe.user.username }}</p>
-						<p><span class="title is-6"><a href="#">Save</a></span></p>
+						<p class="title is-4"><a href="{{ url_for('recipe', recipe_id=recipe.id) }}" class="has-text-primary">{{ recipe.title }}</a></p>
+						<p class="title is-6 no-padding">by {{ recipe.user.username }}</p>
+						<a href="#" class="button is-primary is-small">Save</a>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-{% endfor %}
+
 
 
 
