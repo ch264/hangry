@@ -153,24 +153,24 @@ def post(recipe_id=None):
     return render_template('recipes.html', form=form)
 #  will change 
         # else: 
-        #     user = models.Recipe.select().where(models.Recipe.title == title).get()
-        #     user.delete_instance()
-        #     return repr(user)
+            # user = models.Recipe.select().where(models.Recipe.title == title).get()
+            # user.delete_instance()
+            # return repr(user)
 
 
-# [] TEMPORARY ROUTE
 @app.route('/create-recipe', methods=['GET', 'POST'])
-def add_recipe():
+def add_recipe(user=None):
     form = forms.RecipeForm()
     if request.method == 'POST':
         flash("Recipe Created!", "success")
+        user = g.user._get_current_object()
         models.Recipe.create(
-            category = request.json['category'], #SelectField?? 
-            title = request.json['title'],
-            content = request.json['content'],
-            ingredient_tag = request.json['ingredient_tag'],
-            user = g.user._get_current_object())
-        return render_template('profile.html', form=form)
+            category = form.category.data, #SelectField?? 
+            title = form.title.data,
+            content = form.content.data,
+            ingredient_tag = form.ingredient_tag.data,
+            user = user)
+        return render_template('layout.html', form=form)
     else:
         return render_template('create-recipe.html', form=form)
         
