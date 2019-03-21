@@ -165,10 +165,10 @@ def add_recipe():
     if request.method == 'POST':
         flash("Recipe Created!", "success")
         models.Recipe.create(
-            category = request.json['category'], #SelectField?? 
-            title = request.json['title'],
-            content = request.json['content'],
-            ingredient_tag = request.json['ingredient_tag'],
+            category = form.category.data, #SelectField -use form instead of json
+            title = form.title.data,
+            content = form.content.data,
+            ingredient_tag = form.ingredient_tag.data,
             user = g.user._get_current_object())
         return render_template('profile.html', form=form)
     else:
