@@ -3,6 +3,11 @@ from models import User, Recipe
 from wtforms import StringField, PasswordField, TextAreaField, SelectField
 from wtforms.validators import DataRequired, Regexp, ValidationError, Length, EqualTo, Email
 
+from flask_wtf.file import FileField
+
+class UploadForm(Form):
+    file = FileField()
+
 def name_exists(form, field):
     if User.select().where(User.username == field.data).exists():
         raise ValidationError("User with this username already exists")

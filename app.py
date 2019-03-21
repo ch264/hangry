@@ -11,6 +11,19 @@ from werkzeug.urls import url_parse
 import models
 import forms
 
+# foto uploader via form field
+from flask import url_for, redirect, render_template
+from flask_wtf import Form
+from flask_wtf.file import FileField
+from werkzeug import secure_filename
+
+from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileRequired
+from werkzeug.utils import secure_filename
+
+
+
+# ////////////////////////////////////////////////////
 
 app = Flask(__name__, static_url_path='/static')
 app.secret_key = 'pickle'
@@ -45,6 +58,20 @@ def after_request(response):
 @app.route('/')
 def index():
     return render_template('landing.html')
+
+class UploadForm(Form):
+        file = FileField()
+@app.route('/upload', methods=['GET', 'POST'])
+def upload():
+    form = forms.UploadForm()
+    if form.validate_on_submit():
+        f = form.file.data
+        filename = secure_filename(f.filename)
+        form.file.data.save('uploads')
+        return redirect(url_for('upload'))
+
+    return render_template('upload.html', form=form)
+    
 
 @app.route('/about')
 def about():
@@ -99,7 +126,6 @@ def logout():
 def profile(username=None):
     if username == None and request.method == 'GET':
         # return repr(models.User.select().get())
-        image_file = url_for('static', filename='profile_pics')
         return render_template('profile.html')
     elif username != None and request.method == 'PUT':
         email = request.json['email']

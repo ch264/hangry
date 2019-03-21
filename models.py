@@ -8,11 +8,11 @@ DATABASE = SqliteDatabase('hangry.db')
 # inmport gravatar 
 from hashlib import md5
 # add this to model user for the gravatar
-class User(UserMixin, Model):
-    def avatar(self, size):
-        digest = md5(self.email.lower().encode('utf-8')).hexdigest()
-        return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(
-            digest, size)
+# class User(UserMixin, Model):
+#     def avatar(self, size):
+#         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
+#         return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(
+#             digest, size)
 
 class User(UserMixin, Model):
     username = CharField(unique=True)
