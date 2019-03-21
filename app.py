@@ -136,8 +136,7 @@ def edit_recipe(recipe_id=None):
         flash('Your recipe has been saved.')
 
         return redirect(url_for('recipe', recipe_id=recipe.id))
-    else:
-        return render_template('edit-recipe.html', form=form, recipe=recipe)    
+    return render_template('edit-recipe.html', form=form, recipe=recipe)    
 
 
 @app.route('/recipe', methods=['GET'])
