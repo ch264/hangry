@@ -72,5 +72,4 @@ class EditUserForm(Form):
     email = StringField("Email")
     password = PasswordField("Password")
     location =  StringField("Location")
-   
     
