@@ -98,34 +98,41 @@ def logout():
 @app.route('/profile/<username>', methods=['GET', 'DELETE'])
 @login_required
 def profile(username=None):
-    if username != None and request.method == 'GET':
+    if username == None and request.method == 'GET':
+        return render_template('profile.html')
+    elif username != None and request.method == 'GET':
         user = models.User.select().where(models.User.username==username).get()
         return render_template('profile.html', user=user)
+    elif username == None and request.method == 'POST':
+        created = models.User.create(
+            username = request.json['username'],
+            email = request.json['email'],
+            password=request.json['password'],
+            location = request.json['location']
+            )
+        user = models.User.select().where(models.User.username == created.username).get()
+        return repr(user)
+    else: 
+        user = models.User.select().where(models.User.username == username).get()
+        user.delete_instance()
+        return repr(user)
 
-    return redirect(url_for('index'))
-
-@app.route('/edit-profile', methods=['GET', 'PUT'])
+@app.route('/edit-profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
-    user = current_user
+    user = models.User.get(current_user.id)
     form = forms.EditUserForm()
-    # [] TO BE TESTED
-    if request.method == 'PUT':
-        username = request.json['username']
-        email = request.json['email']
-        password = request.json['password']
-        location = request.json['location']
-
-        # User can change their email or location
-        user.username = username
-        user.email = email
-        user.password = password
-        user.location = location
-
+    if form.validate_on_submit():
+        user.username = form.username.data
+        user.email = form.email.data
+        # user.password = form.password.data
+        user.location = form.location.data
         user.save()
-        return redirect(url_for('profile', username=user.username))
-
+        flash('Your changes have been saved.')
+        return render_template('edit-profile.html', form=form, user=user)
     return render_template('edit-profile.html', form=form, user=user)
+
+    
 
 
 @app.route('/recipe', methods=['GET'])
@@ -141,10 +148,11 @@ def recipe(recipe_id=None):
 
 
 @app.route('/create-recipe', methods=['GET', 'POST'])
+@login_required
 def add_recipe():
     form = forms.RecipeForm()
+    user = g.user._get_current_object()
     if request.method == 'POST':
-        flash("Recipe Created!", "success")
         models.Recipe.create(
             category = form.category.data, #SelectField -use form instead of json
             title = form.title.data,
