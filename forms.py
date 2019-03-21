@@ -50,6 +50,7 @@ class SignUpForm(Form):
         validators=[
             DataRequired()
         ])
+    file = FileField(validators=[FileRequired()])
 
 class LoginForm(Form):
     email = StringField('Email', [DataRequired(), Email()])

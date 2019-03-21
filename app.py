@@ -70,7 +70,7 @@ def upload():
     form = forms.UploadForm()
     if form.validate_on_submit():
         f = form.file.data
-        filename = secure_filename(f.filename + '<username>')
+        filename = secure_filename(str(current_user.username) + '.' + 'jpg' )
         f.save(os.path.join(
             app.instance_path, 'uploads', filename
         ))
