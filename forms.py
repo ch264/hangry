@@ -3,6 +3,11 @@ from models import User, Recipe
 from wtforms import StringField, PasswordField, TextAreaField, SelectField
 from wtforms.validators import DataRequired, Regexp, ValidationError, Length, EqualTo, Email
 
+from flask_wtf.file import FileField, FileRequired
+
+class UploadForm(Form):
+    file = FileField(validators=[FileRequired()])
+
 def name_exists(form, field):
     if User.select().where(User.username == field.data).exists():
         raise ValidationError("User with this username already exists")
@@ -45,6 +50,7 @@ class SignUpForm(Form):
         validators=[
             DataRequired()
         ])
+   
 
 class LoginForm(Form):
     email = StringField('Email', [DataRequired(), Email()])
@@ -67,5 +73,5 @@ class EditUserForm(Form):
     email = StringField("Email")
     # password = PasswordField("Password")
     location =  StringField("Location")
-   
+    file = FileField(validators=[FileRequired()])
     

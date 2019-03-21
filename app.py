@@ -11,6 +11,19 @@ from werkzeug.urls import url_parse
 import models
 import forms
 
+# foto uploader via form field
+from flask import url_for, redirect, render_template
+from flask_wtf import Form
+from flask_wtf.file import FileField
+from werkzeug import secure_filename
+
+from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileRequired
+from werkzeug.utils import secure_filename
+
+from flask_wtf.csrf import CSRFProtect
+
+# ////////////////////////////////////////////////////
 
 app = Flask(__name__, static_url_path='/static')
 app.secret_key = 'pickle'
@@ -45,6 +58,28 @@ def after_request(response):
 @app.route('/')
 def index():
     return render_template('landing.html')
+
+
+
+# def allowed_file(filename):
+#     return '.' in filename and \
+#         filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+
+@app.route('/upload', methods=['GET', 'POST'])
+def upload():
+    form = forms.UploadForm()
+    if form.validate_on_submit():
+        f = form.file.data
+        filename = secure_filename(str(current_user.username) + '.' + 'jpg' )
+        f.save(os.path.join(
+            app.instance_path, 'uploads', filename
+        ))
+        
+        # filename = secure_filename(f.filename)
+        # form.file.data.save('uploads')
+        # return redirect(url_for('upload'))
+    return render_template('upload.html', form=form)
+    
 
 @app.route('/about')
 def about():
@@ -101,10 +136,19 @@ def profile(username=None):
     if username != None and request.method == 'GET':
         user = models.User.select().where(models.User.username==username).get()
         recipes = models.Recipe.select().where(models.Recipe.user == user.id)
+
         # saved_recipes = models.SavedRecipes.select().where(models.SavedRecipes.user == user.id)
-        return render_template('profile.html', user=user, recipes=recipes)
+        Owner = user.alias()
+        saved_recipes = (models.SavedRecipes.select(models.SavedRecipes, models.Recipe.title, models.Recipe.id, models.User.username, Owner.username)
+        .join(Owner) 
+        .switch(models.SavedRecipes)
+        .join(models.Recipe)  
+        .join(models.User))
+
+        return render_template('profile.html', user=user, recipes=recipes, saved_recipes=saved_recipes)
 
     return redirect(url_for('index'))
+
 
 @app.route('/edit-profile', methods=['GET', 'POST'])
 @login_required
@@ -120,6 +164,16 @@ def edit_profile():
         flash('Your changes have been saved.')
         return redirect(url_for('profile', username=user.username))
     return render_template('edit-profile.html', form=form, user=user)
+
+# create a route to add data to join table
+@app.route('/save/<recipe_id>')
+def save_to_favorite(recipe_id=None):
+    user = g.user._get_current_object()
+    recipe = models.Recipe.get(models.Recipe.id == recipe_id)
+
+    models.SavedRecipes.create(user=user.id, recipe=recipe.id)
+
+    return redirect(url_for('recipe'))
 
 @app.route('/edit-recipe/<recipe_id>', methods=['GET', 'POST'])
 @login_required
@@ -139,6 +193,7 @@ def edit_recipe(recipe_id=None):
     return render_template('edit-recipe.html', form=form, recipe=recipe)    
 
 
+
 @app.route('/recipe', methods=['GET'])
 @app.route('/recipe/<recipe_id>', methods=['GET', 'PUT'])
 def recipe(recipe_id=None):
@@ -148,8 +203,6 @@ def recipe(recipe_id=None):
         return render_template('recipe.html', recipe=recipe)
     recipes = models.Recipe.select().limit(20)
     return render_template('recipes.html', recipes=recipes)
-  
-        
 
 @app.route('/create-recipe', methods=['GET', 'POST'])
 @login_required
