@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+<!-- Imports macro template for form rendering -->
+{% from "macros.html" import field_error %}
+
+{% block content %}
+  <form method="PUT" action="">
+    {{ form.hidden_tag() }}
+    <div class="form-input">
+      {{ field_error(form.category) }}
+
+      {{ form.category.label(class="label") }}
+      {{ form.category(class="control", placeholder=recipe.category) }}
+    </div>
+
+    <div class="form-input">
+      {{ field_error(form.title) }}
+
+      {{ form.title.label(class="label") }}
+      {{ form.title(class="control", placeholder=recipe.title) }}
+    </div>
+
+    <div class="form-input">
+      {{ field_error(form.content) }}
+
+      {{ form.content.label(class="label") }}
+      {{ form.content(class="control", placeholder=recipe.content) }}
+    </div>
+
+    <div class="form-input">
+      {{ field_error(form.ingredient_tag) }}
+
+      {{ form.ingredient_tag.label(class="label") }}
+      {{ form.ingredient_tag(class="control", placeholder=recipe.ingredient_tag) }}
+    </div>
+
+    {% with messages = get_flashed_messages(with_categories=True) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class={{category}}>{{ message }}</div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <button type="submit" class="button is-primary">Save my changes</button>
+  </form>
+{% endblock %}
