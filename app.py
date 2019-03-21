@@ -101,8 +101,8 @@ def profile(username=None):
     if username != None and request.method == 'GET':
         user = models.User.select().where(models.User.username==username).get()
         recipes = models.Recipe.select().where(models.Recipe.user == user.id)
-        # saved_recipes = models.SavedRecipes.select().where(models.SavedRecipes.user == user.id)
-        return render_template('profile.html', user=user, recipes=recipes)
+        saved_recipes = models.SavedRecipes.select().where(models.SavedRecipes.user == user.id)
+        return render_template('profile.html', user=user, recipes=recipes, saved_recipes=saved_recipes)
 
     return redirect(url_for('index'))
 
@@ -122,7 +122,7 @@ def edit_profile():
         return render_template('edit-profile.html', form=form, user=user)
     return render_template('edit-profile.html', form=form, user=user)
 
-    
+# create a route to add data to join table
 @app.route('/save/<recipe_id>')
 def save_to_favorite(recipe_id=None):
     user = g.user._get_current_object()
