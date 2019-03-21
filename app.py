@@ -98,24 +98,13 @@ def logout():
 @app.route('/profile/<username>', methods=['GET', 'DELETE'])
 @login_required
 def profile(username=None):
-    if username == None and request.method == 'GET':
-        return render_template('profile.html')
-    elif username != None and request.method == 'GET':
+    if username != None and request.method == 'GET':
         user = models.User.select().where(models.User.username==username).get()
-        return render_template('profile.html', user=user)
-    elif username == None and request.method == 'POST':
-        created = models.User.create(
-            username = request.json['username'],
-            email = request.json['email'],
-            password=request.json['password'],
-            location = request.json['location']
-            )
-        user = models.User.select().where(models.User.username == created.username).get()
-        return repr(user)
-    else: 
-        user = models.User.select().where(models.User.username == username).get()
-        user.delete_instance()
-        return repr(user)
+        recipes = models.Recipe.select().where(models.Recipe.user == user.id)
+        # saved_recipes = models.SavedRecipes.select().where(models.SavedRecipes.user == user.id)
+        return render_template('profile.html', user=user, recipes=recipes)
+
+    return redirect(url_for('index'))
 
 @app.route('/edit-profile', methods=['GET', 'POST'])
 @login_required

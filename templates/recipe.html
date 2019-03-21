@@ -1,11 +1,23 @@
+{% extends 'layout.html' %}
 
-<div class="level">
-	<div class="level-item has-text-centered">
-		<h1>{{ recipe.title }}</h1>
-		<a href="{{ url_for('edit_recipe', recipe_id=recipe.id)}}" class="button is-light">Edit my recipe</a>
-		<a href="#" class="button is-light">Delete my recipe</a>
-		<p><span class="title is-bold">by: {{ recipe.user.username}}</span></p> 
-		<p>{{ recipe.content }}</p>
-		<p>Category: {{ recipe.category }} | Main Ingredient: {{ recipe.ingredient_tag }}</p>
-	</div> 
-</div>
+{% block content %}
+	<div class="columns recipe-show">
+		<div class="column">
+			<figure class="image is-4by5">
+					<a href="{{ url_for('recipe', recipe_id=recipe.id) }}"><img src="{{ url_for('static', filename='klara-avsenik-1365422-unsplash.jpg') }}" alt="Sushi Image"></a>
+			</figure>	
+		</div>
+
+		<div class="column">
+			<h1>{{ recipe.title }}</h1>
+			<p class="is-size-6"> by {{ recipe.user.username}}</p>
+
+			<a href="#" class="button is-primary">Save to Bookmarks</a>
+			<br />
+			<a href="{{ url_for('edit_recipe', recipe_id=recipe.id)}}" class="button is-light is-small">Edit my recipe</a><a href="#" class="button is-light is-small">Delete my recipe</a>
+			<p class="recipe-content is-size-5">{{ recipe.content }}</p>
+			<p class="is-size-7">Category: {{ recipe.category }} | Main Ingredient: {{ recipe.ingredient_tag }}</p>		
+		</div>
+	</div>
+
+{% endblock %}
