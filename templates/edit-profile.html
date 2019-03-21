@@ -3,7 +3,8 @@
 {% from "macros.html" import field_error %}
 
 {% block content %}
-  <form method="POST" action="">
+  <h2 class="subtitle is-2">Edit Profile</h2>
+  <form method="PUT" action="">
     {{ form.hidden_tag() }}
     <div class="form-input">
       {{ field_error(form.username) }}
