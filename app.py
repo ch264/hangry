@@ -94,14 +94,12 @@ def logout():
     return redirect(url_for('index'))
 
 
-# @app.route('/profile')
-@app.route('/profile/<username>', methods=['GET', 'DELETE'])
-@login_required
+@app.route('/profile/<username>', methods=['GET'])
 def profile(username=None):
     if username != None and request.method == 'GET':
         user = models.User.select().where(models.User.username==username).get()
         return render_template('profile.html', user=user)
-
+        # return repr(models.User.select().where(models.User.username==username).get())
     return redirect(url_for('index'))
 
 @app.route('/edit-profile', methods=['GET', 'PUT'])
@@ -109,37 +107,42 @@ def profile(username=None):
 def edit_profile():
     user = current_user
     form = forms.EditUserForm()
-    # [] TO BE TESTED
-    if request.method == 'PUT':
-        username = request.json['username']
-        email = request.json['email']
-        password = request.json['password']
-        location = request.json['location']
-
+    if username != None and request.method == 'PUT':
+        email = form.email.data #changed from request,json 
+        location = form.location.data
+     
         # User can change their email or location
-        user.username = username
         user.email = email
-        user.password = password
         user.location = location
-
         user.save()
-        return redirect(url_for('profile', username=user.username))
-
+        return repr(user)
     return render_template('edit-profile.html', form=form, user=user)
 
 
 @app.route('/recipe', methods=['GET'])
-@app.route('/recipe/<recipe_id>', methods=['GET', 'PUT'])
-def recipe(recipe_id=None):
+@app.route('/recipe/<recipe_id>', methods=['GET'])
+@login_required
+def post(recipe_id=None):
     form = forms.RecipeForm()
     if recipe_id != None and request.method == 'GET':
-        recipe = models.Recipe.select().where(models.Recipe.id == recipe_id).get()
-        return render_template('recipe.html', recipe=recipe)
+        return render_template('recipe.html')
+    # if form.validate_on_submit():
+    #     flash("Recipe Created!", "success") 
+    #     models.Recipe.create(
+    #         user=g.user._get_current_object(), #create new post.
+    #         content=form.content.data.strip()) 
+        
 
-    recipes = models.Recipe.select().limit(20)
-    return render_template('recipes.html', recipes=recipes)
+    #     return redirect(url_for('index')) #redirect user
+    return render_template('recipes.html', form=form)
+#  will change 
+        # else: 
+        #     user = models.Recipe.select().where(models.Recipe.title == title).get()
+        #     user.delete_instance()
+        #     return repr(user)
 
 
+# [] TEMPORARY ROUTE
 @app.route('/create-recipe', methods=['GET', 'POST'])
 def add_recipe():
     form = forms.RecipeForm()
@@ -151,17 +154,8 @@ def add_recipe():
             content = form.content.data,
             ingredient_tag = form.ingredient_tag.data,
             user = g.user._get_current_object())
-        recipe = models.Recipe.get(models.Recipe.title == form.title.data)
-        return redirect(url_for('recipe', recipe_id=recipe.id))
-    else:
-        return render_template('create-recipe.html', form=form)
-
-# [] TO BE TESTED
-@app.route('/edit-recipe/<recipe_id>', methods=['GET', 'PUT'])
-def edit_recipe(recipe_id=None):
-    form = forms.EditRecipeForm()
-    recipe = models.Recipe.select().where(models.Recipe.id==recipe_id).get()
-    return render_template('edit-recipe.html', form=form, recipe=recipe)
+        return redirect(url_for('profile.html', form=form)
+    return redirect(url_for('create-recipe.html', form=form)
         
 
 if __name__ == '__main__':
@@ -195,42 +189,42 @@ if __name__ == '__main__':
         category='Asian',
         title="Dumplings",
         content='Delicious',
-        ingredient_tag="Pork. Cabbage.",
+        ingredient_tag="Pork",
         user = 1
         ),
         models.Recipe.create_recipe(
         category='Italian',
         title="Spaghetti",
         content='Yummy Pasta',
-        ingredient_tag="Pasta. Meat. Sauce.",
+        ingredient_tag="Pasta",
         user = 2
         ),
         models.Recipe.create_recipe(
         category='Mexican',
         title="Enchaladas",
         content='Quick and easy',
-        ingredient_tag="Meat. Cheese. Tortillas",
+        ingredient_tag="Meat",
         user = 3
         ),
         models.Recipe.create_recipe(
         category='Chinese',
         title="Orange Chicken",
         content='Crispy Chicken',
-        ingredient_tag="Chicken. Oranges.",
+        ingredient_tag="Chicken",
         user = 3
         ),
         models.Recipe.create_recipe(
         category='Indian',
         title="Tofu Tikka Marsala",
         content='Taste Authentic',
-        ingredient_tag="Tofu. Sauce.",
+        ingredient_tag="Tikka Marsala.",
         user = 2
         ),
         models.Recipe.create_recipe(
         category='Southern',
         title="Gumbo",
         content='Simple and Quick',
-        ingredient_tag="Meat. Seafood. Rice. Veggies.",
+        ingredient_tag="Meat",
         user = 1
         )
 
