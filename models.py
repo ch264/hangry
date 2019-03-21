@@ -46,6 +46,7 @@ class User(UserMixin, Model):
                 location = location)
         except IntegrityError:
             raise ValueError("create error")
+
 class Recipe(Model):
     timestamp = DateTimeField(default=datetime.datetime.now())
     category = CharField()

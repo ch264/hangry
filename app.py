@@ -162,7 +162,22 @@ def post(recipe_id=None):
 @app.route('/create-recipe', methods=['GET', 'POST'])
 def add_recipe():
     form = forms.RecipeForm()
-    return render_template('create-recipe.html', form=form)
+    if request.method == 'POST':
+        flash("Recipe Created!", "success")
+        models.Recipe.create(
+            category = request.json['category'], #SelectField?? 
+            title = request.json['title'],
+            content = request.json['content'],
+            ingredient_tag = request.json['ingredient_tag'],
+            user = g.user._get_current_object())
+        return render_template('profile.html', form=form)
+    else:
+        return render_template('create-recipe.html', form=form)
+        
+
+  
+    
+    
     
 
 
@@ -195,11 +210,50 @@ if __name__ == '__main__':
         ),
         models.Recipe.create_recipe(
         category='Asian',
-        title='Ramen',
-        content='cook noodles, add Kimchi',
-        ingredient_tag='noodles',
-        user='1'
+        title="Dumplings",
+        content='Delicious',
+        ingredient_tag="Pork. Cabbage.",
+        user = 1
+        ),
+        models.Recipe.create_recipe(
+        category='Italian',
+        title="Spaghetti",
+        content='Yummy Pasta',
+        ingredient_tag="Pasta. Meat. Sauce.",
+        user = 2
+        ),
+        models.Recipe.create_recipe(
+        category='Mexican',
+        title="Enchaladas",
+        content='Quick and easy',
+        ingredient_tag="Meat. Cheese. Tortillas",
+        user = 3
+        ),
+        models.Recipe.create_recipe(
+        category='Chinese',
+        title="Orange Chicken",
+        content='Crispy Chicken',
+        ingredient_tag="Chicken. Oranges.",
+        user = 3
+        ),
+        models.Recipe.create_recipe(
+        category='Indian',
+        title="Tofu Tikka Marsala",
+        content='Taste Authentic',
+        ingredient_tag="Tofu. Sauce.",
+        user = 2
+        ),
+        models.Recipe.create_recipe(
+        category='Southern',
+        title="Gumbo",
+        content='Simple and Quick',
+        ingredient_tag="Meat. Seafood. Rice. Veggies.",
+        user = 1
         )
+
+    
+    
+    
     except ValueError:
         pass
 
