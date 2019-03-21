@@ -4,7 +4,11 @@ body {
   display: flex;
   flex-direction: column;
   font-family: 'Montserrat', sans-serif;
+<<<<<<< HEAD
+  height: 100vh;
+=======
   min-height: 100vh;
+>>>>>>> 9da703ad0af078b84d691bbc92df04077e16d31c
 }
 
 section {
@@ -52,7 +56,14 @@ h2 {
   padding: 6px 10px;
 }
 
-.footer {
-  padding-bottom: 48px;
+.content {
+  padding: 20px;
+  min-height: 100%;
+  margin: 0 auto -50px;
+}
+
+footer {
+  display: flex;
   text-align: center;
+  padding: 0;
 }

@@ -17,7 +17,7 @@
     <nav class="navbar is-dark is-fixed-top" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <!-- Logo -->
-        <a href="{{ url_for('index') }}" class="navbar-item"><img src="#" alt="logo"></a>
+        <a href="{{ url_for('index') }}" class="navbar-item"><img src="{{ url_for('static', filename='../static/noodles.png') }}" alt="Hangry icon"></a>
         <!-- Hamburger bar for responsive nav -->
         <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
           <span aria-hidden="true"></span>
@@ -54,14 +54,16 @@
       </div>
     </nav>
 
-    <section>
+    <section class="content">
       {% block content %}
 
       {% endblock %}
     </section>
 
     <footer class="footer">
-      <p>&copy; Hangry 2019. Made with &hearts; by Nicolette, Brandon, Christina, Ronni.</p>
+      <div class="content has-text-centred">
+        <p>&copy; Hangry 2019. Made with &hearts; by Nicolette, Brandon, Christina, Ronni.</p>
+      </div>
     </footer>
 
     <!-- Vendor Scripts -->

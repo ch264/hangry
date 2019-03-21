@@ -99,6 +99,7 @@ def logout():
 def profile(username=None):
     if username == None and request.method == 'GET':
         # return repr(models.User.select().get())
+        image_file = url_for('static', filename='profile_pics')
         return render_template('profile.html')
     elif username != None and request.method == 'PUT':
         email = request.json['email']
@@ -127,8 +128,16 @@ def profile(username=None):
         user.delete_instance()
         return repr(user)
 
+@app.route('/edit-profile', methods=['GET', 'PUT'])
+@login_required
+def edit_profile():
+    user = current_user
+    form = forms.EditUserForm()
+    return render_template('edit-profile.html', form=form, user=user)
+
 
 @app.route('/recipe', methods=['GET'])
+<<<<<<< HEAD
 @app.route('/recipe/<recipe_id>', methods=['GET', 'DELETE'])
 @login_required
 def get_recipe():
@@ -153,6 +162,50 @@ def create_recipe():
         return redirect(url_for('index')) #redirect user
 
     return render_template('create-recipe.html', form=form)
+=======
+@app.route('/recipe/<recipe_id>', methods=['GET'])
+@login_required
+def post(recipe_id=None):
+    form = forms.RecipeForm()
+    if recipe_id != None and request.method == 'GET':
+        return render_template('recipe.html')
+    # if form.validate_on_submit():
+    #     flash("Recipe Created!", "success") 
+    #     models.Recipe.create(
+    #         user=g.user._get_current_object(), #create new post.
+    #         content=form.content.data.strip()) 
+        
+
+    #     return redirect(url_for('index')) #redirect user
+    return render_template('recipes.html', form=form)
+#  will change 
+        # else: 
+        #     user = models.Recipe.select().where(models.Recipe.title == title).get()
+        #     user.delete_instance()
+        #     return repr(user)
+
+
+# [] TEMPORARY ROUTE
+@app.route('/create-recipe', methods=['GET', 'POST'])
+def add_recipe():
+    form = forms.RecipeForm()
+    if request.method == 'POST':
+        flash("Recipe Created!", "success")
+        models.Recipe.create(
+            category = request.json['category'], #SelectField?? 
+            title = request.json['title'],
+            content = request.json['content'],
+            ingredient_tag = request.json['ingredient_tag'],
+            user = g.user._get_current_object())
+        return render_template('profile.html', form=form)
+    else:
+        return render_template('create-recipe.html', form=form)
+        
+
+  
+    
+    
+>>>>>>> de3dbbc1ae236b481c2b62b1509b096a69789054
     
 
 
@@ -182,7 +235,53 @@ if __name__ == '__main__':
         email="ronni@gmail.com",
         password='password',
         location="San Francisco"
+        ),
+        models.Recipe.create_recipe(
+        category='Asian',
+        title="Dumplings",
+        content='Delicious',
+        ingredient_tag="Pork. Cabbage.",
+        user = 1
+        ),
+        models.Recipe.create_recipe(
+        category='Italian',
+        title="Spaghetti",
+        content='Yummy Pasta',
+        ingredient_tag="Pasta. Meat. Sauce.",
+        user = 2
+        ),
+        models.Recipe.create_recipe(
+        category='Mexican',
+        title="Enchaladas",
+        content='Quick and easy',
+        ingredient_tag="Meat. Cheese. Tortillas",
+        user = 3
+        ),
+        models.Recipe.create_recipe(
+        category='Chinese',
+        title="Orange Chicken",
+        content='Crispy Chicken',
+        ingredient_tag="Chicken. Oranges.",
+        user = 3
+        ),
+        models.Recipe.create_recipe(
+        category='Indian',
+        title="Tofu Tikka Marsala",
+        content='Taste Authentic',
+        ingredient_tag="Tofu. Sauce.",
+        user = 2
+        ),
+        models.Recipe.create_recipe(
+        category='Southern',
+        title="Gumbo",
+        content='Simple and Quick',
+        ingredient_tag="Meat. Seafood. Rice. Veggies.",
+        user = 1
         )
+
+    
+    
+    
     except ValueError:
         pass
 

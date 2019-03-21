@@ -2,9 +2,6 @@
 
 {% block content %}
 	<h1>All Receipes</h1>
-	{% for receipe in receipes %}
-	<section>
-		{% include 'receipe.html' %}
-	</section>>
-{% endfor %}
+	{% include '_recipe.html' %}
+
 {% endblock %}

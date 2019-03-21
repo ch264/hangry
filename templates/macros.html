@@ -14,3 +14,14 @@
   </div>
 {% endmacro %}
 
+<!-- Defining a macro called field_error() that accepts a form field as a parameter to display any errors from data validators -->
+{% macro field_error(field) %}
+  {% if field.errors %}
+    {% for error in field.errors %}
+      <div>
+        {{ error }}
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endmacro %}
+
