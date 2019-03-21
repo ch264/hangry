@@ -1,23 +1,24 @@
-<div class="column is-one-third-desktop is-half-tablet">
-	<div class="card large">
-		<div class="card-image">
-			<figure class="image is-80x80">
-			<img src="{{ url_for('static', filename='klara-avsenik-1365422-unsplash.jpg') }}" alt="Sushi Image">
-			</figure>
-		</div>
-		<div class="card-content">
-			<div class="content">
-				<div class="media-content">
-					<p class="title is-4">recipe.title</p>
-					<p class="title is-6 no-padding">{{ user.username }}</p>
-					<p class="subtitle is-6">from: {{ user.location }}</p>
-					<p><span class="title is-6"><a href="#">Save</a></span></p>
+<!-- [] TO BE TESTED -->
+{% for recipe in recipes %}
+	<div class="column is-one-third-desktop is-half-tablet">
+		<div class="card large">
+			<div class="card-image">
+				<figure class="image is-80x80">
+				<img src="{{ url_for('static', filename='klara-avsenik-1365422-unsplash.jpg') }}" alt="Sushi Image">
+				</figure>
+			</div>
+			<div class="card-content">
+				<div class="content">
+					<div class="media-content">
+						<p class="title is-4">{{ recipe.title }}</p>
+						<p class="title is-6 no-padding">{{ recipe.user }}</p>
+						<p><span class="title is-6"><a href="#">Save</a></span></p>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
-</div>
-
+{% endfor %}
 
 
 
