@@ -149,7 +149,6 @@ def profile(username=None):
 
     return redirect(url_for('index'))
 
-
 @app.route('/edit-profile', methods=['GET', 'POST'])
 @login_required
 def edit_profile():
@@ -165,15 +164,31 @@ def edit_profile():
         return redirect(url_for('profile', username=user.username))
     return render_template('edit-profile.html', form=form, user=user)
 
-# create a route to add data to join table
-@app.route('/save/<recipe_id>')
-def save_to_favorite(recipe_id=None):
-    user = g.user._get_current_object()
-    recipe = models.Recipe.get(models.Recipe.id == recipe_id)
 
-    models.SavedRecipes.create(user=user.id, recipe=recipe.id)
+@app.route('/recipe', methods=['GET'])
+@app.route('/recipe/<recipe_id>', methods=['GET', 'PUT'])
+def recipe(recipe_id=None):
+    if recipe_id != None and request.method == 'GET':
+        recipe = models.Recipe.select().where(models.Recipe.id == recipe_id).get()
+        return render_template('recipe.html', recipe=recipe)
+    recipes = models.Recipe.select().limit(20)
+    return render_template('recipes.html', recipes=recipes)
 
-    return redirect(url_for('recipe'))
+@app.route('/create-recipe', methods=['GET', 'POST'])
+@login_required
+def add_recipe():
+    form = forms.RecipeForm()
+    if request.method == 'POST':
+        models.Recipe.create(
+            category = form.category.data, #SelectField -use form instead of json
+            title = form.title.data,
+            content = form.content.data,
+            ingredient_tag = form.ingredient_tag.data,
+            user = g.user._get_current_object())
+        recipe = models.Recipe.get(models.Recipe.title == form.title.data)
+        return redirect(url_for('recipe', recipe_id=recipe.id))
+    else:
+        return render_template('create-recipe.html', form=form)
 
 @app.route('/edit-recipe/<recipe_id>', methods=['GET', 'POST'])
 @login_required
@@ -193,42 +208,27 @@ def edit_recipe(recipe_id=None):
     return render_template('edit-recipe.html', form=form, recipe=recipe)    
 
 
-
-@app.route('/recipe', methods=['GET'])
-@app.route('/recipe/<recipe_id>', methods=['GET', 'PUT'])
-def recipe(recipe_id=None):
-    form = forms.RecipeForm()
-    if recipe_id != None and request.method == 'GET':
-        recipe = models.Recipe.select().where(models.Recipe.id == recipe_id).get()
-        return render_template('recipe.html', recipe=recipe)
-    recipes = models.Recipe.select().limit(20)
-    return render_template('recipes.html', recipes=recipes)
-
-@app.route('/create-recipe', methods=['GET', 'POST'])
-@login_required
-def add_recipe():
-    form = forms.RecipeForm()
+# create a route to add data to join table
+@app.route('/save/<recipe_id>')
+def save_to_favorite(recipe_id=None):
     user = g.user._get_current_object()
-    if request.method == 'POST':
-        models.Recipe.create(
-            category = form.category.data, #SelectField -use form instead of json
-            title = form.title.data,
-            content = form.content.data,
-            ingredient_tag = form.ingredient_tag.data,
-            user = g.user._get_current_object())
-        recipe = models.Recipe.get(models.Recipe.title == form.title.data)
-        return redirect(url_for('recipe', recipe_id=recipe.id))
-    else:
-        return render_template('create-recipe.html', form=form)
+    recipe = models.Recipe.get(models.Recipe.id == recipe_id)
 
-# [] TO BE TESTED
-# @app.route('/edit-recipe/<recipe_id>', methods=['GET', 'PUT'])
-# def edit_recipe(recipe_id=None):
-#     form = forms.EditRecipeForm()
-#     recipe = models.Recipe.select().where(models.Recipe.id==recipe_id).get()
-#     return render_template('edit-recipe.html', form=form, recipe=recipe)
+    models.SavedRecipes.create(user=user.id, recipe=recipe.id)
 
+    return redirect(url_for('recipe'))
+
+@app.route('/remove/<recipe_id>', methods=['GET', 'DELETE'])
+@login_required
+def remove_favorite(recipe_id=None):
+    user = g.user._get_current_object()
+
+    if recipe_id != None:
+        deleted_recipe = models.SavedRecipes.delete().where(models.SavedRecipes.user == user.id and models.SavedRecipes.recipe == recipe_id)
+        deleted_recipe.execute()
+        return redirect(url_for('profile', username=user.username))
      
+    return redirect(url_for('profile', username=user.username))
 
 if __name__ == '__main__':
     models.initialize()
