@@ -205,8 +205,19 @@ def edit_recipe(recipe_id=None):
         flash('Your recipe has been saved.')
 
         return redirect(url_for('recipe', recipe_id=recipe.id))
-    return render_template('edit-recipe.html', form=form, recipe=recipe)    
+    return render_template('edit-recipe.html', form=form, recipe=recipe)
 
+@app.route('/delete-recipe/<recipe_id>', methods=['GET', 'DELETE'])
+@login_required
+def delete_recipe(recipe_id=None):
+    if recipe_id != None:
+        deleted_saved_recipe = models.SavedRecipes.delete().where(models.SavedRecipes.recipe == recipe_id)
+        deleted_saved_recipe.execute()
+        deleted_recipe = models.Recipe.delete().where(models.Recipe.id == recipe_id)
+        deleted_recipe.execute()
+        return redirect(url_for('recipe'))
+    
+    return redirect(url_for('recipe', recipe_id=recipe_id))
 
 # create a route to add data to join table
 @app.route('/save/<recipe_id>')
@@ -224,11 +235,13 @@ def remove_favorite(recipe_id=None):
     user = g.user._get_current_object()
 
     if recipe_id != None:
-        deleted_recipe = models.SavedRecipes.delete().where(models.SavedRecipes.user == user.id and models.SavedRecipes.recipe == recipe_id)
-        deleted_recipe.execute()
+        removed_recipe = models.SavedRecipes.delete().where(models.SavedRecipes.user == user.id and models.SavedRecipes.recipe == recipe_id)
+        removed_recipe.execute()
         return redirect(url_for('profile', username=user.username))
      
     return redirect(url_for('profile', username=user.username))
+
+
 
 if __name__ == '__main__':
     models.initialize()
