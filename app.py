@@ -129,7 +129,7 @@ def edit_profile():
         user.location = form.location.data
         user.save()
         flash('Your changes have been saved.')
-        return render_template('edit-profile.html', form=form, user=user)
+        return redirect(url_for('profile', username=user.username))
     return render_template('edit-profile.html', form=form, user=user)
 
     
