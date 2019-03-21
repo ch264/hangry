@@ -99,6 +99,7 @@ def logout():
 def profile(username=None):
     if username == None and request.method == 'GET':
         # return repr(models.User.select().get())
+        image_file = url_for('static', filename='profile_pics')
         return render_template('profile.html')
     elif username != None and request.method == 'PUT':
         email = request.json['email']
