@@ -104,7 +104,7 @@ def profile(username=None):
 
         # saved_recipes = models.SavedRecipes.select().where(models.SavedRecipes.user == user.id)
         Owner = user.alias()
-        saved_recipes = (models.SavedRecipes.select(models.SavedRecipes, models.Recipe.content, models.User.username, Owner.username)
+        saved_recipes = (models.SavedRecipes.select(models.SavedRecipes, models.Recipe.title, models.User.username, Owner.username)
         .join(Owner) 
         .switch(models.SavedRecipes)
         .join(models.Recipe)  
