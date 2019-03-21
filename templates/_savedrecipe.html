@@ -1,0 +1,20 @@
+
+	<div class="column is-one-third-desktop is-half-tablet">
+			<div class="card">
+				<div class="card-image">
+					<figure class="image">
+						<a href="{{ url_for('recipe', recipe_id=fave.recipe.id) }}"><img src="{{ url_for('static', filename='klara-avsenik-1365422-unsplash.jpg') }}" alt="Sushi Image"></a>
+					</figure>
+				</div>
+				<div class="card-content">
+					<div class="content">
+						<div class="media-content">
+							<p class="title is-4">
+								<a href="{{ url_for('recipe', recipe_id=fave.recipe) }}" class="has-text-primary">{{ fave.recipe.title }}</a></p>
+							<p class="title is-6 no-padding">by {{ fave.recipe.user.username }}</p>
+							<a href="{{ url_for('save_to_favorite', recipe_id=fave.recipe) }}" class="button is-primary is-small">Remove</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>

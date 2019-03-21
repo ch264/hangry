@@ -3,35 +3,36 @@
 {% from "macros.html" import field_error %}
 
 {% block content %}
-  <form method="PUT" action="">
+  <h2 class="subtitle is-2">Edit Recipe</h2>
+  <form method="POST" action="">
     {{ form.hidden_tag() }}
     <div class="form-input">
       {{ field_error(form.category) }}
 
       {{ form.category.label(class="label") }}
       <!-- [] FIX THIS -->
-      {{ form.category(class="control", placeholder=recipe.category) }}
+      {{ form.category(class="control", value=recipe.category) }}
     </div>
 
     <div class="form-input">
       {{ field_error(form.title) }}
 
       {{ form.title.label(class="label") }}
-      {{ form.title(class="control", placeholder=recipe.title) }}
+      {{ form.title(class="control",  value=recipe.title) }}
     </div>
 
     <div class="form-input">
       {{ field_error(form.content) }}
 
       {{ form.content.label(class="label") }}
-      {{ form.content(class="control", placeholder=recipe.content, cols="35", rows="20") }}
+      {{ form.content(class="control", value=recipe.content, cols="35", rows="20") }}
     </div>
 
     <div class="form-input">
       {{ field_error(form.ingredient_tag) }}
 
       {{ form.ingredient_tag.label(class="label") }}
-      {{ form.ingredient_tag(class="control", placeholder=recipe.ingredient_tag) }}
+      {{ form.ingredient_tag(class="control", value=recipe.ingredient_tag) }}
     </div>
 
     {% with messages = get_flashed_messages(with_categories=True) %}

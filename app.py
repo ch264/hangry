@@ -136,10 +136,19 @@ def profile(username=None):
     if username != None and request.method == 'GET':
         user = models.User.select().where(models.User.username==username).get()
         recipes = models.Recipe.select().where(models.Recipe.user == user.id)
+
         # saved_recipes = models.SavedRecipes.select().where(models.SavedRecipes.user == user.id)
-        return render_template('profile.html', user=user, recipes=recipes)
+        Owner = user.alias()
+        saved_recipes = (models.SavedRecipes.select(models.SavedRecipes, models.Recipe.title, models.Recipe.id, models.User.username, Owner.username)
+        .join(Owner) 
+        .switch(models.SavedRecipes)
+        .join(models.Recipe)  
+        .join(models.User))
+
+        return render_template('profile.html', user=user, recipes=recipes, saved_recipes=saved_recipes)
 
     return redirect(url_for('index'))
+
 
 @app.route('/edit-profile', methods=['GET', 'POST'])
 @login_required
@@ -153,10 +162,35 @@ def edit_profile():
         user.location = form.location.data
         user.save()
         flash('Your changes have been saved.')
-        return render_template('edit-profile.html', form=form, user=user)
+        return redirect(url_for('profile', username=user.username))
     return render_template('edit-profile.html', form=form, user=user)
 
-    
+# create a route to add data to join table
+@app.route('/save/<recipe_id>')
+def save_to_favorite(recipe_id=None):
+    user = g.user._get_current_object()
+    recipe = models.Recipe.get(models.Recipe.id == recipe_id)
+
+    models.SavedRecipes.create(user=user.id, recipe=recipe.id)
+
+    return redirect(url_for('recipe'))
+
+@app.route('/edit-recipe/<recipe_id>', methods=['GET', 'POST'])
+@login_required
+def edit_recipe(recipe_id=None):
+    recipe = models.Recipe.select().where(models.Recipe.id == recipe_id).get()
+    print(recipe)
+    form = forms.EditRecipeForm()
+    if form.validate_on_submit():
+        recipe.category = form.category.data
+        recipe.title = form.title.data
+        recipe.content = form.content.data
+        recipe.ingredient_tag = form.ingredient_tag.data
+        recipe.save()
+        flash('Your recipe has been saved.')
+
+        return redirect(url_for('recipe', recipe_id=recipe.id))
+    return render_template('edit-recipe.html', form=form, recipe=recipe)    
 
 
 
@@ -170,7 +204,6 @@ def recipe(recipe_id=None):
 
     recipes = models.Recipe.select().limit(20)
     return render_template('recipes.html', recipes=recipes)
-
 
 @app.route('/create-recipe', methods=['GET', 'POST'])
 @login_required
@@ -190,12 +223,13 @@ def add_recipe():
         return render_template('create-recipe.html', form=form)
 
 # [] TO BE TESTED
-@app.route('/edit-recipe/<recipe_id>', methods=['GET', 'PUT'])
-def edit_recipe(recipe_id=None):
-    form = forms.EditRecipeForm()
-    recipe = models.Recipe.select().where(models.Recipe.id==recipe_id).get()
-    return render_template('edit-recipe.html', form=form, recipe=recipe)
-        
+# @app.route('/edit-recipe/<recipe_id>', methods=['GET', 'PUT'])
+# def edit_recipe(recipe_id=None):
+#     form = forms.EditRecipeForm()
+#     recipe = models.Recipe.select().where(models.Recipe.id==recipe_id).get()
+#     return render_template('edit-recipe.html', form=form, recipe=recipe)
+
+     
 
 if __name__ == '__main__':
     models.initialize()
