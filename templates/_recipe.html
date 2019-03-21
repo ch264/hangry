@@ -1,4 +1,3 @@
-<!-- [] TO BE TESTED -->
 {% for recipe in recipes %}
 	<div class="column is-one-third-desktop is-half-tablet">
 		<div class="card large">
@@ -11,7 +10,7 @@
 				<div class="content">
 					<div class="media-content">
 						<p class="title is-4">{{ recipe.title }}</p>
-						<p class="title is-6 no-padding">{{ recipe.user }}</p>
+						<p class="title is-6 no-padding">{{ recipe.user.username }}</p>
 						<p><span class="title is-6"><a href="#">Save</a></span></p>
 					</div>
 				</div>
