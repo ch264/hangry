@@ -65,7 +65,7 @@ class EditRecipeForm(Form):
 class EditUserForm(Form):
     username =  StringField("Username")
     email = StringField("Email")
-    password = PasswordField("Password")
+    # password = PasswordField("Password")
     location =  StringField("Location")
    
     

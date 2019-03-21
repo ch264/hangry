@@ -17,7 +17,7 @@
     <nav class="navbar is-dark is-fixed-top" role="navigation" aria-label="main navigation">
       <div class="navbar-brand">
         <!-- Logo -->
-        <a href="{{ url_for('index') }}" class="navbar-item"><img src="#" alt="logo"></a>
+        <a href="{{ url_for('index') }}" class="navbar-item"><img src="{{ url_for('static', filename='../static/noodles.png') }}" alt="Hangry icon"></a>
         <!-- Hamburger bar for responsive nav -->
         <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
           <span aria-hidden="true"></span>
@@ -43,7 +43,7 @@
           
           {% else %}
           <!-- If user is logged in, show other pages -->
-            <a href="#" class="navbar-item">Recipes</a>
+            <a href="{{ url_for ('recipe') }}" class="navbar-item">Recipes</a>
 
             <a href="{{ url_for('profile', username=current_user.username) }}" class="navbar-item">Profile</a>
 
