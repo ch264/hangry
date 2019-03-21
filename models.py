@@ -54,24 +54,24 @@ class Recipe(Model):
     content = TextField()
     ingredient_tag = TextField()
     user = ForeignKeyField(User, backref="recipes")
-
     class Meta:
         database = DATABASE
         db_table = 'recipe'
         order_by = ('-timestamp',)
-# test function for us
+
     @classmethod
     def create_recipe(cls, category, title, content, ingredient_tag, user):
+        # print(location)
         try:
             cls.create(
                 category = category,
                 title = title,
                 content = content,
                 ingredient_tag = ingredient_tag,
-                user = user)
+                user = user
+                )
         except IntegrityError:
-            raise ValueError("create error")
-  
+            raise ValueError("create recipe error")
 
 class SavedRecipes(Model):
     user = ForeignKeyField(User)

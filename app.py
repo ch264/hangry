@@ -128,25 +128,38 @@ def profile(username=None):
         return repr(user)
 
 @app.route('/edit-profile', methods=['GET', 'PUT'])
+@login_required
 def edit_profile():
+    user = current_user
     form = forms.EditUserForm()
-    return render_template('edit-profile.html', form=form)
+    return render_template('edit-profile.html', form=form, user=user)
 
 
-# @app.route('/recipe', methods=['GET', 'POST'])
-# @app.route('/recipe/<user>', methods=['GET', 'PUT', 'POST', 'DELETE'])
-# @login_required
+@app.route('/recipe', methods=['GET'])
+@app.route('/recipe/<recipe_id>', methods=['GET'])
+@login_required
+def post(recipe_id=None):
+    form = forms.RecipeForm()
+    if recipe_id != None and request.method == 'GET':
+        return render_template('recipe.html')
+    # if form.validate_on_submit():
+    #     flash("Recipe Created!", "success") 
+    #     models.Recipe.create(
+    #         user=g.user._get_current_object(), #create new post.
+    #         content=form.content.data.strip()) 
+        
 
-          
-    
+    #     return redirect(url_for('index')) #redirect user
+    return render_template('recipes.html', form=form)
 #  will change 
         # else: 
         #     user = models.Recipe.select().where(models.Recipe.title == title).get()
         #     user.delete_instance()
         #     return repr(user)
 
+
 # [] TEMPORARY ROUTE
-@app.route('/create-recipe', methods=['GET','POST'])
+@app.route('/create-recipe', methods=['GET', 'POST'])
 def add_recipe():
     form = forms.RecipeForm()
     if request.method == 'POST':
