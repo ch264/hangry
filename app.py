@@ -219,7 +219,7 @@ def add_recipe():
         recipe = models.Recipe.get(models.Recipe.title == form.title.data)
         return redirect(url_for('recipe', recipe_id=recipe.id))
     else:
-        return render_template('create-recipe.html', form=form)
+        return render_template('create-recipe.html', form=form) 
 
 # [] TO BE TESTED
 # @app.route('/edit-recipe/<recipe_id>', methods=['GET', 'PUT'])
