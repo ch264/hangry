@@ -164,7 +164,6 @@ def edit_profile():
 
 @app.route('/recipe', methods=['GET'])
 @app.route('/recipe/<recipe_id>', methods=['GET', 'PUT'])
-@login_required
 def recipe(recipe_id=None):
     if recipe_id != None and request.method == 'GET':
         recipe = models.Recipe.select().where(models.Recipe.id == recipe_id).get()
