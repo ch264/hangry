@@ -194,7 +194,6 @@ def add_recipe():
 @login_required
 def edit_recipe(recipe_id=None):
     recipe = models.Recipe.select().where(models.Recipe.id == recipe_id).get()
-    print(recipe)
     form = forms.EditRecipeForm()
     if form.validate_on_submit():
         recipe.category = form.category.data
