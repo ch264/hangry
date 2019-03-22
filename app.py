@@ -72,7 +72,7 @@ def upload():
         f = form.file.data
         filename = secure_filename(str(current_user.username) + '.' + 'jpg' )
         f.save(os.path.join(
-            app.instance_path, 'uploads', filename
+            app.static_url_path, 'uploads', filename
         ))
         
         # filename = secure_filename(f.filename)
