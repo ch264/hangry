@@ -5,7 +5,7 @@
 	<div class="columns">
 		<div class="column is-one-quarter">
 			<div class="image is1by1">
-				<img src="../instance/uploads/christina.jpg">
+				<a href="{{ url_for('profile', username=user.id) }}"></a><img src="{{ user.image_url }}" alt="{{ user.image_filename }}">
 			</div>
 		</div>
 

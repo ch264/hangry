@@ -11,12 +11,9 @@ from werkzeug.urls import url_parse
 import models
 import forms
 
-# foto uploader via file field
-from flask import Flask, render_template, request
 from flask_uploads import UploadSet, configure_uploads, IMAGES
 
 # foto uploader via form field old
-from flask import url_for, redirect, render_template
 from flask_wtf import Form
 from flask_wtf.file import FileField
 from werkzeug import secure_filename
@@ -27,10 +24,14 @@ from werkzeug.utils import secure_filename
 
 from flask_wtf.csrf import CSRFProtect
 
+
+
 # ////////////////////////////////////////////////////
 
-app = Flask(__name__, static_url_path='/static')
+app = Flask(__name__, instance_relative_config=True)
+app.config.from_pyfile('flask.cfg')
 app.secret_key = 'pickle'
+
 
 DEBUG = True
 PORT = 8000
@@ -38,6 +39,9 @@ PORT = 8000
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+
+images = UploadSet('images', IMAGES)
+configure_uploads(app, images)
 
 @login_manager.user_loader
 def load_user(userid):
@@ -65,35 +69,34 @@ def index():
 
 # new photo uploader
 # //////////////////////////////////////////////////////////////
-photos = UploadSet('photos', IMAGES)
+# photos = UploadSet('photos', IMAGES)
 # patch_request_class(app, 32 * 1024 * 1024)
 
 # this is my destination upload folder
-app.config['UPLOADED_PHOTOS_DEST'] = 'static'
 # pass in flask app with photos object
-configure_uploads(app, photos)
+# configure_uploads(app, photos)
 
-@app.route('/upload', methods=['GET', 'POST'])
-def upload():
-    form = forms.UploadForm()
-    if request.method == 'POST' and 'photo' in request.files:
-        if form.validate_on_submit():
-            f = form.file.data
-            filename = photos.save(request.files['photo'])
-            # rec = Photo(filename=filename, user=g.user.id)
-            # rec.store()
-            # flash("Photo saved.")
-            # return redirect(url_for('profile', id=rec.id))
-            return filename
-    return render_template('upload.html', form=form)
+# @app.route('/upload', methods=['GET', 'POST'])
+# def upload():
+#     form = forms.UploadForm()
+#     if request.method == 'POST' and 'photo' in request.files:
+#         if form.validate_on_submit():
+#             f = form.file.data
+#             filename = photos.save(request.files['photo'])
+#             rec = Photo(filename=filename, user=g.user.id)
+#             rec.store()
+#             flash("Photo saved.")
+#             return redirect(url_for('profile', id=rec.id))
 
-@app.route('/photo/<id>')
-def show(id):
-    photo = Photo.load(id)
-    if photo is None:
-        abort(404)
-    url = photos.url(photo.filename)
-    return render_template('profile.html', url=url, photo=photo)
+#     return render_template('upload.html', form=form)
+
+# @app.route('/photo/<id>')
+# def show(id):
+#     photo = Photo.load(id)
+#     if photo is None:
+#         abort(404)
+#     url = photos.url(photo.filename)
+#     return render_template('profile.html', url=url, photo=photo)
 
 # old uploader
 # //////////////////////////////////////////////////////////////
@@ -140,16 +143,22 @@ def login():
 def register():
     form = forms.SignUpForm()
     if form.validate_on_submit():
-        flash('Thank you for signing up', 'success')
+        filename = images.save(request.files['profile_image'])
+        url = images.url(filename)
+
         models.User.create_user(
             username=form.username.data,
             email=form.email.data,
             password=form.password.data,
-            location=form.location.data
-            )
+            location=form.location.data,
+            image_filename=filename,
+            image_url=url)
+        
         user = models.User.get(models.User.username == form.username.data)
         login_user(user)
         name = user.username
+
+        flash('Thank you for signing up', 'success')
         return redirect(url_for('profile', username=name))
     return render_template('signup.html', form=form)
 
@@ -248,8 +257,9 @@ def add_recipe():
             title = form.title.data,
             content = form.content.data,
             ingredient_tag = form.ingredient_tag.data,
-            user = g.user._get_current_object())
-        recipe = models.Recipe.get(models.Recipe.title == form.title.data)
+            user = g.user._get_current_object(),
+            image_filename = images.save(request.files['recipe_image']),
+            image_url = images.url(images.save(request.files['recipe_image'])))
         return redirect(url_for('recipe', recipe_id=recipe.id))
     else:
         return render_template('create-recipe.html', form=form)
@@ -265,78 +275,78 @@ def add_recipe():
 
 if __name__ == '__main__':
     models.initialize()
-    try:
-        models.User.create_user(
-        username='brandon',
-        email="brandon@gmail.com",
-        password='password',
-        location="San Francisco"
-        ),
-        models.User.create_user(
-        username='christina',
-        email="christina@gmail.com",
-        password='password',
-        location="San Francisco"
-        ),
-        models.User.create_user(
-        username='nicolette',
-        email="nicolette@gmail.com",
-        password='password',
-        location="San Francisco"
-        ),
-        models.User.create_user(
-        username='ronni',
-        email="ronni@gmail.com",
-        password='password',
-        location="San Francisco"
-        ),
-        models.Recipe.create_recipe(
-        category='Asian',
-        title="Dumplings",
-        content='Delicious',
-        ingredient_tag="Pork. Cabbage.",
-        user = 1
-        ),
-        models.Recipe.create_recipe(
-        category='Italian',
-        title="Spaghetti",
-        content='Yummy Pasta',
-        ingredient_tag="Pasta. Meat. Sauce.",
-        user = 2
-        ),
-        models.Recipe.create_recipe(
-        category='Mexican',
-        title="Enchaladas",
-        content='Quick and easy',
-        ingredient_tag="Meat. Cheese. Tortillas",
-        user = 3
-        ),
-        models.Recipe.create_recipe(
-        category='Chinese',
-        title="Orange Chicken",
-        content='Crispy Chicken',
-        ingredient_tag="Chicken. Oranges.",
-        user = 3
-        ),
-        models.Recipe.create_recipe(
-        category='Indian',
-        title="Tofu Tikka Marsala",
-        content='Taste Authentic',
-        ingredient_tag="Tofu. Sauce.",
-        user = 2
-        ),
-        models.Recipe.create_recipe(
-        category='Southern',
-        title="Gumbo",
-        content='Simple and Quick',
-        ingredient_tag="Meat. Seafood. Rice. Veggies.",
-        user = 1
-        )
+    # try:
+    #     models.User.create_user(
+    #     username='brandon',
+    #     email="brandon@gmail.com",
+    #     password='password',
+    #     location="San Francisco"
+    #     ),
+    #     models.User.create_user(
+    #     username='christina',
+    #     email="christina@gmail.com",
+    #     password='password',
+    #     location="San Francisco"
+    #     ),
+    #     models.User.create_user(
+    #     username='nicolette',
+    #     email="nicolette@gmail.com",
+    #     password='password',
+    #     location="San Francisco"
+    #     ),
+    #     models.User.create_user(
+    #     username='ronni',
+    #     email="ronni@gmail.com",
+    #     password='password',
+    #     location="San Francisco"
+    #     ),
+    #     models.Recipe.create_recipe(
+    #     category='Asian',
+    #     title="Dumplings",
+    #     content='Delicious',
+    #     ingredient_tag="Pork. Cabbage.",
+    #     user = 1
+    #     ),
+    #     models.Recipe.create_recipe(
+    #     category='Italian',
+    #     title="Spaghetti",
+    #     content='Yummy Pasta',
+    #     ingredient_tag="Pasta. Meat. Sauce.",
+    #     user = 2
+    #     ),
+    #     models.Recipe.create_recipe(
+    #     category='Mexican',
+    #     title="Enchaladas",
+    #     content='Quick and easy',
+    #     ingredient_tag="Meat. Cheese. Tortillas",
+    #     user = 3
+    #     ),
+    #     models.Recipe.create_recipe(
+    #     category='Chinese',
+    #     title="Orange Chicken",
+    #     content='Crispy Chicken',
+    #     ingredient_tag="Chicken. Oranges.",
+    #     user = 3
+    #     ),
+    #     models.Recipe.create_recipe(
+    #     category='Indian',
+    #     title="Tofu Tikka Marsala",
+    #     content='Taste Authentic',
+    #     ingredient_tag="Tofu. Sauce.",
+    #     user = 2
+    #     ),
+    #     models.Recipe.create_recipe(
+    #     category='Southern',
+    #     title="Gumbo",
+    #     content='Simple and Quick',
+    #     ingredient_tag="Meat. Seafood. Rice. Veggies.",
+    #     user = 1
+    #     )
 
     
     
     
-    except ValueError:
-        pass
+    # except ValueError:
+    #     pass
 
 app.run(debug=DEBUG, port=PORT)

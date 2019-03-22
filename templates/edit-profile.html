@@ -1,6 +1,7 @@
 {% extends "layout.html" %}
 <!-- Imports macro template for form rendering -->
 {% from "macros.html" import field_error %}
+{% from "macros.html" import field_upload %}
 
 {% block content %}
   <h2 class="subtitle is-2">Edit Profile</h2>
@@ -28,6 +29,12 @@
       {{ form.location(class="control", value=user.location) }}
     </div>
 
+    <div>
+      <form method="POST" action="" class="field" enctype="multipart/form-data">
+      {{ form.hidden_tag() }}
+      {{ form.file(class="control") }}
+    </div>
+
     <!-- debug form field for uploading picture later. the picture is not saving -->
     <!-- <div class="form-input">
         {{ field_error(form.file) }}
@@ -43,7 +50,6 @@
       {% endif %}
     {% endwith %}
 
-    <a class="button" href="{{ url_for('upload')}}">Upload a new profile picture</a>
     <hr>
 
     <button type="submit" class="button is-primary">Save my changes</button>

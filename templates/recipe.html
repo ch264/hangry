@@ -4,13 +4,13 @@
 	<div class="columns recipe-show">
 		<div class="column">
 			<figure class="image is-4by5">
-					<a href="{{ url_for('recipe', recipe_id=recipe.id) }}"><img src="{{ url_for('static', filename='klara-avsenik-1365422-unsplash.jpg') }}" alt="Sushi Image"></a>
+					<a href="{{ url_for('recipe', recipe_id=recipe.id) }}"><img src="{{ recipe.Recipe.image_url }}" alt="{ recipe.Recipe.image_filename }}"></a>
 			</figure>	
 		</div>
 
 		<div class="column">
 			<h1>{{ recipe.title }}</h1>
-			<p class="is-size-6"> by {{ recipe.user.username}}</p>
+			<p class="is-size-6"> by {{ recipe.user.username }}</p>
 
 			<a href="#" class="button is-primary">Save to Bookmarks</a>
 			<br />

@@ -1,12 +1,13 @@
 {% extends "layout.html" %}
 <!-- Imports macro template for form rendering -->
+{% from "macros.html" import field_upload %}
 {% from "macros.html" import render_field %}
 
 {% block content %}
-  <form method="POST" action="" class="field">
+  <form method="POST" action="{{ url_for('register') }}" class="field" enctype="multipart/form-data">
     {{ form.hidden_tag() }}
     {% for field in form %}
-      {{ render_field(field) }}
+      {{ field_upload(field) }}
     {% endfor %}
 
     {% with messages = get_flashed_messages(with_categories=True) %}
