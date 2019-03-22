@@ -3,7 +3,7 @@
 {% from "macros.html" import render_field %}
 
 {% block content %}
-  <form method="POST" action="" class="field">
+  <form method="POST" action="" class="field ">
     {{ form.hidden_tag() }}
     {% for field in form %}
       {{ render_field(field) }}
@@ -17,6 +17,6 @@
       {% endif %}
     {% endwith %}
 
-    <button type="submit" class="button is-primary">Sign Up</button><a href="{{ url_for('index') }}" class="button is-light">Cancel</a>
+    <button type="submit" class="button is-dark">Sign Up</button><a href="{{ url_for('index') }}" class="button is-light">Cancel</a>
   </form>
 {% endblock %}

@@ -3,6 +3,9 @@
 {% from "macros.html" import field_error %}
 
 {% block content %}
+<div class="container">
+  <div class="columns">
+      <div class="column">
   <h2 class="subtitle is-2">Edit Profile</h2>
   <form method="POST" action="">
     {{ form.hidden_tag() }}
@@ -48,4 +51,10 @@
 
     <button type="submit" class="button is-primary">Save my changes</button><a href="{{ url_for('profile', username=user.username) }}" class="button is-light">Cancel</a>
   </form>
+    </div>
+    <div class="column">
+        <img src="{{ url_for('static', filename='foodmeal.jpeg') }}">
+    </div>
+  </div>
+</div>
 {% endblock %}
