@@ -17,6 +17,7 @@ h2 {
   text-align: center;
 }
 
+
 /* Typewriter Header */
 .overlay {
   font-size: 45px;
@@ -40,6 +41,19 @@ h2 {
 .section-welcome {
   background-color: lightgrey;
   color: white;
+}
+
+.hangry-intro {
+  border-bottom: 1px solid black;
+}
+
+.hangry-title {
+  position: absolute;
+  font-size: 8rem;
+  top: 28vh;
+  width: 100%;
+  left: 350px;
+  z-index: 2;
 }
 
 /* Nav bar */
@@ -78,16 +92,17 @@ h2 {
   margin: 0 auto;
 }
 
-.about-card {
+.about-card, .nav-links {
   transition: .2s ease-out; 
 }
 
-.about-card:hover {
+.about-card:hover, .nav-links:hover{
   -moz-transform: scale(1.1);
   -webkit-transform: scale(1.1);
   -o-transform: scale(1.1);
    transform: scale(1.1);
 }
+
 
 .git {
   color: grey;
@@ -95,12 +110,16 @@ h2 {
 
 .recipe-show {
   margin: 0 10vw;
+  border: .5px solid white;
 }
 
 .recipe-content {
   margin-top: 1em;
-}
 
+}
+.left-side {
+  border-right: 1px inset white;
+}
 /* Footer */
 .footer {
   padding: 1.5rem;
@@ -109,4 +128,31 @@ h2 {
 
 .field {
   margin: 0 auto;
+}
+
+img.shake,
+.shake.inline {
+	display:inline-block
+}
+
+@-webkit-keyframes spaceboots {
+	0% { -webkit-transform: translate(2px, 1px) rotate(0deg); }
+	10% { -webkit-transform: translate(-1px, -2px) rotate(-1deg); }
+	20% { -webkit-transform: translate(-3px, 0px) rotate(1deg); }
+	30% { -webkit-transform: translate(0px, 2px) rotate(0deg); }
+	40% { -webkit-transform: translate(1px, -1px) rotate(1deg); }
+	50% { -webkit-transform: translate(-1px, 2px) rotate(-1deg); }
+	60% { -webkit-transform: translate(-3px, 1px) rotate(0deg); }
+	70% { -webkit-transform: translate(2px, 1px) rotate(-1deg); }
+	80% { -webkit-transform: translate(-1px, -1px) rotate(1deg); }
+	90% { -webkit-transform: translate(2px, 2px) rotate(0deg); }
+	100% { -webkit-transform: translate(1px, -2px) rotate(-1deg); }
+}
+.shake:hover,
+.shake:focus {
+	-webkit-animation-name: spaceboots;
+	-webkit-animation-duration: 0.8s;
+	-webkit-transform-origin:50% 50%;
+	-webkit-animation-iteration-count: infinite;
+	-webkit-animation-timing-function: linear;
 }
