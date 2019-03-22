@@ -24,9 +24,10 @@
         {% endfor %}
       {% endif %}
     {% endwith %}
-
-    <button type="submit" class="button is-primary">Add Recipe</button><a href="{{ url_for('profile', username=user.username) }}" class="button is-light">Cancel</a>
+    <div class="has-text-centered">
+    <button type="submit" class="button is-danger">Add Recipe</button><a href="{{ url_for('profile', username=user.username) }}" class="button is-light">Cancel</a>
   </form>
+</div>
   </div>
 </div>
 </div>

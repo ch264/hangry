@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Questrial');
+
 /* Global Style */
 body {
   display: flex;
@@ -30,7 +31,6 @@ h2 {
 }
 
 /* Landing Page Containers */
-
 
 .section-one {
   padding-bottom: 80px;
@@ -72,16 +72,26 @@ h2 {
   padding-top: 20px;
 }
 
+/* Forms */
 .form-input {
-  margin: 30px 0;
+  margin: 30px 20px;
+  text-align: center;
 }
 
+.edit-page-button {
+  margin: 0 80px;
+}
+
+.edit-column {
+  border: .5px solid white;
+}
 
 .control {
   border: 1px solid gray;
   border-radius: 4px;
   padding: 6px 10px;
 }
+
 /* About Page */
 .about-team,
 .profile {
@@ -101,11 +111,21 @@ h2 {
    transform: scale(1.1);
 }
 
-
 .git {
   color: grey;
 }
 
+/* Profile Page */
+.profile-container {
+  background-color: #eeeeee7c;
+  padding-bottom: 80px;
+}
+
+.title {
+  font-size: 2.5em;
+}
+
+/* Recipe (Show and Edit) */
 .recipe-show {
   margin: 0 10vw;
   border: .5px solid white;
@@ -115,9 +135,10 @@ h2 {
   margin-top: 1em;
 
 }
-.left-side {
+.left-side{
   border-right: 1px inset white;
 }
+
 /* Footer */
 .footer {
   padding: 1.5rem;
@@ -128,6 +149,8 @@ h2 {
   margin: 0 auto;
 }
 
+
+/* Animations */
 img.shake,
 .shake.inline {
 	display:inline-block
