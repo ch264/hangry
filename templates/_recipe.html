@@ -12,6 +12,13 @@
 						<p class="title is-4"><a href="{{ url_for('recipe', recipe_id=recipe.id) }}" class="has-text-primary">{{ recipe.title }}</a></p>
 						<p class="title is-6 no-padding">by {{ recipe.user.username }}</p>
 						<a href="{{ url_for('save_to_favorite', recipe_id=recipe.id) }}" class="button is-primary is-small">Save</a>
+						<!-- <div class="modal">
+							<div class="modal-background"></div>
+							<div class="modal-content">
+								<p>Recipe saved!</p>
+							</div>
+							<button class="modal-close is-large" aria-label="close"></button>
+						</div> -->
 					</div>
 				</div>
 			</div>
