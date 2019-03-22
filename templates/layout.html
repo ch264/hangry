@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>Hangry</title>
+    <title>HANGRY | Food Community</title>
 
     <!-- Bulma CSS -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.4/css/bulma.css">
@@ -14,10 +14,10 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
   </head>
   <body class="has-navbar-fixed-top">
-    <nav class="navbar is-dark is-fixed-top" role="navigation" aria-label="main navigation">
-      <div class="navbar-brand">
+    <nav class="navbar is-light is-fixed-top" role="navigation" aria-label="main navigation">
+      <div class="navbar-brand ">
         <!-- Logo -->
-        <a href="{{ url_for('index') }}" class="navbar-item"><img src="{{ url_for('static', filename='../static/noodles.png') }}" alt="Hangry icon"></a>
+        <a href="{{ url_for('index') }}" class="navbar-item ">HANGRY</a>
         <!-- Hamburger bar for responsive nav -->
         <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
           <span aria-hidden="true"></span>
@@ -28,26 +28,26 @@
 
       <div id="navbarBasicExample" class="navbar-menu">
         <div class="navbar-end">
-          <a href="{{ url_for('about') }}" class="navbar-item">About</a>
+          <a href="{{ url_for('about') }}" class="navbar-item">ABOUT</a>
 
           {% if current_user.is_anonymous %}
           <!-- If user is not logged in, show Login/Signup button -->
             <div class="navbar-item">
               <div class="buttons">
-                <a href="{{ url_for('login') }}" class="button is-light" title="login">Login</a>
+                <a href="{{ url_for('login') }}" class="button is-light" title="login">LOGIN</a>
 
-                <a href="{{ url_for('register') }}" class="button is-primary" title="register">Sign Up</a>
+                <a href="{{ url_for('register') }}" class="button is-light" title="register">SIGN UP</a>
 
               </div>
             </div>
           
           {% else %}
           <!-- If user is logged in, show other pages -->
-            <a href="{{ url_for ('recipe') }}" class="navbar-item">Recipes</a>
+            <a href="{{ url_for ('recipe') }}" class="navbar-item">RECIPES</a>
 
-            <a href="{{ url_for('profile', username=current_user.username) }}" class="navbar-item">Profile</a>
+            <a href="{{ url_for('profile', username=current_user.username) }}" class="navbar-item">PROFILE</a>
 
-            <a href="{{ url_for('logout') }}" class="navbar-item">Logout</a>
+            <a href="{{ url_for('logout') }}" class="navbar-item">LOGOUT</a>
           
           {% endif %}
         </div>
@@ -61,8 +61,9 @@
     </section>
 
     <footer class="footer">
-      <div class="content has-text-centered">
-        <p>&copy; Hangry 2019. Made with &hearts; by Nicolette, Brandon, Christina, Ronni.</p>
+      <div class="content ">
+        <p class="has-text-right">&copy; Hangry 2019. 
+        Made with &#x2661; by Nicolette, Brandon, Christina, Ronni.</p>
       </div>
     </footer>
 

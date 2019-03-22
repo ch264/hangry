@@ -1,10 +1,11 @@
-@import url('https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,900');
-
+@import url('https://fonts.googleapis.com/css?family=Questrial');
+/* Global Style */
 body {
   display: flex;
   flex-direction: column;
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Questrial', sans-serif;
   min-height: 100vh;
+  background-color: #F6F6F6;
 }
 
 section {
@@ -12,26 +13,43 @@ section {
   padding: 20px 20px;
 }
 
+h2 {
+  text-align: center;
+}
+
+/* Typewriter Header */
 .overlay {
-  font-size: 40px;
-  left: -10vw;
+  font-size: 45px;
+  left: 0vw;
   position: absolute;
   text-align: center;
-  top: 40vh;
+  top: 50vh;
   width: 100%;
   z-index: 2;
 }
 
+/* Landing Page Containers */
+.land {
+ margin-bottom: -300px;
+}
+
+.section-one {
+  padding-bottom: 80px;
+}
+
+.section-welcome {
+  background-color: lightgrey;
+  color: white;
+}
+
+/* Nav bar */
 .hero-body {
   padding: 0;
+  margin-top: -300px;
 }
 
 .about {
   padding: 0 10vw;
-}
-
-h2 {
-  text-align: center;
 }
 
 .about-team {
@@ -46,17 +64,33 @@ h2 {
   margin: 30px 0;
 }
 
+
 .control {
   border: 1px solid gray;
   border-radius: 4px;
   padding: 6px 10px;
 }
-
+/* About Page */
 .about-team,
 .profile {
   padding: 20px;
   min-height: 100%;
   margin: 0 auto;
+}
+
+.about-card {
+  transition: .2s ease-out; 
+}
+
+.about-card:hover {
+  -moz-transform: scale(1.1);
+  -webkit-transform: scale(1.1);
+  -o-transform: scale(1.1);
+   transform: scale(1.1);
+}
+
+.git {
+  color: grey;
 }
 
 .recipe-show {
@@ -67,7 +101,12 @@ h2 {
   margin-top: 1em;
 }
 
+/* Footer */
 .footer {
-  display: flex;
   padding: 1.5rem;
+  background-color: #E1E1E1;
+}
+
+.field {
+  margin: 0 auto;
 }
