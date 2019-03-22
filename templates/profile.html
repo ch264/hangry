@@ -1,43 +1,42 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-
+<div class="container profile-container">
 	<div class="columns">
-		<div class="column is-one-quarter">
-			<div class="image is1by1">
-				<img src="../static/{{user.username}}.jpeg">
+		<div class="column">
+			<div class="image is-pulled-right">
+				<img class="image is-rounded is-128x128" src="../static/{{user.username}}.jpeg">
 			</div>
 		</div>
-
 		<div class="column">
-			<p><span class="title is-bold">{{ user.username }}</span></p> 
+			<p><span class="title has-text-danger is-bold">{{ user.username }}</span></p> 
 			<p><span class="location"><small>I live in {{ user.location }}</small></span></p>
 			<a href="{{ url_for('edit_profile', username=current_user.username) }}" class="button is-dark">Edit profile</a>
 		</div>
 	</div>
-
-	<div class="columns">
-			<div class="column is-half">
-					<h4>Your Recipes</h4>
-					<a href="{{ url_for('add_recipe') }}" class="button is-dark">Add a Recipe</a>
-					<div class="columns is-multiline">
-						{% for recipe in recipes %}
-							{% include '_recipe.html' %}
-						{% endfor %}	
-					</div>
-				</div>
-		
-				<div class="column is-half">
-					<h4>Saved Recipes</h4>
-					<div class="columns is-multiline">
-						{% for fave in saved_recipes %}
-							{% include '_savedrecipe.html' %}
-						{% endfor %}	
-					</div>
-				</div>
+</div>
+<div class="container">
+	<div class="columns is-center has-text-centered is-grouped-centered">
+		<div class="column ">
+			<h4>Your Recipes</h4>
+			<a href="{{ url_for('add_recipe') }}" class="button is-small is-dark">Add a Recipe</a>
+			<div class="columns is-multiline">
+				{% for recipe in recipes %}
+					{% include '_recipe.html' %}
+				{% endfor %}	
+			</div>
+		</div>
+		<div class="column">
+			<h4>Saved Recipes</h4>
+			<div class="columns is-multiline">
+				{% for fave in saved_recipes %}
+					{% include '_savedrecipe.html' %}
+				{% endfor %}	
+			</div>
 		</div>
 	</div>
-	
+</div>
+
 {% endblock %}
 
 
