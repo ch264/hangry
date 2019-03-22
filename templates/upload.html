@@ -1,13 +1,13 @@
 {% extends "layout.html" %}
 <!-- Imports macro template for form rendering -->
-{% from "macros.html" import render_field %}
+{% from "macros.html" import field_upload %}
 
 {% block content %}
-  <form method="POST" enctype="multipart/form-data" action="">
+  <form method="POST" enctype="multipart/form-data" action="{{ url_for('upload') }}">
 		{{ form.hidden_tag() }}
 		<p>
     {% for field in form %}
-      {{ render_field(field) }}
+      {{ field_upload(field) }}
 		{% endfor %}
 		</p>
 

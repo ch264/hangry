@@ -25,6 +25,21 @@
   {% endif %}
 {% endmacro %}
 
+<!-- Defining a macro called file_upload in order to upload images -->
+{% macro field_upload(field) %}
+  <div class="form-input" type="file" name="photo">
+    {% if field.errors %}
+      {% for error in field.errors %}
+        <div>
+          {{ error }}
+        </div>
+      {% endfor %}
+    {% endif %}
+    
+    {{ field.label(class="label") }}
+    {{ field(class="control", placeholder=field.label.text, cols="35", rows="20") }}
+  </div>
+{% endmacro %}
 
 <!-- [] TO BE TESTED -->
 {% macro recipe_card(recipe) %}

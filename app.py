@@ -11,7 +11,11 @@ from werkzeug.urls import url_parse
 import models
 import forms
 
-# foto uploader via form field
+# foto uploader via file field
+from flask import Flask, render_template, request
+from flask_uploads import UploadSet, configure_uploads, IMAGES
+
+# foto uploader via form field old
 from flask import url_for, redirect, render_template
 from flask_wtf import Form
 from flask_wtf.file import FileField
@@ -59,26 +63,54 @@ def after_request(response):
 def index():
     return render_template('landing.html')
 
+# new photo uploader
+# //////////////////////////////////////////////////////////////
+photos = UploadSet('photos', IMAGES)
+# patch_request_class(app, 32 * 1024 * 1024)
 
-
-# def allowed_file(filename):
-#     return '.' in filename and \
-#         filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
+# this is my destination upload folder
+app.config['UPLOADED_PHOTOS_DEST'] = 'static'
+# pass in flask app with photos object
+configure_uploads(app, photos)
 
 @app.route('/upload', methods=['GET', 'POST'])
 def upload():
     form = forms.UploadForm()
-    if form.validate_on_submit():
-        f = form.file.data
-        filename = secure_filename(str(current_user.username) + '.' + 'jpg' )
-        f.save(os.path.join(
-            app.static_url_path, 'uploads', filename
-        ))
-        
-        # filename = secure_filename(f.filename)
-        # form.file.data.save('uploads')
-        # return redirect(url_for('upload'))
+    if request.method == 'POST' and 'photo' in request.files:
+        if form.validate_on_submit():
+            f = form.file.data
+            filename = photos.save(request.files['photo'])
+            # rec = Photo(filename=filename, user=g.user.id)
+            # rec.store()
+            # flash("Photo saved.")
+            # return redirect(url_for('profile', id=rec.id))
+            return filename
     return render_template('upload.html', form=form)
+
+@app.route('/photo/<id>')
+def show(id):
+    photo = Photo.load(id)
+    if photo is None:
+        abort(404)
+    url = photos.url(photo.filename)
+    return render_template('profile.html', url=url, photo=photo)
+
+# old uploader
+# //////////////////////////////////////////////////////////////
+# @app.route('/upload', methods=['GET', 'POST'])
+# def upload():
+#     form = forms.UploadForm()
+#     if form.validate_on_submit():
+#         f = form.file.data
+#         filename = secure_filename(str(current_user.username) + '.' + 'jpg' )
+#         f.save(os.path.join(
+#             app.static_url_path, 'uploads', filename
+#         ))
+        
+#         # filename = secure_filename(f.filename)
+#         # form.file.data.save('uploads')
+#         # return redirect(url_for('upload'))
+#     return render_template('upload.html', form=form)
     
 
 @app.route('/about')
