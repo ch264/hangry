@@ -129,9 +129,7 @@ def logout():
     return redirect(url_for('index'))
 
 
-# @app.route('/profile')
-@app.route('/profile/<username>', methods=['GET', 'DELETE'])
-@login_required
+@app.route('/profile/<username>', methods=['GET'])
 def profile(username=None):
     if username != None and request.method == 'GET':
         user = models.User.select().where(models.User.username==username).get()
@@ -178,6 +176,7 @@ def recipe(recipe_id=None):
 @login_required
 def add_recipe():
     form = forms.RecipeForm()
+    user = g.user._get_current_object()
     if request.method == 'POST':
         models.Recipe.create(
             category = form.category.data, #SelectField -use form instead of json
@@ -188,13 +187,12 @@ def add_recipe():
         recipe = models.Recipe.get(models.Recipe.title == form.title.data)
         return redirect(url_for('recipe', recipe_id=recipe.id))
     else:
-        return render_template('create-recipe.html', form=form)
+        return render_template('create-recipe.html', form=form, user=user)
 
 @app.route('/edit-recipe/<recipe_id>', methods=['GET', 'POST'])
 @login_required
 def edit_recipe(recipe_id=None):
     recipe = models.Recipe.select().where(models.Recipe.id == recipe_id).get()
-    print(recipe)
     form = forms.EditRecipeForm()
     if form.validate_on_submit():
         recipe.category = form.category.data
@@ -281,7 +279,7 @@ if __name__ == '__main__':
         category='Italian',
         title="Spaghetti",
         content='Yummy Pasta',
-        ingredient_tag="Noodles",
+        ingredient_tag="Pasta",
         user = 2
         ),
         models.Recipe.create_recipe(
@@ -294,7 +292,7 @@ if __name__ == '__main__':
         models.Recipe.create_recipe(
         category='Chinese',
         title="Orange Chicken",
-        content='Fiery. Hot. Nice.',
+        content='Crispy Chicken',
         ingredient_tag="Chicken",
         user = 3
         ),

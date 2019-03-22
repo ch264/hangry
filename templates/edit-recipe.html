@@ -25,7 +25,7 @@
       {{ field_error(form.content) }}
 
       {{ form.content.label(class="label") }}
-      {{ form.content(class="control", value=recipe.content, cols="35", rows="20") }}
+      {{ form.content(class="control", placeholder=recipe.content, cols="35", rows="20") }}
     </div>
 
     <div class="form-input">
@@ -43,6 +43,6 @@
       {% endif %}
     {% endwith %}
 
-    <button type="submit" class="button is-primary">Save my changes</button>
+    <button type="submit" class="button is-primary">Save my changes</button><a href="{{ url_for('recipe', recipe_id=recipe.id) }}" class="button is-light">Cancel</a>
   </form>
 {% endblock %}

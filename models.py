@@ -26,18 +26,10 @@ class User(UserMixin, Model):
          # Get all recipes
     def get_recipes(self):
         return Recipe.select().where(Recipe.user == self)
-    # Repr returns object so we can view it
-    # def __repr__(self):
-    #     return "{}, {}, {}, {}".format(
-    #         self.id,
-    #         self.username,
-    #         self.email,
-    #         self.location
-    #     )
+
     # Sign Up POST request
     @classmethod
     def create_user(cls, username, email, password, location):
-        # print(location)
         try:
             cls.create(
                 username = username,
@@ -47,8 +39,8 @@ class User(UserMixin, Model):
         except IntegrityError:
             raise ValueError("create error")
 
+    @classmethod
     def edit_user(cls, username, email, password, location):
-        # print(location)
         try:
             cls.create(
                 username = username,
@@ -72,7 +64,6 @@ class Recipe(Model):
 
     @classmethod
     def create_recipe(cls, category, title, content, ingredient_tag, user):
-        # print(location)
         try:
             cls.create(
                 category = category,

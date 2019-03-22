@@ -46,6 +46,6 @@
     <a class="button" href="{{ url_for('upload')}}">Upload a new profile picture</a>
     <hr>
 
-    <button type="submit" class="button is-primary">Save my changes</button>
+    <button type="submit" class="button is-primary">Save my changes</button><a href="{{ url_for('profile', username=user.username) }}" class="button is-light">Cancel</a>
   </form>
 {% endblock %}
