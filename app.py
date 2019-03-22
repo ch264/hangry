@@ -102,13 +102,11 @@ def login():
             else:
                 flash("Your email or password doesn't match", "error")
     return render_template('login.html', form=form)
-#  will change 
 
 @app.route('/signup', methods=('GET', 'POST'))
 def register():
     form = forms.SignUpForm()
     if form.validate_on_submit():
-        flash('Thank you for signing up', 'success')
         models.User.create_user(
             username=form.username.data,
             email=form.email.data,
@@ -118,6 +116,7 @@ def register():
         user = models.User.get(models.User.username == form.username.data)
         login_user(user)
         name = user.username
+        flash('Thank you for signing up', 'success')
         return redirect(url_for('profile', username=name))
     return render_template('signup.html', form=form)
 
@@ -125,11 +124,11 @@ def register():
 @login_required
 def logout():
     logout_user()
-    flash("You've been logged out", "success")
     return redirect(url_for('index'))
 
 
 @app.route('/profile/<username>', methods=['GET'])
+@login_required
 def profile(username=None):
     if username != None and request.method == 'GET':
         user = models.User.select().where(models.User.username==username).get()
@@ -158,13 +157,14 @@ def edit_profile():
         # user.password = form.password.data
         user.location = form.location.data
         user.save()
-        flash('Your changes have been saved.')
+        flash('Your changes have been saved.', 'success')
         return redirect(url_for('profile', username=user.username))
     return render_template('edit-profile.html', form=form, user=user)
 
 
 @app.route('/recipe', methods=['GET'])
 @app.route('/recipe/<recipe_id>', methods=['GET', 'PUT'])
+@login_required
 def recipe(recipe_id=None):
     if recipe_id != None and request.method == 'GET':
         recipe = models.Recipe.select().where(models.Recipe.id == recipe_id).get()
@@ -185,6 +185,7 @@ def add_recipe():
             ingredient_tag = form.ingredient_tag.data,
             user = g.user._get_current_object())
         recipe = models.Recipe.get(models.Recipe.title == form.title.data)
+        flash('Recipe created!', 'success')
         return redirect(url_for('recipe', recipe_id=recipe.id))
     else:
         return render_template('create-recipe.html', form=form, user=user)
@@ -199,9 +200,10 @@ def edit_recipe(recipe_id=None):
         recipe.title = form.title.data
         recipe.content = form.content.data
         recipe.ingredient_tag = form.ingredient_tag.data
+        
         recipe.save()
-        flash('Your recipe has been saved.')
 
+        flash('Your recipe has been saved.', 'success')
         return redirect(url_for('recipe', recipe_id=recipe.id))
     return render_template('edit-recipe.html', form=form, recipe=recipe)
 
@@ -211,19 +213,26 @@ def delete_recipe(recipe_id=None):
     if recipe_id != None:
         deleted_saved_recipe = models.SavedRecipes.delete().where(models.SavedRecipes.recipe == recipe_id)
         deleted_saved_recipe.execute()
+
         deleted_recipe = models.Recipe.delete().where(models.Recipe.id == recipe_id)
         deleted_recipe.execute()
+
         return redirect(url_for('recipe'))
     
     return redirect(url_for('recipe', recipe_id=recipe_id))
 
+
 # create a route to add data to join table
 @app.route('/save/<recipe_id>')
+@login_required
 def save_to_favorite(recipe_id=None):
-    user = g.user._get_current_object()
-    recipe = models.Recipe.get(models.Recipe.id == recipe_id)
+    if recipe_id != None:
+        user = g.user._get_current_object()
+        recipe = models.Recipe.get(models.Recipe.id == recipe_id)
 
-    models.SavedRecipes.create(user=user.id, recipe=recipe.id)
+        models.SavedRecipes.create(user=user.id, recipe=recipe.id)
+
+        return redirect(url_for('profile', username=user.username))
 
     return redirect(url_for('recipe'))
 
