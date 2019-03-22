@@ -38,3 +38,7 @@ Libraries
 
 
 ## Contributors
+Brandon Castillo - <a href="https://github.com/brandonmcastillo">GitHub</a>
+Christina Hastenrath - <a href-"https://github.com/ch264">GitHub</a>
+Nicolette Lewis - <a href="https://github.com/LewNic1">GitHub</a>
+Ronni Louie - <a href="https://github.com/ronsbons">GitHub</a>
