@@ -249,7 +249,12 @@ def remove_favorite(recipe_id=None):
     return redirect(url_for('profile', username=user.username))
 
 
+# Initialize models when running in Heroku
+if 'ON_HEROKU' in os.environ:
+    print('hitting ')
+    models.initialize()
 
+# Initialize models when running on localhost
 if __name__ == '__main__':
     models.initialize()
     try:
@@ -320,9 +325,6 @@ if __name__ == '__main__':
         user = 4
         )
 
-    
-    
-    
     except ValueError:
         pass
 

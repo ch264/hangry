@@ -1,10 +1,16 @@
+import os
 from flask import jsonify
 from flask_login import UserMixin
 from flask_bcrypt import generate_password_hash
 import datetime
 from peewee import *
 
-DATABASE = SqliteDatabase('hangry.db')
+# To connect to postgres on heroku
+from playhouse.db_url import connect
+
+DATABASE = connect(os.environ.get('DATABASE_URL'))
+# DATABASE = SqliteDatabase('hangry.db')
+
 # inmport gravatar 
 from hashlib import md5
 # add this to model user for the gravatar
