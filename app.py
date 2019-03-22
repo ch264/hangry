@@ -129,9 +129,7 @@ def logout():
     return redirect(url_for('index'))
 
 
-# @app.route('/profile')
-@app.route('/profile/<username>', methods=['GET', 'DELETE'])
-@login_required
+@app.route('/profile/<username>', methods=['GET'])
 def profile(username=None):
     if username != None and request.method == 'GET':
         user = models.User.select().where(models.User.username==username).get()
@@ -166,6 +164,7 @@ def edit_profile():
 
 
 @app.route('/recipe', methods=['GET'])
+<<<<<<< HEAD
 @app.route('/recipe/<recipe_id>', methods=['GET', 'PUT'])
 def recipe(recipe_id=None):
     if recipe_id != None and request.method == 'GET':
@@ -174,6 +173,31 @@ def recipe(recipe_id=None):
     recipes = models.Recipe.select().limit(20)
     return render_template('recipes.html', recipes=recipes)
 
+=======
+@app.route('/recipe/<recipe_id>', methods=['GET'])
+@login_required
+def post(recipe_id=None):
+    form = forms.RecipeForm()
+    if recipe_id != None and request.method == 'GET':
+        return render_template('recipe.html')
+    # if form.validate_on_submit():
+    #     flash("Recipe Created!", "success") 
+    #     models.Recipe.create(
+    #         user=g.user._get_current_object(), #create new post.
+    #         content=form.content.data.strip()) 
+        
+
+    #     return redirect(url_for('index')) #redirect user
+    return render_template('recipes.html', form=form)
+#  will change 
+        # else: 
+        #     user = models.Recipe.select().where(models.Recipe.title == title).get()
+        #     user.delete_instance()
+        #     return repr(user)
+
+
+# [] TEMPORARY ROUTE
+>>>>>>> ca401f7908a36e50b7056aa395ba5556f1d64034
 @app.route('/create-recipe', methods=['GET', 'POST'])
 @login_required
 def add_recipe():
@@ -185,6 +209,7 @@ def add_recipe():
             content = form.content.data,
             ingredient_tag = form.ingredient_tag.data,
             user = g.user._get_current_object())
+<<<<<<< HEAD
         recipe = models.Recipe.get(models.Recipe.title == form.title.data)
         return redirect(url_for('recipe', recipe_id=recipe.id))
     else:
@@ -241,6 +266,11 @@ def remove_favorite(recipe_id=None):
     return redirect(url_for('profile', username=user.username))
 
 
+=======
+        return redirect(url_for('profile.html', form=form)
+    return redirect(url_for('create-recipe.html', form=form)
+        
+>>>>>>> ca401f7908a36e50b7056aa395ba5556f1d64034
 
 if __name__ == '__main__':
     models.initialize()
@@ -280,7 +310,11 @@ if __name__ == '__main__':
         category='Italian',
         title="Spaghetti",
         content='Yummy Pasta',
+<<<<<<< HEAD
         ingredient_tag="Noodles",
+=======
+        ingredient_tag="Pasta",
+>>>>>>> ca401f7908a36e50b7056aa395ba5556f1d64034
         user = 2
         ),
         models.Recipe.create_recipe(
@@ -293,7 +327,11 @@ if __name__ == '__main__':
         models.Recipe.create_recipe(
         category='Chinese',
         title="Orange Chicken",
+<<<<<<< HEAD
         content='Fiery. Hot. Nice.',
+=======
+        content='Crispy Chicken',
+>>>>>>> ca401f7908a36e50b7056aa395ba5556f1d64034
         ingredient_tag="Chicken",
         user = 3
         ),
@@ -301,15 +339,24 @@ if __name__ == '__main__':
         category='Indian',
         title="Tofu Tikka Marsala",
         content='Taste Authentic',
+<<<<<<< HEAD
         ingredient_tag="Sauce",
+=======
+        ingredient_tag="Tikka Marsala.",
+>>>>>>> ca401f7908a36e50b7056aa395ba5556f1d64034
         user = 2
         ),
         models.Recipe.create_recipe(
         category='Southern',
         title="Gumbo",
         content='Simple and Quick',
+<<<<<<< HEAD
         ingredient_tag="Seafood",
         user = 4
+=======
+        ingredient_tag="Meat",
+        user = 1
+>>>>>>> ca401f7908a36e50b7056aa395ba5556f1d64034
         )
 
     
