@@ -12,10 +12,10 @@ from playhouse.db_url import connect
 # DATABASE = SqliteDatabase('hangry.db')
 
 # Sets DATABASE variable for production
-DATABASE = PostgresqlDatabase('hangry')
+# DATABASE = PostgresqlDatabase('hangry')
 
 # Sets DATABASE variable for deployment on Heroku
-# DATABASE = connect(os.environ.get('DATABASE_URL'))
+DATABASE = connect(os.environ.get('DATABASE_URL'))
 
 
 # inmport gravatar 
