@@ -1,12 +1,13 @@
 import os
-from flask import Flask, g
-from flask import Flask, request
+from flask import Flask, g, request
 from flask import render_template, flash, redirect, url_for, session, escape
 from flask_bcrypt import check_password_hash
 # User login
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 # Redirect user when not logged in
 from werkzeug.urls import url_parse
+
+from flask.ext.heroku import Heroku
 
 import models
 import forms
@@ -27,6 +28,7 @@ from flask_wtf.csrf import CSRFProtect
 
 app = Flask(__name__, static_url_path='/static')
 app.secret_key = 'pickle'
+heroku = Heroku(app)
 
 DEBUG = True
 PORT = 8000
