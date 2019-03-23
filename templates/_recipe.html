@@ -9,7 +9,7 @@
 			<div class="card-content ">
 				<div class="content">
 					<div class="media-content is-grouped-centered has-text-centered">
-						<p class="title is-4 "><a href="{{ url_for('add_recipe', recipe=recipe.id) }}" class="has-text-danger">{{ recipe.title }}</a></p>
+						<p class="title is-4 "><a href="{{ url_for('recipe', recipe_id=recipe.id) }}" class="has-text-danger">{{ recipe.title }}</a></p>
 						<p class="title is-5 no-padding">By: {{ recipe.user.username }}</p>
 						<a href="{{ url_for('save_to_favorite', recipe_id=recipe.id) }}" class="button is-light is-small">Save</a>
 					</div>
