@@ -38,11 +38,13 @@ Libraries
 ## Wish List/Future Development
 - Search bar to search recipes by ingredient tags
 - Notifications/alerts using BulmaJS for successfully saving recipes and removing a saved recipe
-- Solve lingering issues:
-  - the issue of data validators making a couple of forms break
-  - Regex validators not working on some forms
-  - Display recipe's ingredients and instructions separately/better
 - Heroku deployment
+- Default image for users who choose not to upload
+- Rich text editor to help display recipe's ingredients and instructions separately/better
+- Solve lingering issues:
+  - The issue of data validators making a couple of forms break
+  - Regex validators not working on some forms
+  - Edit recipe's content has to be used as a placeholder, so user loses all text when clicking into text area field
 
 ## Contributors
 Brandon Castillo - <a href="https://github.com/brandonmcastillo">GitHub</a>
