@@ -252,14 +252,17 @@ def add_recipe():
     form = forms.RecipeForm()
     user = g.user._get_current_object()
     if request.method == 'POST':
+        filename = images.save(request.files['recipe_image'])
+        url = images.url(filename)
+
         models.Recipe.create(
             category = form.category.data, #SelectField -use form instead of json
             title = form.title.data,
             content = form.content.data,
             ingredient_tag = form.ingredient_tag.data,
             user = g.user._get_current_object(),
-            image_filename = images.save(request.files['recipe_image']),
-            image_url = images.url(images.save(request.files['recipe_image'])))
+            image_filename = filename,
+            image_url = url)
         recipe = models.Recipe.get(models.Recipe.title == form.title.data)
         flash('Recipe created!', 'success')
         return redirect(url_for('recipe', recipe_id=recipe.id))
