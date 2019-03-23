@@ -3,7 +3,10 @@
 {% from "macros.html" import field_error %}
 
 {% block content %}
-  <h2 class="subtitle is-2">Edit Recipe</h2>
+<div class="container">
+  <div class="columns">
+    <div class="column edit-column">
+  <h2 class="subtitle is-2 ">Edit Recipe</h2>
   <form method="POST" action="">
     {{ form.hidden_tag() }}
     <div class="form-input">
@@ -43,6 +46,12 @@
       {% endif %}
     {% endwith %}
 
-    <button type="submit" class="button is-primary">Save my changes</button><a href="{{ url_for('recipe', recipe_id=recipe.id) }}" class="button is-light">Cancel</a>
+    <button type="submit" class="button is-dark edit-page-button">Save my changes</button><a href="{{ url_for('recipe', recipe_id=recipe.id) }}" class="button is-danger has-text-centered">Cancel</a>
   </form>
+</div>
+<div class="column">
+    <img class="animated fadeIn" src="{{ url_for('static', filename='fruits.jpeg') }}">
+</div>
+</div>
+</div>
 {% endblock %}

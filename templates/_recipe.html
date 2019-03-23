@@ -1,6 +1,6 @@
 
 	<div class="column is-one-third-desktop is-half-tablet">
-		<div class="card is-small animated fadeIn">
+		<div class="card animated fadeIn">
 			<div class="card-image">
 				<figure class="image">
 					<a href="{{ url_for('recipe', recipe_id=recipe.id) }}"><img src="{{ url_for('static', filename='dumpling.jpeg') }}" alt="Sushi Image"></a>
@@ -9,9 +9,9 @@
 			<div class="card-content ">
 				<div class="content">
 					<div class="media-content is-grouped-centered has-text-centered">
-						<p class="title is-3 "><a href="{{ url_for('recipe', recipe_id=recipe.id) }}" class="has-text-danger">{{ recipe.title }}</a></p>
+						<p class="title is-4 "><a href="{{ url_for('recipe', recipe_id=recipe.id) }}" class="has-text-danger">{{ recipe.title }}</a></p>
 						<p class="title is-5 no-padding">By: {{ recipe.user.username }}</p>
-						<a href="{{ url_for('save_to_favorite', recipe_id=recipe.id) }}" class="button is-light is-medium">Save</a>
+						<a href="{{ url_for('save_to_favorite', recipe_id=recipe.id) }}" class="button is-light is-small">Save</a>
 					</div>
 				</div>
 			</div>

@@ -4,9 +4,10 @@
 <div class="hero is-fullheight-with-navbar">
   <div class="hero-body">
     <div class="container land">
+      <div>
       <img class="animated fadeIn" src="{{ url_for('static', filename='head1.jpeg') }}">
-      <p class="hangry-title animated fadeIn">Hangry</p>
-      <div class="overlay">
+      <p class="hangry-title animated fadeIn has-text-centered">Hangry</p>
+      <div class="overlay has-text-centered">
         <div id="typed-strings">
             <p><strong>Hungry ?</strong></p>
             <p><strong>Angry ?</strong></p>
@@ -36,7 +37,7 @@
   <div class="about Level-item has-text-centered">
     <h2 class="subtitle is-2 animated fade-in">Welcome to Hangry!</h2>
       <p>Hangry was created by a team of hungry and angry individuals who struggled to find perfect recipes in their busy schedules. Join your fellow hangry eaters and find recipes that will calm your hanger!  Or share a recipe or two that helped you satisfy your hanger in a crucial moment.  Feel free to browse recipes created by the community and save them to your favorites! Just sign up for an account to get started or login if you already have an account.</p>  
-      <a class="button" href="{{ url_for ('recipe') }}">Browse Recipes</a>
+      <a class="button" href="{{ url_for ('about') }}">Meet The Team</a>
     </div>
 </div> 
 <div>
