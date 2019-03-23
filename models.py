@@ -1,11 +1,24 @@
+import os
 from flask import jsonify
 from flask_login import UserMixin
 from flask_bcrypt import generate_password_hash
 import datetime
 from peewee import *
 
+# To connect to postgres on heroku
+from playhouse.db_url import connect
+
+# Sets DATABASE variable for development
 DATABASE = SqliteDatabase('hangry.db')
 
+# Sets DATABASE variable for production
+# DATABASE = PostgresqlDatabase('hangry')
+
+# Sets DATABASE variable for deployment on Heroku
+# DATABASE = connect(os.environ.get('DATABASE_URL'))
+
+
+# inmport gravatar 
 from hashlib import md5
 
 
@@ -23,14 +36,7 @@ class User(UserMixin, Model):
          # Get all recipes
     def get_recipes(self):
         return Recipe.select().where(Recipe.user == self)
-    # Repr returns object so we can view it
-    # def __repr__(self):
-    #     return "{}, {}, {}, {}".format(
-    #         self.id,
-    #         self.username,
-    #         self.email,
-    #         self.location
-    #     )
+
     # Sign Up POST request
     @classmethod
     def create_user(cls, username, email, password, location, image_filename, image_url):
@@ -46,8 +52,8 @@ class User(UserMixin, Model):
         except IntegrityError:
             raise ValueError("create error")
 
+    @classmethod
     def edit_user(cls, username, email, password, location):
-        # print(location)
         try:
             cls.create(
                 username = username,

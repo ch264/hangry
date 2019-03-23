@@ -1,12 +1,13 @@
 import os
-from flask import Flask, g
-from flask import Flask, request
+from flask import Flask, g, request
 from flask import render_template, flash, redirect, url_for, session, escape
 from flask_bcrypt import check_password_hash
 # User login
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 # Redirect user when not logged in
 from werkzeug.urls import url_parse
+
+# from flask.ext.heroku import Heroku
 
 import models
 import forms
@@ -31,6 +32,7 @@ from flask_wtf.csrf import CSRFProtect
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_pyfile('flask.cfg')
 app.secret_key = 'pickle'
+# heroku = Heroku(app)
 
 
 DEBUG = True
@@ -67,55 +69,6 @@ def after_request(response):
 def index():
     return render_template('landing.html')
 
-# new photo uploader
-# //////////////////////////////////////////////////////////////
-# photos = UploadSet('photos', IMAGES)
-# patch_request_class(app, 32 * 1024 * 1024)
-
-# this is my destination upload folder
-# pass in flask app with photos object
-# configure_uploads(app, photos)
-
-# @app.route('/upload', methods=['GET', 'POST'])
-# def upload():
-#     form = forms.UploadForm()
-#     if request.method == 'POST' and 'photo' in request.files:
-#         if form.validate_on_submit():
-#             f = form.file.data
-#             filename = photos.save(request.files['photo'])
-#             rec = Photo(filename=filename, user=g.user.id)
-#             rec.store()
-#             flash("Photo saved.")
-#             return redirect(url_for('profile', id=rec.id))
-
-#     return render_template('upload.html', form=form)
-
-# @app.route('/photo/<id>')
-# def show(id):
-#     photo = Photo.load(id)
-#     if photo is None:
-#         abort(404)
-#     url = photos.url(photo.filename)
-#     return render_template('profile.html', url=url, photo=photo)
-
-# old uploader
-# //////////////////////////////////////////////////////////////
-# @app.route('/upload', methods=['GET', 'POST'])
-# def upload():
-#     form = forms.UploadForm()
-#     if form.validate_on_submit():
-#         f = form.file.data
-#         filename = secure_filename(str(current_user.username) + '.' + 'jpg' )
-#         f.save(os.path.join(
-#             app.static_url_path, 'uploads', filename
-#         ))
-        
-#         # filename = secure_filename(f.filename)
-#         # form.file.data.save('uploads')
-#         # return redirect(url_for('upload'))
-#     return render_template('upload.html', form=form)
-    
-
 @app.route('/about')
 def about():
     return render_template('about.html')
@@ -137,7 +90,6 @@ def login():
             else:
                 flash("Your email or password doesn't match", "error")
     return render_template('login.html', form=form)
-#  will change 
 
 @app.route('/signup', methods=('GET', 'POST'))
 def register():
@@ -157,7 +109,6 @@ def register():
         user = models.User.get(models.User.username == form.username.data)
         login_user(user)
         name = user.username
-
         flash('Thank you for signing up', 'success')
         return redirect(url_for('profile', username=name))
     return render_template('signup.html', form=form)
@@ -166,12 +117,10 @@ def register():
 @login_required
 def logout():
     logout_user()
-    flash("You've been logged out", "success")
     return redirect(url_for('index'))
 
 
-# @app.route('/profile')
-@app.route('/profile/<username>', methods=['GET', 'DELETE'])
+@app.route('/profile/<username>', methods=['GET'])
 @login_required
 def profile(username=None):
     if username != None and request.method == 'GET':
@@ -180,7 +129,7 @@ def profile(username=None):
 
         # saved_recipes = models.SavedRecipes.select().where(models.SavedRecipes.user == user.id)
         Owner = user.alias()
-        saved_recipes = (models.SavedRecipes.select(models.SavedRecipes, models.Recipe.title, models.Recipe.id, models.User.username, Owner.username)
+        saved_recipes = (models.SavedRecipes.select(models.SavedRecipes, models.Recipe.title, models.Recipe.id, models.Recipe.image_filename, models.Recipe.image_url, models.User.username, Owner.username)
         .join(Owner) 
         .switch(models.SavedRecipes)
         .join(models.Recipe)  
@@ -189,7 +138,6 @@ def profile(username=None):
         return render_template('profile.html', user=user, recipes=recipes, saved_recipes=saved_recipes)
 
     return redirect(url_for('index'))
-
 
 @app.route('/edit-profile', methods=['GET', 'POST'])
 @login_required
@@ -202,47 +150,18 @@ def edit_profile():
         # user.password = form.password.data
         user.location = form.location.data
         user.save()
-        flash('Your changes have been saved.')
+        flash('Your changes have been saved.', 'success')
         return redirect(url_for('profile', username=user.username))
     return render_template('edit-profile.html', form=form, user=user)
-
-# create a route to add data to join table
-@app.route('/save/<recipe_id>')
-def save_to_favorite(recipe_id=None):
-    user = g.user._get_current_object()
-    recipe = models.Recipe.get(models.Recipe.id == recipe_id)
-
-    models.SavedRecipes.create(user=user.id, recipe=recipe.id)
-
-    return redirect(url_for('recipe'))
-
-@app.route('/edit-recipe/<recipe_id>', methods=['GET', 'POST'])
-@login_required
-def edit_recipe(recipe_id=None):
-    recipe = models.Recipe.select().where(models.Recipe.id == recipe_id).get()
-    print(recipe)
-    form = forms.EditRecipeForm()
-    if form.validate_on_submit():
-        recipe.category = form.category.data
-        recipe.title = form.title.data
-        recipe.content = form.content.data
-        recipe.ingredient_tag = form.ingredient_tag.data
-        recipe.save()
-        flash('Your recipe has been saved.')
-
-        return redirect(url_for('recipe', recipe_id=recipe.id))
-    return render_template('edit-recipe.html', form=form, recipe=recipe)    
-
 
 
 @app.route('/recipe', methods=['GET'])
 @app.route('/recipe/<recipe_id>', methods=['GET', 'PUT'])
+@login_required
 def recipe(recipe_id=None):
-    form = forms.RecipeForm()
     if recipe_id != None and request.method == 'GET':
         recipe = models.Recipe.select().where(models.Recipe.id == recipe_id).get()
         return render_template('recipe.html', recipe=recipe)
-
     recipes = models.Recipe.select().limit(20)
     return render_template('recipes.html', recipes=recipes)
 
@@ -267,20 +186,77 @@ def add_recipe():
         flash('Recipe created!', 'success')
         return redirect(url_for('recipe', recipe_id=recipe.id))
     else:
-        return render_template('create-recipe.html', form=form)
+        return render_template('create-recipe.html', form=form, user=user)
+
+@app.route('/edit-recipe/<recipe_id>', methods=['GET', 'POST'])
+@login_required
+def edit_recipe(recipe_id=None):
+    recipe = models.Recipe.select().where(models.Recipe.id == recipe_id).get()
+    form = forms.EditRecipeForm()
+
+    if form.validate_on_submit():
+        recipe.category = form.category.data
+        recipe.title = form.title.data
+        recipe.content = form.content.data
+        recipe.ingredient_tag = form.ingredient_tag.data
+        
+        recipe.save()
+
+        flash('Your changes have been saved.', 'success')
+        return redirect(url_for('recipe', recipe_id=recipe.id))
+    
+    form.category.default = recipe.category
+    form.process()
+    return render_template('edit-recipe.html', form=form, recipe=recipe)
+
+@app.route('/delete-recipe/<recipe_id>', methods=['GET', 'DELETE'])
+@login_required
+def delete_recipe(recipe_id=None):
+    if recipe_id != None:
+        deleted_saved_recipe = models.SavedRecipes.delete().where(models.SavedRecipes.recipe == recipe_id)
+        deleted_saved_recipe.execute()
+
+        deleted_recipe = models.Recipe.delete().where(models.Recipe.id == recipe_id)
+        deleted_recipe.execute()
+
+        return redirect(url_for('recipe'))
+    
+    return redirect(url_for('recipe', recipe_id=recipe_id))
 
 
+# create a route to add data to join table
+@app.route('/save/<recipe_id>')
+@login_required
+def save_to_favorite(recipe_id=None):
+    if recipe_id != None:
+        user = g.user._get_current_object()
+        recipe = models.Recipe.get(models.Recipe.id == recipe_id)
 
+        models.SavedRecipes.create(user=user.id, recipe=recipe.id)
 
-# [] TO BE TESTED
-# @app.route('/edit-recipe/<recipe_id>', methods=['GET', 'PUT'])
-# def edit_recipe(recipe_id=None):
-#     form = forms.EditRecipeForm()
-#     recipe = models.Recipe.select().where(models.Recipe.id==recipe_id).get()
-#     return render_template('edit-recipe.html', form=form, recipe=recipe)
+        return redirect(url_for('profile', username=user.username))
 
+    return redirect(url_for('recipe'))
+
+@app.route('/remove/<recipe_id>', methods=['GET', 'DELETE'])
+@login_required
+def remove_favorite(recipe_id=None):
+    user = g.user._get_current_object()
+
+    if recipe_id != None:
+        removed_recipe = models.SavedRecipes.delete().where(models.SavedRecipes.user == user.id and models.SavedRecipes.recipe == recipe_id)
+        removed_recipe.execute()
+        return redirect(url_for('profile', username=user.username))
      
+    return redirect(url_for('profile', username=user.username))
 
+
+# Initialize models when running in Heroku
+if 'ON_HEROKU' in os.environ:
+    print('hitting ')
+    models.initialize()
+
+# Initialize models when running on localhost
 if __name__ == '__main__':
     models.initialize()
     # try:

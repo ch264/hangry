@@ -4,20 +4,16 @@
 {% from "macros.html" import render_field %}
 
 {% block content %}
+
   <form method="POST" action="{{ url_for('register') }}" class="field" enctype="multipart/form-data">
     {{ form.hidden_tag() }}
-    {% for field in form %}
+    {% for field in form if field.widget.input_type != 'hidden' %}
       {{ field_upload(field) }}
     {% endfor %}
 
-    {% with messages = get_flashed_messages(with_categories=True) %}
-      {% if messages %}
-        {% for category, message in messages %}
-          <div class={{category}}>{{ message }}</div>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
-
-    <button type="submit" class="button is-primary">Sign Up</button>
+    <div class="has-text-centered">
+    <button type="submit" class="button is-dark">Sign Up</button><a href="{{ url_for('index') }}" class="button is-light">Cancel</a>
+    </div>
   </form>
+
 {% endblock %}

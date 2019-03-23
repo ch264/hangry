@@ -55,28 +55,51 @@ class SignUpForm(Form):
 
 
 class LoginForm(Form):
-    email = StringField('Email', [DataRequired(), Email()])
-    password = PasswordField('Password', validators=[DataRequired()])
+    email = StringField(
+        'Email',
+        validators=[
+            DataRequired(),
+            Email()
+        ])
+    password = PasswordField(
+        'Password',
+        validators=[DataRequired()]
+        )
 
-class RecipeForm(Form):
-    category = SelectField("Category", choices=[('mexican', 'Mexican'), ('italian', 'Italian'), ('chinese', 'Chinese'), ('asian', 'Asian'), ('indian', 'Indian'), ('southern', 'Southern')])
-    title = StringField("Title")
-    content = TextAreaField("Ingredients and Instructions")
-    ingredient_tag = StringField("Main Ingredient")
-    recipe_image = FileField('Recipe Image')
-
-
-class EditRecipeForm(Form):
-    category = SelectField("Category", choices=[('mexican', 'Mexican'), ('italian', 'Italian'), ('chinese', 'Chinese'), ('asian', 'Asian'), ('indian', 'Indian'), ('southern', 'Southern')])
-    title = StringField("Title")
-    content = TextAreaField("Content")
-    ingredient_tag = StringField("Ingredient_tag")
 
 class EditUserForm(Form):
-    username =  StringField("Username")
-    email = StringField("Email")
-    # password = PasswordField("Password")
-    location =  StringField("Location")
-    content = TextAreaField("Ingredients and Instructions")
+    username =  StringField('Username')
+    email = StringField('Email')
+    location =  StringField('Location')
     file = FileField(validators=[FileRequired()])
-    
+
+class RecipeForm(Form): 
+    category = SelectField(
+        'Category',
+        choices=[('mexican', 'Mexican'), ('italian', 'Italian'), ('chinese', 'Chinese'), ('asian', 'Asian'), ('indian', 'Indian'), ('southern', 'Southern'), ('other', 'Other')],
+        validators=[DataRequired()]
+        )
+    title = StringField(
+        'Title',
+        validators=[DataRequired()]
+        )
+    content = TextAreaField(
+        'Ingredients and Instructions',
+        validators=[DataRequired()]
+        )
+    ingredient_tag = StringField(
+        'Main Ingredient',
+        validators=[
+            DataRequired(),
+            Regexp(
+                r'^[a-zA-Z]+$',
+                message=('Include only one ingredient'))
+        ])
+    recipe_image = FileField('Recipe Image')
+
+class EditRecipeForm(Form):
+    category = SelectField('Category', choices=[('mexican', 'Mexican'), ('italian', 'Italian'), ('chinese', 'Chinese'), ('asian', 'Asian'), ('indian', 'Indian'), ('southern', 'Southern'), ('other', 'Other')])
+    title = StringField('Title')
+    content = TextAreaField('Content')
+    ingredient_tag = StringField('Ingredient_tag')
+
