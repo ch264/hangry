@@ -14,7 +14,7 @@
 
       {{ form.category.label(class="label") }}
       <!-- [] FIX THIS -->
-      {{ form.category(class="control", value=recipe.category) }}
+      {{ form.category(class="control") }}
     </div>
 
     <div class="form-input">
@@ -37,14 +37,6 @@
       {{ form.ingredient_tag.label(class="label") }}
       {{ form.ingredient_tag(class="control", value=recipe.ingredient_tag) }}
     </div>
-
-    {% with messages = get_flashed_messages(with_categories=True) %}
-      {% if messages %}
-        {% for category, message in messages %}
-          <div class={{category}}>{{ message }}</div>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
 
     <button type="submit" class="button is-dark edit-page-button">Save my changes</button><a href="{{ url_for('recipe', recipe_id=recipe.id) }}" class="button is-danger has-text-centered">Cancel</a>
   </form>

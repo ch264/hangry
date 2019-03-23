@@ -7,7 +7,7 @@ from flask_login import LoginManager, login_user, logout_user, current_user, log
 # Redirect user when not logged in
 from werkzeug.urls import url_parse
 
-from flask.ext.heroku import Heroku
+# from flask.ext.heroku import Heroku
 
 import models
 import forms
@@ -18,7 +18,7 @@ from flask_wtf.csrf import CSRFProtect
 
 app = Flask(__name__, static_url_path='/static')
 app.secret_key = 'pickle'
-heroku = Heroku(app)
+# heroku = Heroku(app)
 
 DEBUG = True
 PORT = 8000
@@ -165,6 +165,7 @@ def add_recipe():
 def edit_recipe(recipe_id=None):
     recipe = models.Recipe.select().where(models.Recipe.id == recipe_id).get()
     form = forms.EditRecipeForm()
+
     if form.validate_on_submit():
         recipe.category = form.category.data
         recipe.title = form.title.data
@@ -175,6 +176,9 @@ def edit_recipe(recipe_id=None):
 
         flash('Your recipe has been saved.', 'success')
         return redirect(url_for('recipe', recipe_id=recipe.id))
+    
+    form.category.default = recipe.category
+    form.process()
     return render_template('edit-recipe.html', form=form, recipe=recipe)
 
 @app.route('/delete-recipe/<recipe_id>', methods=['GET', 'DELETE'])
