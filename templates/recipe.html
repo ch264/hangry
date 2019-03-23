@@ -3,6 +3,7 @@
 {% block content %}
 
 	<div class="columns recipe-show">
+
 		<div class="column left-side has-text-centered">
 					<h1 class="is-4 has-text-danger">{{ recipe.title }}</h1>
 					<p class="is-size-6"> Created By {{ recipe.user.username}}</p>
@@ -32,9 +33,9 @@
 		</div>				
 		<div class="column">
 			<figure class="image is-square">
-					<a href="{{ url_for('recipe', recipe_id=recipe.id) }}"><img class="animated fadeInRight" src="{{ url_for('static', filename='dumpling.jpeg') }}" alt="Your Food"></a>
+					<a href="{{ url_for('recipe', recipe=recipe.id) }}"><img class="animated fadeInRight" src="../static/uploads/{{ recipe.image_filename }}" alt="{{ recipe.image_filename }}"></a>
 			</figure>	
 		</div>	
-	</div>
+</div>
 
 {% endblock %}

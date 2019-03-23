@@ -3,10 +3,11 @@ from models import User, Recipe
 from wtforms import StringField, PasswordField, TextAreaField, SelectField
 from wtforms.validators import DataRequired, Regexp, ValidationError, Length, EqualTo, Email
 
-from flask_wtf.file import FileField, FileRequired
+from flask_wtf.file import FileField, FileRequired, FileAllowed
+
 
 class UploadForm(Form):
-    file = FileField(validators=[FileRequired()])
+    file = FileField(FileRequired())
 
 def name_exists(form, field):
     if User.select().where(User.username == field.data).exists():
@@ -50,7 +51,8 @@ class SignUpForm(Form):
         validators=[
             DataRequired()
         ])
-   
+    profile_image = FileField('Profile Image')
+
 
 class LoginForm(Form):
     email = StringField(
@@ -69,9 +71,9 @@ class EditUserForm(Form):
     username =  StringField('Username')
     email = StringField('Email')
     location =  StringField('Location')
-    
+    file = FileField(validators=[FileRequired()])
 
-class RecipeForm(Form):
+class RecipeForm(Form): 
     category = SelectField(
         'Category',
         choices=[('mexican', 'Mexican'), ('italian', 'Italian'), ('chinese', 'Chinese'), ('asian', 'Asian'), ('indian', 'Indian'), ('southern', 'Southern'), ('other', 'Other')],
@@ -93,6 +95,7 @@ class RecipeForm(Form):
                 r'^[a-zA-Z]+$',
                 message=('Include only one ingredient'))
         ])
+    recipe_image = FileField('Recipe Image')
 
 class EditRecipeForm(Form):
     category = SelectField('Category', choices=[('mexican', 'Mexican'), ('italian', 'Italian'), ('chinese', 'Chinese'), ('asian', 'Asian'), ('indian', 'Indian'), ('southern', 'Southern'), ('other', 'Other')])

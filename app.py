@@ -12,13 +12,28 @@ from werkzeug.urls import url_parse
 import models
 import forms
 
+from flask_uploads import UploadSet, configure_uploads, IMAGES
+
+# foto uploader via form field old
+from flask_wtf import Form
+from flask_wtf.file import FileField
+from werkzeug import secure_filename
+
+from flask_wtf import FlaskForm
+from flask_wtf.file import FileField, FileRequired
+from werkzeug.utils import secure_filename
+
 from flask_wtf.csrf import CSRFProtect
+
+
 
 # ////////////////////////////////////////////////////
 
-app = Flask(__name__, static_url_path='/static')
+app = Flask(__name__, instance_relative_config=True)
+app.config.from_pyfile('flask.cfg')
 app.secret_key = 'pickle'
 # heroku = Heroku(app)
+
 
 DEBUG = True
 PORT = 8000
@@ -26,6 +41,9 @@ PORT = 8000
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
+
+images = UploadSet('images', IMAGES)
+configure_uploads(app, images)
 
 @login_manager.user_loader
 def load_user(userid):
@@ -77,12 +95,17 @@ def login():
 def register():
     form = forms.SignUpForm()
     if form.validate_on_submit():
+        filename = images.save(request.files['profile_image'])
+        url = images.url(filename)
+
         models.User.create_user(
             username=form.username.data,
             email=form.email.data,
             password=form.password.data,
-            location=form.location.data
-            )
+            location=form.location.data,
+            image_filename=filename,
+            image_url=url)
+        
         user = models.User.get(models.User.username == form.username.data)
         login_user(user)
         name = user.username
@@ -106,7 +129,7 @@ def profile(username=None):
 
         # saved_recipes = models.SavedRecipes.select().where(models.SavedRecipes.user == user.id)
         Owner = user.alias()
-        saved_recipes = (models.SavedRecipes.select(models.SavedRecipes, models.Recipe.title, models.Recipe.id, models.User.username, Owner.username)
+        saved_recipes = (models.SavedRecipes.select(models.SavedRecipes, models.Recipe.title, models.Recipe.id, models.Recipe.image_filename, models.Recipe.image_url, models.User.username, Owner.username)
         .join(Owner) 
         .switch(models.SavedRecipes)
         .join(models.Recipe)  
@@ -148,12 +171,17 @@ def add_recipe():
     form = forms.RecipeForm()
     user = g.user._get_current_object()
     if request.method == 'POST':
+        filename = images.save(request.files['recipe_image'])
+        url = images.url(filename)
+
         models.Recipe.create(
             category = form.category.data, #SelectField -use form instead of json
             title = form.title.data,
             content = form.content.data,
             ingredient_tag = form.ingredient_tag.data,
-            user = g.user._get_current_object())
+            user = g.user._get_current_object(),
+            image_filename = filename,
+            image_url = url)
         recipe = models.Recipe.get(models.Recipe.title == form.title.data)
         flash('Recipe created!', 'success')
         return redirect(url_for('recipe', recipe_id=recipe.id))
@@ -231,75 +259,78 @@ if 'ON_HEROKU' in os.environ:
 # Initialize models when running on localhost
 if __name__ == '__main__':
     models.initialize()
-    try:
-        models.User.create_user(
-        username='brandon',
-        email="brandon@gmail.com",
-        password='password',
-        location="San Francisco"
-        ),
-        models.User.create_user(
-        username='christina',
-        email="christina@gmail.com",
-        password='password',
-        location="San Francisco"
-        ),
-        models.User.create_user(
-        username='nicolette',
-        email="nicolette@gmail.com",
-        password='password',
-        location="San Francisco"
-        ),
-        models.User.create_user(
-        username='ronni',
-        email="ronni@gmail.com",
-        password='password',
-        location="San Francisco"
-        ),
-        models.Recipe.create_recipe(
-        category='Asian',
-        title="Dumplings",
-        content='Delicious',
-        ingredient_tag="Pork",
-        user = 1
-        ),
-        models.Recipe.create_recipe(
-        category='Italian',
-        title="Spaghetti",
-        content='Yummy Pasta',
-        ingredient_tag="Pasta",
-        user = 2
-        ),
-        models.Recipe.create_recipe(
-        category='Mexican',
-        title="Enchaladas",
-        content='Quick and easy',
-        ingredient_tag="Meat",
-        user = 3
-        ),
-        models.Recipe.create_recipe(
-        category='Chinese',
-        title="Orange Chicken",
-        content='Crispy Chicken',
-        ingredient_tag="Chicken",
-        user = 3
-        ),
-        models.Recipe.create_recipe(
-        category='Indian',
-        title="Tofu Tikka Marsala",
-        content='Taste Authentic',
-        ingredient_tag="Sauce",
-        user = 2
-        ),
-        models.Recipe.create_recipe(
-        category='Southern',
-        title="Gumbo",
-        content='Simple and Quick',
-        ingredient_tag="Seafood",
-        user = 4
-        )
+    # try:
+    #     models.User.create_user(
+    #     username='brandon',
+    #     email="brandon@gmail.com",
+    #     password='password',
+    #     location="San Francisco"
+    #     ),
+    #     models.User.create_user(
+    #     username='christina',
+    #     email="christina@gmail.com",
+    #     password='password',
+    #     location="San Francisco"
+    #     ),
+    #     models.User.create_user(
+    #     username='nicolette',
+    #     email="nicolette@gmail.com",
+    #     password='password',
+    #     location="San Francisco"
+    #     ),
+    #     models.User.create_user(
+    #     username='ronni',
+    #     email="ronni@gmail.com",
+    #     password='password',
+    #     location="San Francisco"
+    #     ),
+    #     models.Recipe.create_recipe(
+    #     category='Asian',
+    #     title="Dumplings",
+    #     content='Delicious',
+    #     ingredient_tag="Pork. Cabbage.",
+    #     user = 1
+    #     ),
+    #     models.Recipe.create_recipe(
+    #     category='Italian',
+    #     title="Spaghetti",
+    #     content='Yummy Pasta',
+    #     ingredient_tag="Pasta. Meat. Sauce.",
+    #     user = 2
+    #     ),
+    #     models.Recipe.create_recipe(
+    #     category='Mexican',
+    #     title="Enchaladas",
+    #     content='Quick and easy',
+    #     ingredient_tag="Meat. Cheese. Tortillas",
+    #     user = 3
+    #     ),
+    #     models.Recipe.create_recipe(
+    #     category='Chinese',
+    #     title="Orange Chicken",
+    #     content='Crispy Chicken',
+    #     ingredient_tag="Chicken. Oranges.",
+    #     user = 3
+    #     ),
+    #     models.Recipe.create_recipe(
+    #     category='Indian',
+    #     title="Tofu Tikka Marsala",
+    #     content='Taste Authentic',
+    #     ingredient_tag="Tofu. Sauce.",
+    #     user = 2
+    #     ),
+    #     models.Recipe.create_recipe(
+    #     category='Southern',
+    #     title="Gumbo",
+    #     content='Simple and Quick',
+    #     ingredient_tag="Meat. Seafood. Rice. Veggies.",
+    #     user = 1
+    #     )
 
-    except ValueError:
-        pass
+    
+    
+    
+    # except ValueError:
+    #     pass
 
 app.run(debug=DEBUG, port=PORT)

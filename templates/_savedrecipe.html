@@ -3,7 +3,7 @@
 			<div class="card">
 				<div class="card-image">
 					<figure class="image">
-						<a href="{{ url_for('recipe', recipe_id=fave.recipe.id) }}"><img src="{{ url_for('static', filename='dumpling.jpeg') }}" alt="Your Food"></a>
+						<a href="{{ url_for('recipe', recipe_id=fave.recipe.id) }}"><img src="../static/uploads/{{ fave.recipe.image_filename}}" alt="{{ fave.recipe.image_filename }}"></a>
 					</figure>
 				</div>
 				<div class="card-content">

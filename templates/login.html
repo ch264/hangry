@@ -10,15 +10,7 @@
       {{ render_field(field) }}
     {% endfor %}
   </p>
-  <p>
-    {% with messages = get_flashed_messages(with_categories=True) %}
-      {% if messages %}
-        {% for category, message in messages %}
-          <div class={{category}}>{{ message }}</div>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
-  </p>
+
   <div class="has-text-centered">
     <button type="submit" class="button is-dark">Log In</button><a href="{{ url_for('index') }}" class="button is-light">Cancel</a>
   </div>

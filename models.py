@@ -20,18 +20,15 @@ DATABASE = SqliteDatabase('hangry.db')
 
 # inmport gravatar 
 from hashlib import md5
-# add this to model user for the gravatar
-# class User(UserMixin, Model):
-#     def avatar(self, size):
-#         digest = md5(self.email.lower().encode('utf-8')).hexdigest()
-#         return 'https://www.gravatar.com/avatar/{}?d=identicon&s={}'.format(
-#             digest, size)
+
 
 class User(UserMixin, Model):
     username = CharField(unique=True)
     email = CharField(unique=True)
     password = CharField(max_length=100)
     location = TextField()
+    image_filename = CharField()
+    image_url = CharField()
     class Meta:
         database = DATABASE
         db_table = 'user'
@@ -42,13 +39,16 @@ class User(UserMixin, Model):
 
     # Sign Up POST request
     @classmethod
-    def create_user(cls, username, email, password, location):
+    def create_user(cls, username, email, password, location, image_filename, image_url):
+        # print(location)
         try:
             cls.create(
                 username = username,
                 email = email,
                 password = generate_password_hash(password),
-                location = location)
+                location = location,
+                image_filename = image_filename,
+                image_url = image_url)
         except IntegrityError:
             raise ValueError("create error")
 
@@ -70,21 +70,25 @@ class Recipe(Model):
     content = TextField()
     ingredient_tag = TextField()
     user = ForeignKeyField(User, backref="recipes")
+    image_filename = CharField()
+    image_url = CharField()
     class Meta:
         database = DATABASE
         db_table = 'recipe'
         order_by = ('-timestamp',)
 
     @classmethod
-    def create_recipe(cls, category, title, content, ingredient_tag, user):
+    def create_recipe(cls, category, title, content, ingredient_tag, user, image_filename, image_url):
+        # print(location)
         try:
             cls.create(
                 category = category,
                 title = title,
                 content = content,
                 ingredient_tag = ingredient_tag,
-                user = user
-                )
+                user = user,
+                image_filename = image_filename,
+                image_url = image_url)
         except IntegrityError:
             raise ValueError("create recipe error")
 
