@@ -260,9 +260,14 @@ def add_recipe():
             user = g.user._get_current_object(),
             image_filename = images.save(request.files['recipe_image']),
             image_url = images.url(images.save(request.files['recipe_image'])))
+        recipe = models.Recipe.get(models.Recipe.title == form.title.data)
+        flash('Recipe created!', 'success')
         return redirect(url_for('recipe', recipe_id=recipe.id))
     else:
         return render_template('create-recipe.html', form=form)
+
+
+
 
 # [] TO BE TESTED
 # @app.route('/edit-recipe/<recipe_id>', methods=['GET', 'PUT'])

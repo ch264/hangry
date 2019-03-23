@@ -4,7 +4,7 @@
 	<div class="columns recipe-show">
 		<div class="column">
 			<figure class="image is-4by5">
-					<a href="{{ url_for('recipe', recipe_id=recipe.id) }}"><img src="{{ recipe.Recipe.image_url }}" alt="{ recipe.Recipe.image_filename }}"></a>
+					<a href="{{ url_for('recipe', recipe=recipe.id) }}"><img src="../static/uploads/{{ recipe.image_filename}}" alt="{ recipe.Recipe.image_filename }}"></a>
 			</figure>	
 		</div>
 
