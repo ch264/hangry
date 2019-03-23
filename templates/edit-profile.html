@@ -1,44 +1,45 @@
 {% extends "layout.html" %}
 <!-- Imports macro template for form rendering -->
 {% from "macros.html" import field_error %}
-{% from "macros.html" import field_upload %}
 
 {% block content %}
 <div class="container edit-profile">
   <div class="columns">
-      <div class="column">
-        <h2 class="subtitle is-2">Edit Profile</h2>
-  <form method="POST" action="">
-    {{ form.hidden_tag() }}
-    <div class="form-input">
-      {{ field_error(form.username) }}
+    <div class="column">
+      <h2 class="subtitle is-2">Edit Profile</h2>
 
-      {{ form.username.label(class="label") }}
-      {{ form.username(class="control", value=user.username) }}
+      <form method="POST" action="">
+        {{ form.hidden_tag() }}
+        <div class="form-input">
+          {{ field_error(form.username) }}
+
+          {{ form.username.label(class="label") }}
+          {{ form.username(class="control", value=user.username) }}
+        </div>
+
+        <div class="form-input">
+          {{ field_error(form.email) }}
+
+          {{ form.email.label(class="label") }}
+          {{ form.email(class="control", value=user.email) }}
+        </div>
+
+        <div class="form-input">
+          {{ field_error(form.location) }}
+
+          {{ form.location.label(class="label") }}
+          {{ form.location(class="control", value=user.location) }}
+        </div>
+
+        <div class="has-text-centered">
+          <button type="submit" class="button is-danger edit-profile-bttn">Save my changes</button><a href="{{ url_for('profile', username=user.username) }}" class="button is-light">Cancel</a>
+        </div>
+      </form>
+
     </div>
 
-    <div class="form-input">
-      {{ field_error(form.email) }}
-
-      {{ form.email.label(class="label") }}
-      {{ form.email(class="control", value=user.email) }}
-    </div>
-
-
-    <div class="form-input">
-      {{ field_error(form.location) }}
-
-      {{ form.location.label(class="label") }}
-      {{ form.location(class="control", value=user.location) }}
-    </div>
-  </form>
-    <div class="has-text-centered">
-      <button type="submit" class="button is-danger edit-profile-bttn">Save my changes</button><a href="{{ url_for('profile', username=user.username) }}" class="button is-light">Cancel</a>
-    </div>
-    </form>
-</div>
-<div class="column">
-        <img src="{{ url_for('static', filename='foodmeal.jpeg') }}">
+    <div class="column">
+      <img src="{{ url_for('static', filename='foodmeal.jpeg') }}">
     </div>
   </div>
 </div>

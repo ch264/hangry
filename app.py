@@ -147,8 +147,8 @@ def edit_profile():
     if form.validate_on_submit():
         user.username = form.username.data
         user.email = form.email.data
-        # user.password = form.password.data
         user.location = form.location.data
+        
         user.save()
         flash('Your changes have been saved.', 'success')
         return redirect(url_for('profile', username=user.username))
