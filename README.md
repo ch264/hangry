@@ -2,6 +2,7 @@
 
 ## Overview
 Hangry is a platform for users to create and save recipes.  Users must register or login to view, create, and save recipes.  They have the ability to edit their profile information, edit and delete their created recipes.  They can also remove a recipe from their saved collection.
+![](assets/Hangry.png)
 
 ## Wireframes and User Stories
 Our database consists of 2 relational tables (User, Recipe) and one junction table (Saved Recipes)
@@ -35,10 +36,15 @@ Libraries
 
 
 ## Wish List/Future Development
-
+- Search bar to search recipes by ingredient tags
+- Notifications/alerts using BulmaJS for successfully saving recipes and removing a saved recipe
+- Solve lingering issues:
+  - the issue of data validators making a couple of forms break
+  - Regex validators not working on some forms
+- Heroku deployment
 
 ## Contributors
 Brandon Castillo - <a href="https://github.com/brandonmcastillo">GitHub</a>
-Christina Hastenrath - <a href-"https://github.com/ch264">GitHub</a>
+Christina Hastenrath - <a href="https://github.com/ch264">GitHub</a>
 Nicolette Lewis - <a href="https://github.com/LewNic1">GitHub</a>
 Ronni Louie - <a href="https://github.com/ronsbons">GitHub</a>
