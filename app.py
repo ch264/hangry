@@ -174,7 +174,7 @@ def edit_recipe(recipe_id=None):
         
         recipe.save()
 
-        flash('Your recipe has been saved.', 'success')
+        flash('Your changes have been saved.', 'success')
         return redirect(url_for('recipe', recipe_id=recipe.id))
     
     form.category.default = recipe.category

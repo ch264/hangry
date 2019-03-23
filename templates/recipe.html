@@ -2,16 +2,6 @@
 
 {% block content %}
 
-
-	{% with messages = get_flashed_messages(with_categories=True) %}
-		{% if messages %}
-			{% for category, message in messages %}
-				<div class={{category}}>{{ message }}</div>
-			{% endfor %}
-		{% endif %}
-	{% endwith %}
-
-
 	<div class="columns recipe-show">
 		<div class="column left-side has-text-centered">
 					<h1 class="is-4 has-text-danger">{{ recipe.title }}</h1>
@@ -31,6 +21,14 @@
 			{% endif %}
 			<p class="recipe-content is-size-5">Description: {{ recipe.content }}</p>
 			<p class="is-size-5">Category: {{ recipe.category }} <br> Main Ingredient: {{ recipe.ingredient_tag }}</p>		
+
+			{% with messages = get_flashed_messages(with_categories=True) %}
+				{% if messages %}
+					{% for category, message in messages %}
+						<div class={{category}}>{{ message }}</div>
+					{% endfor %}
+				{% endif %}
+			{% endwith %}
 		</div>				
 		<div class="column">
 			<figure class="image is-square">

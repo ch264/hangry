@@ -12,6 +12,14 @@
 			<p><span class="title has-text-danger is-bold">{{ user.username }}</span></p> 
 			<p><span class="location"><small>I live in {{ user.location }}</small></span></p>
 			<a href="{{ url_for('edit_profile', username=current_user.username) }}" class="button is-dark">Edit profile</a>
+
+			{% with messages = get_flashed_messages(with_categories=True) %}
+				{% if messages %}
+					{% for category, message in messages %}
+						<div class={{category}}>{{ message }}</div>
+					{% endfor %}
+				{% endif %}
+			{% endwith %}
 		</div>
 	</div>
 </div>

@@ -5,17 +5,10 @@
 {% block content %}
   <form method="POST" action="" class="field ">
     {{ form.hidden_tag() }}
-    {% for field in form %}
+    {% for field in form if field.widget.input_type != 'hidden' %}
       {{ render_field(field) }}
     {% endfor %}
 
-    {% with messages = get_flashed_messages(with_categories=True) %}
-      {% if messages %}
-        {% for category, message in messages %}
-          <div class={{category}}>{{ message }}</div>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
     <div class="has-text-centered">
     <button type="submit" class="button is-dark">Sign Up</button><a href="{{ url_for('index') }}" class="button is-light">Cancel</a>
     </div>

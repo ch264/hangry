@@ -18,13 +18,6 @@
       {{ render_field(field) }}
     {% endfor %}
 
-    {% with messages = get_flashed_messages(with_categories=True) %}
-      {% if messages %}
-        {% for category, message in messages %}
-          <div class={{category}}>{{ message }}</div>
-        {% endfor %}
-      {% endif %}
-    {% endwith %}
     <div class="has-text-centered">
     <button type="submit" class="button is-danger">Add Recipe</button><a href="{{ url_for('profile', username=user.username) }}" class="button is-light">Cancel</a>
   </form>
