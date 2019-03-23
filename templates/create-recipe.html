@@ -13,7 +13,8 @@
   <h2 class="subtitle is-2">Add Recipe</h2>
   <form method="POST" action="" class="field">
     {{ form.hidden_tag() }}
-    {% for field in form %}
+    
+    {% for field in form if field.widget.input_type != 'hidden' %}
       {{ render_field(field) }}
     {% endfor %}
 
@@ -24,9 +25,10 @@
         {% endfor %}
       {% endif %}
     {% endwith %}
-
-    <button type="submit" class="button is-primary">Add Recipe</button><a href="{{ url_for('profile', username=user.username) }}" class="button is-light">Cancel</a>
+    <div class="has-text-centered">
+    <button type="submit" class="button is-danger">Add Recipe</button><a href="{{ url_for('profile', username=user.username) }}" class="button is-light">Cancel</a>
   </form>
+</div>
   </div>
 </div>
 </div>

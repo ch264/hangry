@@ -1,6 +1,5 @@
 import os
-from flask import Flask, g
-from flask import Flask, request
+from flask import Flask, g, request
 from flask import render_template, flash, redirect, url_for, session, escape
 from flask_bcrypt import check_password_hash
 # User login
@@ -8,18 +7,10 @@ from flask_login import LoginManager, login_user, logout_user, current_user, log
 # Redirect user when not logged in
 from werkzeug.urls import url_parse
 
+# from flask.ext.heroku import Heroku
+
 import models
 import forms
-
-# foto uploader via form field
-from flask import url_for, redirect, render_template
-from flask_wtf import Form
-from flask_wtf.file import FileField
-from werkzeug import secure_filename
-
-from flask_wtf import FlaskForm
-from flask_wtf.file import FileField, FileRequired
-from werkzeug.utils import secure_filename
 
 from flask_wtf.csrf import CSRFProtect
 
@@ -27,6 +18,7 @@ from flask_wtf.csrf import CSRFProtect
 
 app = Flask(__name__, static_url_path='/static')
 app.secret_key = 'pickle'
+# heroku = Heroku(app)
 
 DEBUG = True
 PORT = 8000
@@ -58,28 +50,6 @@ def after_request(response):
 @app.route('/')
 def index():
     return render_template('landing.html')
-
-
-
-# def allowed_file(filename):
-#     return '.' in filename and \
-#         filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
-
-@app.route('/upload', methods=['GET', 'POST'])
-def upload():
-    form = forms.UploadForm()
-    if form.validate_on_submit():
-        f = form.file.data
-        filename = secure_filename(str(current_user.username) + '.' + 'jpg' )
-        f.save(os.path.join(
-            app.instance_path, 'uploads', filename
-        ))
-        
-        # filename = secure_filename(f.filename)
-        # form.file.data.save('uploads')
-        # return redirect(url_for('upload'))
-    return render_template('upload.html', form=form)
-    
 
 @app.route('/about')
 def about():
@@ -195,6 +165,7 @@ def add_recipe():
 def edit_recipe(recipe_id=None):
     recipe = models.Recipe.select().where(models.Recipe.id == recipe_id).get()
     form = forms.EditRecipeForm()
+
     if form.validate_on_submit():
         recipe.category = form.category.data
         recipe.title = form.title.data
@@ -205,6 +176,9 @@ def edit_recipe(recipe_id=None):
 
         flash('Your recipe has been saved.', 'success')
         return redirect(url_for('recipe', recipe_id=recipe.id))
+    
+    form.category.default = recipe.category
+    form.process()
     return render_template('edit-recipe.html', form=form, recipe=recipe)
 
 @app.route('/delete-recipe/<recipe_id>', methods=['GET', 'DELETE'])
@@ -249,7 +223,12 @@ def remove_favorite(recipe_id=None):
     return redirect(url_for('profile', username=user.username))
 
 
+# Initialize models when running in Heroku
+if 'ON_HEROKU' in os.environ:
+    print('hitting ')
+    models.initialize()
 
+# Initialize models when running on localhost
 if __name__ == '__main__':
     models.initialize()
     try:
@@ -320,9 +299,6 @@ if __name__ == '__main__':
         user = 4
         )
 
-    
-    
-    
     except ValueError:
         pass
 

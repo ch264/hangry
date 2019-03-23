@@ -66,29 +66,9 @@ class LoginForm(Form):
 
 
 class EditUserForm(Form):
-    username =  StringField(
-        'Username',
-        validators=[
-            Regexp(
-                r'^[a-zA-Z0-9_]+$',
-                message=("Username should be one word, letters, "
-                         "numbers, and underscores only.")),
-            name_exists
-        ])
-    email = StringField(
-        'Email',
-        validators=[
-            Email(),
-            email_exists
-        ])
-    location =  StringField(
-        'Location',
-        validators=[
-            Regexp(
-                r'^[a-zA-Z0-9,]+$',
-                message=('Location can only include letters, numbers, and commas.')),
-        ])
-    file = FileField(validators=[FileRequired()])
+    username =  StringField('Username')
+    email = StringField('Email')
+    location =  StringField('Location')
     
 
 class RecipeForm(Form):
@@ -111,20 +91,12 @@ class RecipeForm(Form):
             DataRequired(),
             Regexp(
                 r'^[a-zA-Z]+$',
-                message=('Include only one ingredient')),
+                message=('Include only one ingredient'))
         ])
 
 class EditRecipeForm(Form):
     category = SelectField('Category', choices=[('mexican', 'Mexican'), ('italian', 'Italian'), ('chinese', 'Chinese'), ('asian', 'Asian'), ('indian', 'Indian'), ('southern', 'Southern'), ('other', 'Other')])
     title = StringField('Title')
-    content = TextAreaField(
-        'Content',
-        validators=[DataRequired()])
-    ingredient_tag = StringField(
-        'Ingredient_tag',
-        validators=[
-            Regexp(
-                r'^[a-zA-Z]+$',
-                message=('Include only one ingredient'))
-        ])
+    content = TextAreaField('Content')
+    ingredient_tag = StringField('Ingredient_tag')
 

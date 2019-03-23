@@ -3,10 +3,10 @@
 {% from "macros.html" import field_error %}
 
 {% block content %}
-<div class="container">
+<div class="container edit-profile">
   <div class="columns">
       <div class="column">
-  <h2 class="subtitle is-2">Edit Profile</h2>
+        <h2 class="subtitle is-2">Edit Profile</h2>
   <form method="POST" action="">
     {{ form.hidden_tag() }}
     <div class="form-input">
@@ -31,13 +31,6 @@
       {{ form.location(class="control", value=user.location) }}
     </div>
 
-    <!-- debug form field for uploading picture later. the picture is not saving -->
-    <!-- <div class="form-input">
-        {{ field_error(form.file) }}
-        {{ form.file.label(class="label") }}
-        {{ form.file(class="control") }} 
-    </div> -->
-
     {% with messages = get_flashed_messages(with_categories=True) %}
       {% if messages %}
         {% for category, message in messages %}
@@ -45,14 +38,12 @@
         {% endfor %}
       {% endif %}
     {% endwith %}
-
-    <a class="button" href="{{ url_for('upload')}}">Upload a new profile picture</a>
-    <hr>
-
-    <button type="submit" class="button is-primary">Save my changes</button><a href="{{ url_for('profile', username=user.username) }}" class="button is-light">Cancel</a>
-  </form>
+    <div class="has-text-centered">
+      <button type="submit" class="button is-danger edit-profile-bttn">Save my changes</button><a href="{{ url_for('profile', username=user.username) }}" class="button is-light">Cancel</a>
     </div>
-    <div class="column">
+    </form>
+</div>
+<div class="column">
         <img src="{{ url_for('static', filename='foodmeal.jpeg') }}">
     </div>
   </div>
