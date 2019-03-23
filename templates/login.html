@@ -6,7 +6,7 @@
   <form method="POST" action="">
     {{ form.hidden_tag() }}
     <p>
-    {% for field in form %}
+    {% for field in form if field.widget.input_type != 'hidden' %}
       {{ render_field(field) }}
     {% endfor %}
   </p>
