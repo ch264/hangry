@@ -66,29 +66,9 @@ class LoginForm(Form):
 
 
 class EditUserForm(Form):
-    username =  StringField(
-        'Username',
-        validators=[
-            Regexp(
-                r'^[a-zA-Z0-9_]+$',
-                message=("Username should be one word, letters, "
-                         "numbers, and underscores only.")),
-            name_exists
-        ])
-    email = StringField(
-        'Email',
-        validators=[
-            Email(),
-            email_exists
-        ])
-    location =  StringField(
-        'Location',
-        validators=[
-            Regexp(
-                r'^[a-zA-Z0-9,]+$',
-                message=('Location can only include letters, numbers, and commas.')),
-        ])
-    file = FileField(validators=[FileRequired()])
+    username =  StringField('Username')
+    email = StringField('Email')
+    location =  StringField('Location')
     
 
 class RecipeForm(Form):
