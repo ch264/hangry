@@ -41,6 +41,7 @@ Libraries
 - Solve lingering issues:
   - the issue of data validators making a couple of forms break
   - Regex validators not working on some forms
+  - Display recipe's ingredients and instructions separately/better
 - Heroku deployment
 
 ## Contributors
