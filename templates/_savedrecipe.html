@@ -1,20 +1,27 @@
+<!-- Template for saved recipe card, used as a sub-template in profile page -->
+<div class="column is-one-third-desktop is-half-tablet">
+		<div class="card">
+			<div class="card-image">
+				<figure class="image">
+					<!-- Uses recipe info passed in from app.py to dynamically change anchor tag and image src -->
+					<!-- Because this accesses a referenced recipe from the join table, call values with an additional dot notation -->
+					<a href="{{ url_for('recipe', recipe_id=fave.recipe.id) }}"><img src="../static/uploads/{{ fave.recipe.image_filename}}" alt="{{ fave.recipe.image_filename }}"></a>
+				</figure>
+			</div>
 
-	<div class="column is-one-third-desktop is-half-tablet">
-			<div class="card">
-				<div class="card-image">
-					<figure class="image">
-						<a href="{{ url_for('recipe', recipe_id=fave.recipe.id) }}"><img src="../static/uploads/{{ fave.recipe.image_filename}}" alt="{{ fave.recipe.image_filename }}"></a>
-					</figure>
-				</div>
-				<div class="card-content">
-					<div class="content">
-						<div class="media-content">
-							<p class="title is-4">
-								<a href="{{ url_for('recipe', recipe_id=fave.recipe) }}" class="has-text-dark">{{ fave.recipe.title }}</a></p>
-							<p class="title is-6 no-padding">By: {{ fave.recipe.user.username }}</p>
-							<a href="{{ url_for('remove_favorite', recipe_id=fave.recipe) }}" class="button is-dark is-small">Remove</a>
-						</div>
+			<div class="card-content">
+				<div class="content">
+					<div class="media-content">
+						<p class="title is-4">
+							<!-- Sets anchor tag to 'recipe' function defined in app.py to redirect to individual recipe page -->
+							<a href="{{ url_for('recipe', recipe_id=fave.recipe) }}" class="has-text-dark">{{ fave.recipe.title }}</a></p>
+						<!-- Uses recipe info passed in from app.py to dynamically change text content -->
+						<p class="title is-6 no-padding">By: <a href="{{ url_for('profile', username=fave.recipe.user.username) }}">{{ fave.recipe.user.username }}</a></p>
+						<!-- Sets anchor tag to link to function 'remove_favorite' defined in app.py -->
+						<a href="{{ url_for('remove_favorite', recipe_id=fave.recipe) }}" class="button is-dark is-small">Remove</a>
 					</div>
 				</div>
 			</div>
+
 		</div>
+	</div>

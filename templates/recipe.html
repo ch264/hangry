@@ -6,7 +6,7 @@
 
 		<div class="column left-side has-text-centered">
 					<h1 class="is-4 has-text-danger">{{ recipe.title }}</h1>
-					<p class="is-size-6"> Created By {{ recipe.user.username}}</p>
+					<p class="is-size-6"> Created By <a href="{{ url_for('profile', username=recipe.user.username) }}">{{ recipe.user.username}}</a></p>
 					<p class="is-size-6"> Date: {{ recipe.timestamp}}</p>
 					<a href="{{ url_for('save_to_favorite', recipe_id=recipe.id) }}" class="button is-small is-dark">Save to Bookmarks</a>
 					{% if current_user.id == recipe.user.id %}
