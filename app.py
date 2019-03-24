@@ -149,10 +149,10 @@ def profile(username=None):
     if username != None:
         # Finds user in database by username passed into url
         user = models.User.select().where(models.User.username==username).get()
-        # Finds all recipes in database where the user id stored with a recipe matches the found user above's id
-        recipes = models.Recipe.select().where(models.Recipe.user == user.id)
-        # Finds all recipes in saved recipe junction table where the user id matches the found user above's id
-        saved_recipes = models.SavedRecipes.select().where(models.SavedRecipes.user == user.id)
+        # Finds all recipes in database where the user id stored with a recipe matches the found user above's id and sorts by newest to oldest
+        recipes = models.Recipe.select().where(models.Recipe.user == user.id).order_by(-models.Recipe.timestamp)
+        # Finds all recipes in saved recipe junction table where the user id matches the found user above's id and sorts by newest to oldest
+        saved_recipes = models.SavedRecipes.select().where(models.SavedRecipes.user == user.id).order_by(-models.SavedRecipes.timestamp)
 
         # Passes all 3 variables into profile template to make use of database results
         return render_template('profile.html', user=user, recipes=recipes, saved_recipes=saved_recipes)
@@ -221,7 +221,8 @@ def add_recipe():
         # Sets variable url to change image url to match filename
         url = images.url(filename)
 
-        models.Recipe.create(
+        # Calls method create_recipe defined in models.py for the Recipe model
+        models.Recipe.create_recipe(
             # User form.field instead of request.json in order to capture the category data since it's a SelectField, rather than a StringField etc.
             # Sets attributes of new recipe in database equal to what was input into the form
             category = form.category.data,
@@ -351,6 +352,7 @@ def remove_favorite(recipe_id=None):
 
 # Initialize models when running on localhost
 if __name__ == '__main__':
+    # Calls initialize function as defined in models.py
     models.initialize()
 
 
