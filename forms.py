@@ -100,5 +100,5 @@ class EditRecipeForm(Form):
     category = SelectField('Category', choices=[('mexican', 'Mexican'), ('italian', 'Italian'), ('chinese', 'Chinese'), ('asian', 'Asian'), ('indian', 'Indian'), ('southern', 'Southern'), ('other', 'Other')])
     title = StringField('Title')
     content = TextAreaField('Content')
-    ingredient_tag = StringField('Ingredient_tag')
+    ingredient_tag = StringField('Main Ingredient')
 
