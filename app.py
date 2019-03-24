@@ -127,13 +127,7 @@ def profile(username=None):
         user = models.User.select().where(models.User.username==username).get()
         recipes = models.Recipe.select().where(models.Recipe.user == user.id)
 
-        # saved_recipes = models.SavedRecipes.select().where(models.SavedRecipes.user == user.id)
-        Owner = user.alias()
-        saved_recipes = (models.SavedRecipes.select(models.SavedRecipes, models.Recipe.title, models.Recipe.id, models.Recipe.image_filename, models.Recipe.image_url, models.User.username, Owner.username)
-        .join(Owner) 
-        .switch(models.SavedRecipes)
-        .join(models.Recipe)  
-        .join(models.User))
+        saved_recipes = models.SavedRecipes.select().where(models.SavedRecipes.user == user.id)
 
         return render_template('profile.html', user=user, recipes=recipes, saved_recipes=saved_recipes)
 
