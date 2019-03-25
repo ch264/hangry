@@ -15,12 +15,14 @@
     <!-- Our CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
   </head>
+
   <body class="has-navbar-fixed-top">
     <nav class="navbar is-light is-fixed-top" role="navigation" aria-label="main navigation">
       <div class="navbar-brand ">
         <!-- Logo -->
         <a href="{{ url_for('index') }}" class="navbar-item center"><img src="{{ url_for('static', filename='rolling-pin.png') }}"></a>
-        <!-- Hamburger bar for responsive nav -->
+
+        <!-- Hamburger icon for responsive nav -->
         <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
           <span aria-hidden="true"></span>
           <span aria-hidden="true"></span>
@@ -34,31 +36,25 @@
 
           {% if current_user.is_anonymous %}
           <!-- If user is not logged in, show Login/Signup button -->
-            <div class="navbar-item">
-              <div class="buttons">
-                <a href="{{ url_for('login') }}" class="button is-light nav-links" title="login">LOGIN</a>
+            <a href="{{ url_for('login') }}" class="navbar-item nav-links" title="login">LOGIN</a>
 
-                <a href="{{ url_for('register') }}" class="button is-light nav-links" title="register">SIGN UP</a>
-
-              </div>
-            </div>
+            <a href="{{ url_for('register') }}" class="navbar-item nav-links" title="register">SIGN UP</a>
           
           {% else %}
           <!-- If user is logged in, show other pages -->
-            <a href="{{ url_for ('recipe') }}" class="navbar-item">RECIPES</a>
+            <a href="{{ url_for ('recipe') }}" class="navbar-item nav-links">RECIPES</a>
 
             <a href="{{ url_for('profile', username=current_user.username) }}" class="navbar-item nav-links">PROFILE</a>
 
             <a href="{{ url_for('logout') }}" class="navbar-item nav-links">LOGOUT</a>
-          
           {% endif %}
-        </div>
-      </div>
+        </div>  <!-- end of .navbar-end div -->
+      </div>  <!-- end of .navbar-menu div -->
     </nav>
 
     <section class="content">
       {% block content %}
-
+        <!-- Where templates will be entered -->
       {% endblock %}
     </section>
 
@@ -70,6 +66,7 @@
     </footer>
 
     <!-- Vendor Scripts -->
+    <!-- Typed.js animation -->
     <script src="https://cdn.jsdelivr.net/npm/typed.js@2.0.9"></script>
     <script>
       var typed = new Typed('#typed', {
@@ -81,7 +78,11 @@
         loopCount: Infinity,
       });
     </script>
+
+    <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+
+    <!-- Our JS file -->
     <script src="{{ url_for('static', filename='app.js') }}"></script>
   </body>
 

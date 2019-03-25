@@ -1,6 +1,7 @@
-<!-- Defining a macro called render_field() that accepts a form field as an argument -->
+<!-- Defining a macro called render_field() that accepts a form field as an argument to build form inputs -->
 {% macro render_field(field) %}
   <div class="form-input">
+    <!-- Displays to user any form errors set in forms.py -->
     {% if field.errors %}
       {% for error in field.errors %}
         <div>
@@ -10,6 +11,7 @@
     {% endif %}
   
     {{ field.label(class="label") }}
+    <!-- cols and rows for textarea field -->
     {{ field(class="control", placeholder=field.label.text, cols="35", rows="20") }}
   </div>
 {% endmacro %}
@@ -23,42 +25,4 @@
       </div>
     {% endfor %}
   {% endif %}
-{% endmacro %}
-
-<!-- Defining a macro called file_upload in order to upload images -->
-{% macro field_upload(field) %}
-  <div class="form-input" type="file" name="photo">
-    {% if field.errors %}
-      {% for error in field.errors %}
-        <div>
-          {{ error }}
-        </div>
-      {% endfor %}
-    {% endif %}
-    
-    {{ field.label(class="label") }}
-    {{ field(class="control", placeholder=field.label.text, cols="35", rows="20") }}
-  </div>
-{% endmacro %}
-
-<!-- [] TO BE TESTED -->
-{% macro recipe_card(recipe) %}
-  <div class="column is-one-third-desktop is-half-tablet">
-    <div class="card large">
-      <div class="card-image">
-        <figure class="image is-80x80">
-        <img src="{{ url_for('static', filename='klara-avsenik-1365422-unsplash.jpg') }}" alt="Sushi Image">
-        </figure>
-      </div>
-      <div class="card-content">
-        <div class="content">
-          <div class="media-content">
-            <p class="title is-4">{{ recipe.title }}</p>
-            <p class="title is-6 no-padding">{{ recipe.user }}</p>
-            <p><span class="title is-6"><a href="#">Save</a></span></p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
 {% endmacro %}

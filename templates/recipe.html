@@ -1,28 +1,38 @@
 {% extends 'layout.html' %}
 
+<!-- Uses recipe info passed down from app.py -->
 {% block content %}
-
 	<div class="columns recipe-show">
-
 		<div class="column left-side has-text-centered">
-					<h1 class="is-4 has-text-danger">{{ recipe.title }}</h1>
-					<p class="is-size-6"> Created By {{ recipe.user.username}}</p>
-					<p class="is-size-6"> Date: {{ recipe.timestamp}}</p>
-					<a href="{{ url_for('save_to_favorite', recipe_id=recipe.id) }}" class="button is-small is-dark">Save to Bookmarks</a>
-					{% if current_user.id == recipe.user.id %}
-						<a href="{{ url_for('edit_recipe', recipe_id=recipe.id)}}" class="button is-light is-small">Edit my recipe</a><button class="button is-danger is-small modal-button">Delete my recipe</button>
-						<div class="modal">
-							<div class="modal-background has-background-grey-dark"></div>
-							<div class="modal-content">
-								<p class="has-text-white">Are you sure you want to delete your recipe?</p>
-								<a href="{{ url_for('delete_recipe', recipe_id=recipe.id) }}" class="button is-danger is-small">Yes, delete my recipe</a><button class="button is-light is-small modal-button">No, never mind</button>
-							</div>
-							<button class="modal-close is-large" aria-label="close"></button>
-						</div>
+			<h1 class="is-4 has-text-danger">{{ recipe.title }}</h1>
+			<!-- Links to function 'profile' in app.py to be redirected to author's profile -->
+			<p class="is-size-6"> Created By <a href="{{ url_for('profile', username=recipe.user.username) }}">{{ recipe.user.username}}</a></p>
+			<p class="is-size-6"> Date: {{ recipe.timestamp}}</p>
+			<!-- Links to function 'save_to_favorite' in app.py -->
+			<a href="{{ url_for('save_to_favorite', recipe_id=recipe.id) }}" class="button is-small is-dark">Save to Bookmarks</a>
+
+			<!-- If logged in user is author of recipe, show edit/delete buttons -->
+			{% if current_user.id == recipe.user.id %}
+				<!-- Links to 'edit_recipe' function -->
+				<!-- Delete button triggers modal to verify user wants to delete recipe -->
+				<a href="{{ url_for('edit_recipe', recipe_id=recipe.id)}}" class="button is-light is-small">Edit my recipe</a><button class="button is-danger is-small modal-button">Delete my recipe</button>
+				<div class="modal">
+					<div class="modal-background has-background-grey-dark"></div>
+					<div class="modal-content">
+						<p class="has-text-white">Are you sure you want to delete your recipe?</p>
+						<!-- Links to 'delete_recipe' function in app.py -->
+						<!-- 'No' button closes modal -->
+						<a href="{{ url_for('delete_recipe', recipe_id=recipe.id) }}" class="button is-danger is-small">Yes, delete my recipe</a><button class="button is-light is-small modal-button">No, never mind</button>
+					</div>
+					<!-- 'X' close button -->
+					<button class="modal-close is-large" aria-label="close"></button>
+				</div>  <!-- end of .modal div -->
 			{% endif %}
+
 			<p class="recipe-content is-size-5">Description: {{ recipe.content }}</p>
 			<p class="is-size-5">Category: {{ recipe.category }} <br> Main Ingredient: {{ recipe.ingredient_tag }}</p>		
 
+			<!-- Display to user any success/error messages from functions set in app.py -->
 			{% with messages = get_flashed_messages(with_categories=True) %}
 				{% if messages %}
 					{% for category, message in messages %}
@@ -30,12 +40,13 @@
 					{% endfor %}
 				{% endif %}
 			{% endwith %}
-		</div>				
+		</div>  <!-- end of .column div -->
+
+		<!-- Recipe photo -->
 		<div class="column">
 			<figure class="image is-square">
 					<a href="{{ url_for('recipe', recipe=recipe.id) }}"><img class="animated fadeInRight" src="../static/uploads/{{ recipe.image_filename }}" alt="{{ recipe.image_filename }}"></a>
 			</figure>	
 		</div>	
-</div>
-
+	</div>  <!-- end of .columns div -->
 {% endblock %}

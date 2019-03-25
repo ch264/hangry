@@ -1,50 +1,67 @@
 {% extends 'layout.html' %}
 
 {% block content %}
-<div class="container profile-container">
-	<div class="columns">
-		<div class="column">
-			<div class="image is-pulled-right">
-				<img class="image is-rounded is-128x128" src="../static/uploads/{{ user.image_filename}}" alt="{{ user.image_filename }}">
+	<div class="container profile-container">
+		<div class="columns">
+			<!-- User photo -->
+			<div class="column">
+				<div class="image is-pulled-right">
+					<img class="image is-rounded is-128x128" src="../static/uploads/{{ user.image_filename}}" alt="{{ user.image_filename }}">
+				</div>
 			</div>
-		</div>
-		<div class="column">
-			<p><span class="title has-text-danger is-bold">{{ user.username }}</span></p> 
-			<p><span class="location"><small>I live in {{ user.location }}</small></span></p>
-			<a href="{{ url_for('edit_profile', username=current_user.username) }}" class="button is-dark">Edit profile</a>
 
-			{% with messages = get_flashed_messages(with_categories=True) %}
-				{% if messages %}
-					{% for category, message in messages %}
-						<div class={{category}}>{{ message }}</div>
-					{% endfor %}
+			<!-- User info -->
+			<div class="column">
+				<p><span class="title has-text-danger is-bold">{{ user.username }}</span></p> 
+				<p><span class="location"><small>I live in {{ user.location }}</small></span></p>
+				<!-- If logged in user is on their profile, show Edit Profile button -->
+				{% if current_user.id == user.id %}
+					<a href="{{ url_for('edit_profile', username=current_user.username) }}" class="button is-dark">Edit profile</a>
 				{% endif %}
-			{% endwith %}
-		</div>
-	</div>
-</div>
-<div class="container">
-	<div class="columns is-center has-text-centered is-grouped-centered">
-		<div class="column ">
-			<h4>Your Recipes</h4>
-			<a href="{{ url_for('add_recipe') }}" class="button is-small is-dark">Add a Recipe</a>
-			<div class="columns is-multiline">
-				{% for recipe in recipes %}
-					{% include '_recipe.html' %}
-				{% endfor %}	
-			</div>
-		</div>
-		<div class="column">
-			<h4>Saved Recipes</h4>
-			<div class="columns is-multiline">
-				{% for fave in saved_recipes %}
-					{% include '_savedrecipe.html' %}
-				{% endfor %}	
-			</div>
-		</div>
-	</div>
-</div>
 
+				<!-- Show any flash messages to user from logging in or signing up -->
+				{% with messages = get_flashed_messages(with_categories=True) %}
+					{% if messages %}
+						{% for category, message in messages %}
+							<div class={{category}}>{{ message }}</div>
+						{% endfor %}
+					{% endif %}
+				{% endwith %}
+			</div>  <!-- end of .column div-->
+		</div>  <!-- end of columns div-->
+	</div>  <!-- end of .container div -->
+
+	<div class="container">
+		<div class="columns is-center has-text-centered is-grouped-centered">
+			<!-- User created recipes -->
+			<div class="column ">
+				<h4>Your Recipes</h4>
+				{% if current_user.id == user.id %}
+					<a href="{{ url_for('add_recipe') }}" class="button is-small is-dark">Add a Recipe</a>
+				{% endif %}
+				<!-- is-multiline is a Bulma class to allow columns to wrap -->
+				<div class="columns is-multiline">
+					<!-- Iterate through recipes passed down from app.py -->
+					{% for recipe in recipes %}
+						<!-- Use each single recipe info in sub-template _recipe.html -->
+						{% include '_recipe.html' %}
+					{% endfor %}	
+				</div>  <!-- end of .columns div -->
+			</div>  <!-- end of .column div -->
+
+			<!-- User saved recipes -->
+			<div class="column">
+				<h4>Saved Recipes</h4>
+				<div class="columns is-multiline">
+					<!-- Iterate through saved_recipes passed down from app.py -->
+					{% for fave in saved_recipes %}
+						<!-- Use each single fave recipe info in sub-template _recipe.html -->
+						{% include '_savedrecipe.html' %}
+					{% endfor %}	
+				</div>  <!-- end of .columns div -->
+			</div>  <!-- end of .column div -->
+		</div>  <!-- end of .columns div -->
+	</div>  <!-- end of .container div -->
 {% endblock %}
 
 
