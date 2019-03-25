@@ -18,7 +18,9 @@
 						<!-- Uses recipe info passed in from app.py to dynamically change text content -->
 						<p class="title is-6 no-padding">By: <a href="{{ url_for('profile', username=fave.recipe.user.username) }}">{{ fave.recipe.user.username }}</a></p>
 						<!-- Sets anchor tag to link to function 'remove_favorite' defined in app.py -->
-						<a href="{{ url_for('remove_favorite', recipe_id=fave.recipe) }}" class="button is-dark is-small">Remove</a>
+						{% if current_user.id == fave.user.id %}
+							<a href="{{ url_for('remove_favorite', recipe_id=fave.recipe) }}" class="button is-dark is-small">Remove</a>
+						{% endif %}
 					</div>
 				</div>
 			</div>
