@@ -30,8 +30,8 @@ h2 {
   z-index: 2;
 }
 
-/* Landing Page Containers */
 
+/* Landing Page Containers */
 .section-one {
   padding-bottom: 80px;
 }
@@ -54,10 +54,10 @@ h2 {
   z-index: 2;
 }
 
+
 /* Nav bar */
 .hero-body {
   padding: 0;
-
 }
 
 .about {
@@ -72,14 +72,11 @@ h2 {
   padding-top: 20px;
 }
 
+
 /* Forms */
 .form-input {
   margin: 30px 20px;
   text-align: center;
-}
-
-.edit-page-button {
-  margin: 0 80px;
 }
 
 .edit-column {
@@ -91,6 +88,7 @@ h2 {
   border-radius: 4px;
   padding: 6px 10px;
 }
+
 
 /* About Page */
 .about-team,
@@ -115,6 +113,7 @@ h2 {
   color: grey;
 }
 
+
 /* Profile Page */
 .profile-container {
   background-color: #eeeeee7c;
@@ -125,6 +124,7 @@ h2 {
   font-size: 2.5em;
 }
 
+
 /* Recipe (Show and Edit) */
 .recipe-show {
   margin: 0 10vw;
@@ -133,11 +133,12 @@ h2 {
 
 .recipe-content {
   margin-top: 1em;
-
 }
+
 .left-side{
   border-right: 1px inset white;
 }
+
 
 /* Footer */
 .footer {
@@ -169,6 +170,7 @@ img.shake,
 	90% { -webkit-transform: translate(2px, 2px) rotate(0deg); }
 	100% { -webkit-transform: translate(1px, -2px) rotate(-1deg); }
 }
+
 .shake:hover,
 .shake:focus {
 	-webkit-animation-name: spaceboots;
