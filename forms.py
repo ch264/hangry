@@ -71,7 +71,7 @@ class EditUserForm(Form):
     username =  StringField('Username')
     email = StringField('Email')
     location =  StringField('Location')
-    file = FileField(validators=[FileRequired()])
+    # file = FileField(validators=[FileRequired()])
 
 class RecipeForm(Form): 
     category = SelectField(
