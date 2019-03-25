@@ -23,7 +23,7 @@ class SignUpForm(Form):
     # Sets names of fields equal to what type of data to receive
     username = StringField(
         # Label for the field
-        'Username:',
+        'Username',
         validators=[
             # Requires user to enter something
             DataRequired(),
@@ -36,14 +36,14 @@ class SignUpForm(Form):
             name_exists
         ])
     email = StringField(
-        'Email:',
+        'Email',
         validators=[
             DataRequired(),
             Email(),
             email_exists
         ])
     password = PasswordField(
-        'Password:',
+        'Password',
         validators=[
             DataRequired(),
             Length(min=2),
@@ -78,7 +78,9 @@ class LoginForm(Form):
 
 # Creates an EditUserForm class
 class EditUserForm(Form):
-    username =  StringField('Username')
+    username =  StringField(
+        'Username',
+        validators=[name_exists])
     email = StringField('Email')
     location =  StringField('Location')
 

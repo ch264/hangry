@@ -169,18 +169,17 @@ def edit_profile(username=None):
     # Accesses EditUserForm from forms.py
     form = forms.EditUserForm()
 
-    if username != None and request.method == 'POST':
-        if form.validate_on_submit():
-            # Set user's info in database to new values entered in form
-            user.username = form.username.data
-            user.email = form.email.data
-            user.location = form.location.data
-            
-            # Save changes to user in database
-            user.save()
-            flash('Your changes have been saved.', 'success')
-            # Redirect to user's profile to reflect changes
-            return redirect(url_for('profile', username=user.username))
+    if form.validate_on_submit():
+        # Set user's info in database to new values entered in form
+        user.username = form.username.data
+        user.email = form.email.data
+        user.location = form.location.data
+        
+        # Save changes to user in database
+        user.save()
+        flash('Your changes have been saved.', 'success')
+        # Redirect to user's profile to reflect changes
+        return redirect(url_for('profile', username=user.username))
     
     # Upon initial visit to route, serves up edit profile form
     return render_template('edit-profile.html', form=form, user=user)
