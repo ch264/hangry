@@ -3,7 +3,9 @@
 {% block content %}
 	<h2 class="subtitle is-2">Recipes</h2>
 	<div class="columns is-multiline">
+		<!-- Iterates through recipes passed down from app.py -->
 		{% for recipe in recipes %}
+			<!-- Uses sub-template _recipe.html to create recipe cards -->
 			{% include '_recipe.html' %}
 		{% endfor %}
 	</div>

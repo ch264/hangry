@@ -1,50 +1,58 @@
 {% extends "layout.html" %}
-<!-- Imports macro template for form rendering -->
+<!-- Imports macro template for error rendering -->
 {% from "macros.html" import field_error %}
 
 {% block content %}
-<div class="container">
-  <div class="columns">
-    <div class="column edit-column">
-  <h2 class="subtitle is-2 ">Edit Recipe</h2>
-  <form method="POST" action="">
-    {{ form.hidden_tag() }}
-    <div class="form-input">
-      {{ field_error(form.category) }}
+  <div class="container">
+    <div class="columns">
+      <div class="column edit-column">
+        <h2 class="subtitle is-2 ">Edit Recipe</h2>
+        <!-- form tag to enclose the form fields and upon submit, sends whole form as request -->
+        <form method="POST" action="{{ url_for('recipe', recipe_id=recipe.id) }}">
+          {{ form.hidden_tag() }}
+          <!-- category field -->
+          <div class="form-input">
+            {{ field_error(form.category) }}
 
-      {{ form.category.label(class="label") }}
-      <!-- [] FIX THIS -->
-      {{ form.category(class="control") }}
-    </div>
+            {{ form.category.label(class="label") }}
+            {{ form.category(class="control") }}
+          </div>
 
-    <div class="form-input">
-      {{ field_error(form.title) }}
+          <!-- title field -->
+          <div class="form-input">
+            {{ field_error(form.title) }}
 
-      {{ form.title.label(class="label") }}
-      {{ form.title(class="control",  value=recipe.title) }}
-    </div>
+            {{ form.title.label(class="label") }}
+            {{ form.title(class="control",  value=recipe.title) }}
+          </div>
 
-    <div class="form-input">
-      {{ field_error(form.content) }}
+          <!-- content field -->
+          <div class="form-input">
+            {{ field_error(form.content) }}
 
-      {{ form.content.label(class="label") }}
-      {{ form.content(class="control", placeholder=recipe.content, cols="35", rows="20") }}
-    </div>
+            {{ form.content.label(class="label") }}
+            {{ form.content(class="control", placeholder=recipe.content, cols="35", rows="20") }}
+          </div>
 
-    <div class="form-input">
-      {{ field_error(form.ingredient_tag) }}
+          <!-- ingredient_tag field -->
+          <div class="form-input">
+            {{ field_error(form.ingredient_tag) }}
 
-      {{ form.ingredient_tag.label(class="label") }}
-      {{ form.ingredient_tag(class="control", value=recipe.ingredient_tag) }}
-    </div>
+            {{ form.ingredient_tag.label(class="label") }}
+            {{ form.ingredient_tag(class="control", value=recipe.ingredient_tag) }}
+          </div>
 
-    <button type="submit" class="button is-dark edit-page-button">Save my changes</button><a href="{{ url_for('recipe', recipe_id=recipe.id) }}" class="button is-danger has-text-centered">Cancel</a>
-  </form>
-</div>
-<div class="column">
-    <!-- [] CHANGING THIS IMAGE SRC TO DYNAMIC RECIPE.FILENAME UPLOAD MAKES CHROME HANG -->
-    <img class="animated fadeIn" src="{{ url_for('static', filename='fruits.jpeg') }}">
-</div>
-</div>
-</div>
+          <div class="has-text-centered">
+            <!-- Cancel link redirects to 'recipe' function as defined in app.py -->
+            <button type="submit" class="button is-dark edit-page-button">Save my changes</button><a href="{{ url_for('recipe', recipe_id=recipe.id) }}" class="button is-danger">Cancel</a>
+          </div>
+        </form>
+      </div>  <!-- end of .column div -->
+
+      <div class="column">
+          <!-- [] CHANGING THIS IMAGE SRC TO DYNAMIC RECIPE.FILENAME UPLOAD MAKES CHROME HANG -->
+          <img class="animated fadeIn" src="{{ url_for('static', filename='fruits.jpeg') }}">
+      </div>
+    </div>  <!-- end of .columns div-->
+  </div>
 {% endblock %}

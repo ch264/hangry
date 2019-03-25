@@ -1,4 +1,5 @@
 <!-- Template for recipe card, used as a sub-template in profile page and recipes page -->
+<!-- .column class to be a child of .columns class whereever this sub-template is called -->
 <div class="column is-one-third-desktop is-half-tablet">
 	<div class="card animated fadeIn">
 		<div class="card-image">
@@ -21,10 +22,9 @@
 					<a href="{{ url_for('save_to_favorite', recipe_id=recipe.id) }}" class="button is-light is-small">Save</a>
 				</div>
 			</div>
-		</div>
-		
-	</div>
-</div>
+		</div>  <!-- end of .card-content div -->
+	</div>  <!-- end of .card div -->
+</div>  <!-- end of .column div -->
 
 
 

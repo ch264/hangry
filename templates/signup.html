@@ -1,18 +1,22 @@
 {% extends "layout.html" %}
 <!-- Imports macro template for form rendering -->
-{% from "macros.html" import field_upload %}
 {% from "macros.html" import render_field %}
 
 {% block content %}
 
   <form method="POST" action="{{ url_for('register') }}" class="field" enctype="multipart/form-data">
     {{ form.hidden_tag() }}
+    <!-- "form" was passed into template in app.py in add_recipe method -->
+    <!-- if condition hides CSRF token field -->
     {% for field in form if field.widget.input_type != 'hidden' %}
-      {{ field_upload(field) }}
+      <!-- Pass in iterated "field" value from form into macro render_field -->
+      {{ render_field(field) }}
     {% endfor %}
 
     <div class="has-text-centered">
-    <button type="submit" class="button is-dark">Sign Up</button><a href="{{ url_for('index') }}" class="button is-light">Cancel</a>
+      <!-- Sign Up button submits form -->
+      <!-- Cancel button links to 'index' function in app.py to redirect to landing page -->
+      <button type="submit" class="button is-dark">Sign Up</button><a href="{{ url_for('index') }}" class="button is-light">Cancel</a>
     </div>
   </form>
 

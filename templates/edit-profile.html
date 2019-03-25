@@ -1,46 +1,49 @@
 {% extends "layout.html" %}
-<!-- Imports macro template for form rendering -->
+<!-- Imports macro template for error rendering -->
 {% from "macros.html" import field_error %}
 
 {% block content %}
-<div class="container edit-profile">
-  <div class="columns">
-    <div class="column">
-      <h2 class="subtitle is-2">Edit Profile</h2>
+  <div class="container edit-profile">
+    <div class="columns">
+      <div class="column">
+        <h2 class="subtitle is-2">Edit Profile</h2>
+        <!-- form tag to enclose the form fields and upon submit, sends whole form as request -->
+        <form method="POST" action="{{ url_for('edit_profile', username=user.username) }}">
+          {{ form.hidden_tag() }}
+          <!-- username field -->
+          <div class="form-input">
+            {{ field_error(form.username) }}
 
-      <form method="POST" action="">
-        {{ form.hidden_tag() }}
-        <div class="form-input">
-          {{ field_error(form.username) }}
+            {{ form.username.label(class="label") }}
+            {{ form.username(class="control", value=user.username) }}
+          </div>
 
-          {{ form.username.label(class="label") }}
-          {{ form.username(class="control", value=user.username) }}
-        </div>
+          <!-- email field -->
+          <div class="form-input">
+            {{ field_error(form.email) }}
 
-        <div class="form-input">
-          {{ field_error(form.email) }}
+            {{ form.email.label(class="label") }}
+            {{ form.email(class="control", value=user.email) }}
+          </div>
 
-          {{ form.email.label(class="label") }}
-          {{ form.email(class="control", value=user.email) }}
-        </div>
+          <!-- location field -->
+          <div class="form-input">
+            {{ field_error(form.location) }}
 
-        <div class="form-input">
-          {{ field_error(form.location) }}
+            {{ form.location.label(class="label") }}
+            {{ form.location(class="control", value=user.location) }}
+          </div>
 
-          {{ form.location.label(class="label") }}
-          {{ form.location(class="control", value=user.location) }}
-        </div>
+          <div class="has-text-centered">
+            <!-- Cancel link redirects to 'profile' function as defined in app.py -->
+            <button type="submit" class="button is-danger">Save my changes</button><a href="{{ url_for('profile', username=user.username) }}" class="button is-light">Cancel</a>
+          </div>
+        </form>
+      </div>  <!-- end of .column div-->
 
-        <div class="has-text-centered">
-          <button type="submit" class="button is-danger edit-profile-bttn">Save my changes</button><a href="{{ url_for('profile', username=user.username) }}" class="button is-light">Cancel</a>
-        </div>
-      </form>
-
-    </div>
-
-    <div class="column">
-      <img src="{{ url_for('static', filename='foodmeal.jpeg') }}">
-    </div>
+      <div class="column">
+        <img src="{{ url_for('static', filename='foodmeal.jpeg') }}">
+      </div>
+    </div>  <!-- end of .columns div -->
   </div>
-</div>
 {% endblock %}

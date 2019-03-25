@@ -5,17 +5,21 @@
 {% block content %}
   <form method="POST" action="">
     {{ form.hidden_tag() }}
-    <p>
-      {% for field in form if field.widget.input_type != 'hidden' %}
-        {{ render_field(field) }}
-      {% endfor %}
-    </p>
+
+    <!-- Uses macro template to render form inputs with form being passed down in app.py -->
+    <!-- if condition hides CSRF token -->
+    {% for field in form if field.widget.input_type != 'hidden' %}
+      <!-- Passing in iterated field into render_field macro -->
+      {{ render_field(field) }}
+    {% endfor %}
 
     <div class="has-text-centered">
+      <!-- Cancel button redirects to landing -->
       <button type="submit" class="button is-dark">Log In</button><a href="{{ url_for('index') }}" class="button is-light">Cancel</a>
     </div>
   </form>
 
+  <!-- Displays any errors/flash messages to user -->
   {% with messages = get_flashed_messages(with_categories=True) %}
     {% if messages %}
       {% for category, message in messages %}

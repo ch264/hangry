@@ -1,29 +1,33 @@
 {% extends "layout.html" %}
 <!-- Imports macro template for form rendering -->
 {% from "macros.html" import render_field %}
-{% from "macros.html" import field_upload %}
 
 {% block content %}
-<div class="container">
-  <div class="columns">
-    <div class="column">
-        <img src="{{ url_for('static', filename='beef.jpeg') }}">
-        <!-- <img src="{{ url_for('static', filename='rice.jpeg') }}"> -->
-      </div>
+  <div class="container">
+    <div class="columns">
       <div class="column">
-  <h2 class="subtitle is-2">Add Recipe</h2>
-  <form method="POST" action="{{ url_for('add_recipe') }}" class="field" enctype="multipart/form-data">
-    {{ form.hidden_tag() }}
-    
-    {% for field in form if field.widget.input_type != 'hidden' %}
-      {{ render_field(field) }}
-    {% endfor %}
+        <img src="{{ url_for('static', filename='beef.jpeg') }}">
+      </div>
+      
+      <div class="column">
+        <h2 class="subtitle is-2">Add Recipe</h2>
+        <!-- form tag to enclose the form fields and upon submit, sends whole form as request -->
+        <form method="POST" action="{{ url_for('add_recipe') }}" class="field" enctype="multipart/form-data">
+          {{ form.hidden_tag() }}
+          
+          <!-- "form" was passed into template in app.py in add_recipe method -->
+          <!-- if condition hides CSRF token field -->
+          {% for field in form if field.widget.input_type != 'hidden' %}
+            <!-- Pass in iterated "field" value from form into macro render_field -->
+            {{ render_field(field) }}
+          {% endfor %}
 
-    <div class="has-text-centered">
-    <button type="submit" class="button is-danger">Add Recipe</button><a href="{{ url_for('profile', username=user.username) }}" class="button is-light">Cancel</a>
-  </form>
-</div>
+          <div class="has-text-centered">
+            <!-- Anchor tag makes use of user object passed in from app.py -->
+            <button type="submit" class="button is-danger">Add Recipe</button><a href="{{ url_for('profile', username=user.username) }}" class="button is-light">Cancel</a>
+          </div>
+        </form>
+      </div>  <!-- end of .column div-->
+    </div>  <!-- end of .columns div-->
   </div>
-</div>
-</div>
 {% endblock %}
