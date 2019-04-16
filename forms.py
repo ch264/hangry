@@ -59,7 +59,7 @@ class SignUpForm(Form):
         validators=[
             DataRequired()
         ])
-    profile_image = FileField('Profile Image')
+    # profile_image = FileField('Profile Image')
 
 
 # Creates a LoginForm class
