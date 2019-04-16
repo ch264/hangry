@@ -35,6 +35,10 @@ Libraries
 - Typed.js
 
 
+## Installation
+You can install this project's dependencies and run it locally.  It is currently hosted on [Heroku](https://project-hangry.herokuapp.com/), but as Heroku is a free hosting service, it is not supporting our image uploader feature.  We are currently working on removing that feature to complete a successful launch on Heroku.
+
+
 ## Wish List/Future Development
 - Search bar to search recipes by ingredient tags
 - Notifications/alerts using BulmaJS for successfully saving recipes and removing a saved recipe
