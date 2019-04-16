@@ -25,8 +25,8 @@ class User(UserMixin, Model):
     email = CharField(unique=True)
     password = CharField(max_length=100)
     location = TextField()
-    # image_filename = CharField()
-    # image_url = CharField() 
+    image_filename = CharField()
+    image_url = CharField() 
     
     # Sets which database to connect to
     # Sets which table to access
@@ -43,10 +43,9 @@ class User(UserMixin, Model):
                 username = username,
                 email = email,
                 password = generate_password_hash(password),
-                # location = location,
-                # image_filename = image_filename,
-                # image_url = image_url
-                )
+                location = location,
+                image_filename = image_filename,
+                image_url = image_url)
         except IntegrityError:
             raise ValueError("create error")
 
