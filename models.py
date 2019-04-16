@@ -26,7 +26,7 @@ class User(UserMixin, Model):
     password = CharField(max_length=100)
     location = TextField()
     image_filename = CharField()
-    image_url = CharField()
+    image_url = CharField() 
     
     # Sets which database to connect to
     # Sets which table to access
