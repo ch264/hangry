@@ -345,17 +345,23 @@ def remove_favorite(recipe_id=None):
 
 
 # Initialize models when running in Heroku
-# if 'ON_HEROKU' in os.environ:
-#     print('hitting ')
-#     models.initialize()
+if 'ON_HEROKU' in os.environ:
+    print('hitting ')
+    models.initialize()
 
 # Initialize models when running on localhost
-if __name__ == '__main__':
+# if __name__ == '__main__':
     # Calls initialize function as defined in models.py
-    models.initialize()
+    # models.initialize()
 
 
 DEBUG = True
 PORT = 8000
 
-app.run(debug=DEBUG, port=PORT)
+# app.run(debug=DEBUG, port=PORT)
+
+# Used for Heroku
+if __name__ == '__main__':
+        models.initialize() 
+        port = int(os.environ.get('PORT', 8000)) 
+        app.run(host='0.0.0.0', port=port)
