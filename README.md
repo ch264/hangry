@@ -1,7 +1,9 @@
-# project_hangry
+# hangry
 
 ## Overview
-Hangry is a platform for users to create and save recipes.  Users must register or login to view, create, and save recipes.  They have the ability to edit their profile information, edit and delete their created recipes.  They can also remove a recipe from their saved collection.
+Hangry is a platform for food lovers to share their favorite recipes and save food recipes created by other users. Users must register or login to view, create, and save recipes.  They have the ability to edit their profile information, edit and delete their created recipe or remove a recipe from their saved collection. 
+Hangry was created by Brandon Castillo, Christina Hastenrath, Nicolette Lewis and Ronni Louie.
+
 ![](assets/Hangry.png)
 
 ## Wireframes and User Stories
