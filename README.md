@@ -40,6 +40,14 @@ Libraries
 ## Installation
 You can install this project's dependencies and run it locally.  It is currently hosted on [Heroku](https://project-hangry.herokuapp.com/), but as Heroku is a free hosting service, it is not supporting our image uploader feature.  We are currently working on removing that feature to complete a successful launch on Heroku.
 
+- Clone down repo
+- Run a terminal and cd to folder
+- Open a new terminal (CMD+T) and run 'pip3 install virtualenv' followed by 'virtualenv .env -p python3'
+- Run 'source .env/bin/activate' in the same terminal to activate environment
+- Run pip install -r requirements.txt to install depenendcies
+- Run 'python3 app.py' to run application
+- Open browser and go to http://127.0.0.1:8000 to run on local machine
+
 
 ## Wish List/Future Development
 - Search bar to search recipes by ingredient tags
