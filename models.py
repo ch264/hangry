@@ -9,13 +9,13 @@ from peewee import *
 from playhouse.db_url import connect
 
 # Sets DATABASE variable for development
-# DATABASE = SqliteDatabase('hangry.db')
+DATABASE = SqliteDatabase('hangry.db')
 
 # Sets DATABASE variable for production
 # DATABASE = PostgresqlDatabase('hangry')
 
 # Sets DATABASE variable for deployment on Heroku
-DATABASE = connect(os.environ.get('DATABASE_URL'))
+# DATABASE = connect(os.environ.get('DATABASE_URL'))
 
 
 # Creates User class for User table in database
