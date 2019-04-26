@@ -2,7 +2,11 @@ from flask_wtf import FlaskForm as Form
 from wtforms import StringField, PasswordField, TextAreaField, SelectField
 from wtforms.validators import DataRequired, Regexp, ValidationError, Length, EqualTo, Email
 # Imports for file/photo uploader
-# from flask_wtf.file import FileField, FileRequired, FileAllowed
+from flask_wtf.file import FileField, FileRequired, FileAllowed
+
+# Cloudinary
+# from cloudinary.models import CloudinaryField
+
 
 # Imports User model
 from models import User
@@ -60,6 +64,7 @@ class SignUpForm(Form):
             DataRequired()
         ])
     # profile_image = FileField('Profile Image')
+    # profile_image = CloudinaryField('Profile Image')
 
 
 # Creates a LoginForm class

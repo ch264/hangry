@@ -3,19 +3,20 @@ import os, datetime
 from flask_login import UserMixin
 from flask_bcrypt import generate_password_hash
 
+
 from peewee import *
 
 # To connect to postgres on heroku
 from playhouse.db_url import connect
 
 # Sets DATABASE variable for development
-# DATABASE = SqliteDatabase('hangry.db')
+DATABASE = SqliteDatabase('hangry.db')
 
 # Sets DATABASE variable for production
 # DATABASE = PostgresqlDatabase('hangry')
 
 # Sets DATABASE variable for deployment on Heroku
-DATABASE = connect(os.environ.get('DATABASE_URL'))
+# DATABASE = connect(os.environ.get('DATABASE_URL'))
 
 
 # Creates User class for User table in database
@@ -27,6 +28,7 @@ class User(UserMixin, Model):
     location = TextField()
     # image_filename = CharField()
     # image_url = CharField() 
+    image = CharField()
     
     # Sets which database to connect to
     # Sets which table to access
@@ -37,16 +39,17 @@ class User(UserMixin, Model):
     # Function to create an entry in User table
     @classmethod
     # def create_user(cls, username, email, password, location, image_filename, image_url):
-    def create_user(cls, username, email, password, location):
+    def create_user(cls, username, email, password, location, image):
         try:
             cls.create(
                 # Set column values to parameters passed into method
                 username = username,
                 email = email,
                 password = generate_password_hash(password),
-                location = location
+                location = location,
                 # image_filename = image_filename,
                 # image_url = image_url
+                image = image
                 )
         except IntegrityError:
             raise ValueError()

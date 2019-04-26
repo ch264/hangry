@@ -9,6 +9,15 @@ from flask_bcrypt import check_password_hash
 # Image uploader
 # from flask_uploads import UploadSet, configure_uploads, IMAGES
 
+# Cloudinary imports for image hosting for heroku deployment
+# import our config.py file that contains cloudinary API keys
+import config
+import cloudinary
+import cloudinary.uploader
+from cloudinary.uploader import upload
+import cloudinary.api
+from cloudinary.utils import cloudinary_url
+
 # For Heroku deployment
 # from flask.ext.heroku import Heroku
 
@@ -29,6 +38,9 @@ login_manager.login_view = 'login'
 # Sets variable images to uploader
 # images = UploadSet('images', IMAGES)
 # configure_uploads(app, images)
+
+# Cloudinary config
+cloudinary.config(cloud_name=config.cloud_name, api_key=config.api_key, api_secret=config.api_secret)
 
 
 @login_manager.user_loader
@@ -81,14 +93,18 @@ def register():
         # Sets variable url to change image url to match filename
         # url = images.url(filename)
 
+        # Cloudinary image upload
+        cloudinary.uploader.upload(request.FILES['file'])
+
         # Calls method 'create_user' as defined in models.py to create a user in database
         models.User.create_user(
             username=form.username.data,
             email=form.email.data,
             password=form.password.data,
-            location=form.location.data
+            location=form.location.data,
             # image_filename=filename,
             # image_url=url
+            image=form.image.data
             )
         
         # Gets newly created user from the database by matching username in the database to username entered in the form
@@ -352,17 +368,17 @@ if 'ON_HEROKU' in os.environ:
     models.initialize()
 
 # Initialize models when running on localhost
-# if __name__ == '__main__':
+if __name__ == '__main__':
     # Calls initialize function as defined in models.py
-    # models.initialize()
+    models.initialize()
 
-# DEBUG = True
-# PORT = 8000 
+DEBUG = True
+PORT = 8000 
 
-# app.run(debug=DEBUG, port=PORT)
+app.run(debug=DEBUG, port=PORT)
 
 # Used for Heroku
-if __name__ == '__main__':
-        models.initialize() 
-        port = int(os.environ.get('PORT', 8000)) 
-        app.run(host='0.0.0.0', port=port)
+# if __name__ == '__main__':
+#         models.initialize() 
+#         port = int(os.environ.get('PORT', 8000)) 
+#         app.run(host='0.0.0.0', port=port)
