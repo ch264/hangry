@@ -25,8 +25,8 @@ class User(UserMixin, Model):
     email = CharField(unique=True)
     password = CharField(max_length=100)
     location = TextField()
-    image_filename = CharField()
-    image_url = CharField() 
+    # image_filename = CharField()
+    # image_url = CharField() 
     
     # Sets which database to connect to
     # Sets which table to access
@@ -36,7 +36,8 @@ class User(UserMixin, Model):
 
     # Function to create an entry in User table
     @classmethod
-    def create_user(cls, username, email, password, location, image_filename, image_url):
+    # def create_user(cls, username, email, password, location, image_filename, image_url):
+    def create_user(cls, username, email, password, location):
         try:
             cls.create(
                 # Set column values to parameters passed into method
@@ -44,8 +45,9 @@ class User(UserMixin, Model):
                 email = email,
                 password = generate_password_hash(password),
                 location = location,
-                image_filename = image_filename,
-                image_url = image_url)
+                # image_filename = image_filename,
+                # image_url = image_url
+                )
         except IntegrityError:
             raise ValueError("create error")
 
@@ -61,8 +63,8 @@ class Recipe(Model):
     ingredient_tag = TextField()
     # Sets user column to expect a foreign key (user id of who created a recipe)
     user = ForeignKeyField(User, backref="recipes")
-    image_filename = CharField()
-    image_url = CharField()
+    # image_filename = CharField()
+    # image_url = CharField()
 
     # Sets which database to connect to
     # Sets which table to access
@@ -72,7 +74,8 @@ class Recipe(Model):
 
     # Defines function create_recipe to create an entry in Recipe table
     @classmethod
-    def create_recipe(cls, category, title, content, ingredient_tag, user, image_filename, image_url):
+    # def create_recipe(cls, category, title, content, ingredient_tag, user, image_filename, image_url):
+    def create_recipe(cls, category, title, content, ingredient_tag, user):
         try:
             cls.create(
                 category = category,
@@ -80,8 +83,9 @@ class Recipe(Model):
                 content = content,
                 ingredient_tag = ingredient_tag,
                 user = user,
-                image_filename = image_filename,
-                image_url = image_url)
+                # image_filename = image_filename,
+                # image_url = image_url
+                )
         except IntegrityError:
             raise ValueError("create recipe error")
 

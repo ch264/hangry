@@ -2,7 +2,7 @@ from flask_wtf import FlaskForm as Form
 from wtforms import StringField, PasswordField, TextAreaField, SelectField
 from wtforms.validators import DataRequired, Regexp, ValidationError, Length, EqualTo, Email
 # Imports for file/photo uploader
-from flask_wtf.file import FileField, FileRequired, FileAllowed
+# from flask_wtf.file import FileField, FileRequired, FileAllowed
 
 # Imports User model
 from models import User
@@ -59,7 +59,7 @@ class SignUpForm(Form):
         validators=[
             DataRequired()
         ])
-    profile_image = FileField('Profile Image')
+    # profile_image = FileField('Profile Image')
 
 
 # Creates a LoginForm class
@@ -111,7 +111,7 @@ class RecipeForm(Form):
                 r'^[a-zA-Z]+$',
                 message=('Include only one ingredient'))
         ])
-    recipe_image = FileField('Recipe Image')
+    # recipe_image = FileField('Recipe Image')
 
 
 # Creates an EditRecipeForm class

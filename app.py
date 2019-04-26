@@ -7,7 +7,7 @@ from flask_login import LoginManager, login_user, logout_user, current_user, log
 from flask_bcrypt import check_password_hash
 
 # Image uploader
-from flask_uploads import UploadSet, configure_uploads, IMAGES
+# from flask_uploads import UploadSet, configure_uploads, IMAGES
 
 # For Heroku deployment
 # from flask.ext.heroku import Heroku
@@ -18,7 +18,7 @@ import forms
 
 app = Flask(__name__, instance_relative_config=True)
 # Sets upload destinations for image uploader
-app.config.from_pyfile('flask.cfg')
+# app.config.from_pyfile('flask.cfg')
 app.secret_key = 'pickle'
 # heroku = Heroku(app)
 
@@ -27,8 +27,8 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 
 # Sets variable images to uploader
-images = UploadSet('images', IMAGES)
-configure_uploads(app, images)
+# images = UploadSet('images', IMAGES)
+# configure_uploads(app, images)
 
 
 @login_manager.user_loader
@@ -77,18 +77,19 @@ def register():
 
     if form.validate_on_submit():
         # Sets variable filename to image file of uploaded 'profile_image' from form
-        filename = images.save(request.files['profile_image'])
+        # filename = images.save(request.files['profile_image'])
         # Sets variable url to change image url to match filename
-        url = images.url(filename)
+        # url = images.url(filename)
 
         # Calls method 'create_user' as defined in models.py to create a user in database
         models.User.create_user(
             username=form.username.data,
             email=form.email.data,
             password=form.password.data,
-            location=form.location.data,
-            image_filename=filename,
-            image_url=url)
+            location=form.location.data
+            # image_filename=filename,
+            # image_url=url
+            )
         
         # Gets newly created user from the database by matching username in the database to username entered in the form
         user = models.User.get(models.User.username == form.username.data)
@@ -216,9 +217,9 @@ def add_recipe():
     
     if request.method == 'POST':
         # Sets variable filename to image file of uploaded 'recipe_image' from form
-        filename = images.save(request.files['recipe_image'])
+        # filename = images.save(request.files['recipe_image'])
         # Sets variable url to change image url to match filename
-        url = images.url(filename)
+        # url = images.url(filename)
 
         # Calls method create_recipe defined in models.py for the Recipe model
         models.Recipe.create_recipe(
@@ -229,9 +230,10 @@ def add_recipe():
             content = form.content.data,
             ingredient_tag = form.ingredient_tag.data,
             # Sets user ID in recipe table to logged in user
-            user = user,
-            image_filename = filename,
-            image_url = url)
+            user = user
+            # image_filename = filename,
+            # image_url = url
+            )
 
         # Find newly created recipe in database
         recipe = models.Recipe.get(models.Recipe.title == form.title.data)
