@@ -44,12 +44,12 @@ class User(UserMixin, Model):
                 username = username,
                 email = email,
                 password = generate_password_hash(password),
-                location = location,
+                location = location
                 # image_filename = image_filename,
                 # image_url = image_url
                 )
         except IntegrityError:
-            raise ValueError("create error")
+            raise ValueError()
 
 
 # Creates Recipe class for Recipe table in database
