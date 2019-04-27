@@ -94,7 +94,7 @@ def register():
         # url = images.url(filename)
 
         # Cloudinary image upload
-        cloudinary.uploader.upload(request.FILES['file'])
+        # cloudinary.uploader.upload(request.FILES['file'])
 
         # Calls method 'create_user' as defined in models.py to create a user in database
         models.User.create_user(
@@ -104,7 +104,7 @@ def register():
             location=form.location.data,
             # image_filename=filename,
             # image_url=url
-            image=form.image.data
+            image=form.profile_image.data
             )
         
         # Gets newly created user from the database by matching username in the database to username entered in the form
