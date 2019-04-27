@@ -12,6 +12,9 @@
       <!-- Pass in iterated "field" value from form into macro render_field -->
       {{ render_field(field) }}
     {% endfor %}
+    
+    <!-- [] HOW TO ACCESS RESULT.INFO.URL FROM CLOUDINARY WIDGET? AND SUBMIT IT WITH THE FORM? -->
+    <!-- <input type="hidden" name="profile_image" value="result.info.url"> -->
 
     <button id="upload_widget" class="cloudinary-button">Upload Profile Image</button>
 
@@ -25,14 +28,16 @@
   <script src="https://widget.cloudinary.com/v2.0/global/all.js" type="text/javascript"></script>  
 
   <script type="text/javascript">  
-    var myWidget = cloudinary.createUploadWidget({
-      cloudName: 'dtwqqfg0g', 
-      uploadPreset: 'hangry_image'}, (error, result) => { 
-        if (!error && result && result.event === "success") { 
-          console.log('Done! Here is the image info: ', result.info); 
-        }
-      }
-    )
+    var myWidget = cloudinary.createUploadWidget({ cloudName: 'dtwqqfg0g', uploadPreset: 'hangry'}, (error, result) => {
+      if (!error && result && result.event === "success") { 
+        console.log('Done! Here is the image info: ', result.info);
+        // [] store result.info.url in a variable to be accessed in <form>?
+      };
+
+      if (error) {
+        console.log(`image upload error: `, error);
+      };
+    });
 
     document.getElementById("upload_widget").addEventListener("click", function(){
         myWidget.open();
