@@ -11,12 +11,12 @@ from flask_bcrypt import check_password_hash
 
 # Cloudinary imports for image hosting for heroku deployment
 # import our config.py file that contains cloudinary API keys
-import config
-import cloudinary
-import cloudinary.uploader
-from cloudinary.uploader import upload
-import cloudinary.api
-from cloudinary.utils import cloudinary_url
+# import config
+# import cloudinary
+# import cloudinary.uploader
+# from cloudinary.uploader import upload
+# import cloudinary.api
+# from cloudinary.utils import cloudinary_url
 
 # For Heroku deployment
 # from flask.ext.heroku import Heroku
@@ -40,7 +40,7 @@ login_manager.login_view = 'login'
 # configure_uploads(app, images)
 
 # Cloudinary config
-cloudinary.config(cloud_name=config.cloud_name, api_key=config.api_key, api_secret=config.api_secret)
+# cloudinary.config(cloud_name=config.cloud_name, api_key=config.api_key, api_secret=config.api_secret)
 
 
 @login_manager.user_loader
@@ -368,17 +368,17 @@ if 'ON_HEROKU' in os.environ:
     models.initialize()
 
 # Initialize models when running on localhost
-if __name__ == '__main__':
+# if __name__ == '__main__':
     # Calls initialize function as defined in models.py
-    models.initialize()
+#     models.initialize()
 
-DEBUG = True
-PORT = 8000 
+# DEBUG = True
+# PORT = 8000 
 
-app.run(debug=DEBUG, port=PORT)
+# app.run(debug=DEBUG, port=PORT)
 
 # Used for Heroku
-# if __name__ == '__main__':
-#         models.initialize() 
-#         port = int(os.environ.get('PORT', 8000)) 
-#         app.run(host='0.0.0.0', port=port)
+if __name__ == '__main__':
+        models.initialize() 
+        port = int(os.environ.get('PORT', 8000)) 
+        app.run(host='0.0.0.0', port=port)
