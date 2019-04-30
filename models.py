@@ -11,10 +11,10 @@ from playhouse.db_url import connect
 # DATABASE = SqliteDatabase('hangry.db')
 
 # Sets DATABASE variable for production
-# DATABASE = PostgresqlDatabase('hangrydb')
+DATABASE = PostgresqlDatabase('hangrydb')
 
 # # Sets DATABASE variable for deployment on Heroku
-DATABASE = connect(os.environ.get('DATABASE_URL'))
+# DATABASE = connect(os.environ.get('DATABASE_URL'))
 
 
 # Creates User class for User table in database
@@ -48,7 +48,7 @@ class User(UserMixin, Model):
               # image_filename = image_filename,
               # image_url = image_url
               # image = image
-                )
+                ) 
         except IntegrityError:
             raise ValueError()
 
