@@ -28,7 +28,7 @@ class User(UserMixin, Model):
     location = TextField()
     # image_filename = CharField()
     # image_url = CharField() 
-    image = CharField()
+    # image = CharField()
     
     # Sets which database to connect to
     # Sets which table to access
@@ -49,7 +49,7 @@ class User(UserMixin, Model):
                 location = location,
                 # image_filename = image_filename,
                 # image_url = image_url
-                image = image
+                # image = image
                 )
         except IntegrityError:
             raise ValueError()
