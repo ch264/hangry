@@ -7,7 +7,9 @@ Hangry was created by Brandon Castillo, Christina Hastenrath, Nicolette Lewis an
 ![](assets/readmedemo.gif)
 
 ## Demo Note
-Currently, Heroku and Flask Image Uploader is unsupported so it is deployed without the uploader due to errors.
+Email: demo@gmail.com
+Password: 123
+Currently, Heroku and Flask Image Uploader is unsupported so it is deployed without the uploader due to errors and certain snippets of code have been commented out. 
 
 ## Wireframes and User Stories
 Our database consists of 2 relational tables (User, Recipe) and one junction table (Saved Recipes)
