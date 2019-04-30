@@ -102,7 +102,9 @@ def register():
             email=form.email.data,
             password=form.password.data,
             location=form.location.data
-          
+            #  image_filename=filename,
+            # image_url=url
+            # image=form.profile_image.data
             )
         
         # Gets newly created user from the database by matching username in the database to username entered in the form

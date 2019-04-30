@@ -2,8 +2,6 @@
 import os, datetime
 from flask_login import UserMixin
 from flask_bcrypt import generate_password_hash
-
-
 from peewee import *
 
 # To connect to postgres on heroku
@@ -26,7 +24,10 @@ class User(UserMixin, Model):
     email = CharField(unique=True)
     password = CharField(max_length=100)
     location = TextField()
-  
+    # image_filename=filename,
+    # image_url=url
+    # image=form.profile_image.data
+
     # Sets which database to connect to
     # Sets which table to access
     class Meta:
@@ -36,7 +37,7 @@ class User(UserMixin, Model):
     # Function to create an entry in User table
     @classmethod
     # def create_user(cls, username, email, password, location, image_filename, image_url):
-    def create_user(cls, username, email, password, location, image):
+    def create_user(cls, username, email, password, location):
         try:
             cls.create(
                 # Set column values to parameters passed into method
@@ -44,7 +45,9 @@ class User(UserMixin, Model):
                 email = email,
                 password = generate_password_hash(password),
                 location = location
-               
+              # image_filename = image_filename,
+              # image_url = image_url
+              # image = image
                 )
         except IntegrityError:
             raise ValueError()
