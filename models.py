@@ -13,9 +13,9 @@ from playhouse.db_url import connect
 # DATABASE = SqliteDatabase('hangry.db')
 
 # Sets DATABASE variable for production
-# DATABASE = PostgresqlDatabase('hangry')
+# DATABASE = PostgresqlDatabase('hangrydb')
 
-# Sets DATABASE variable for deployment on Heroku
+# # Sets DATABASE variable for deployment on Heroku
 DATABASE = connect(os.environ.get('DATABASE_URL'))
 
 
@@ -26,10 +26,7 @@ class User(UserMixin, Model):
     email = CharField(unique=True)
     password = CharField(max_length=100)
     location = TextField()
-    # image_filename = CharField()
-    # image_url = CharField() 
-    # image = CharField()
-    
+  
     # Sets which database to connect to
     # Sets which table to access
     class Meta:
@@ -46,10 +43,8 @@ class User(UserMixin, Model):
                 username = username,
                 email = email,
                 password = generate_password_hash(password),
-                location = location,
-                # image_filename = image_filename,
-                # image_url = image_url
-                # image = image
+                location = location
+               
                 )
         except IntegrityError:
             raise ValueError()
@@ -85,7 +80,7 @@ class Recipe(Model):
                 title = title,
                 content = content,
                 ingredient_tag = ingredient_tag,
-                user = user,
+                user = user
                 # image_filename = image_filename,
                 # image_url = image_url
                 )

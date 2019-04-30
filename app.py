@@ -101,10 +101,8 @@ def register():
             username=form.username.data,
             email=form.email.data,
             password=form.password.data,
-            location=form.location.data,
-            # image_filename=filename,
-            # image_url=url
-            # image=form.profile_image.data
+            location=form.location.data
+          
             )
         
         # Gets newly created user from the database by matching username in the database to username entered in the form
@@ -368,17 +366,17 @@ if 'ON_HEROKU' in os.environ:
     models.initialize()
 
 # Initialize models when running on localhost
-if __name__ == '__main__':
-    # Calls initialize function as defined in models.py
-    models.initialize()
+# if __name__ == '__main__':
+#     # Calls initialize function as defined in models.py
+#     models.initialize()
 
-DEBUG = True
-PORT = 8000 
+# DEBUG = True
+# PORT = 8000 
 
-app.run(debug=DEBUG, port=PORT)
+# app.run(debug=DEBUG, port=PORT)
 
 # Used for Heroku
-# if __name__ == '__main__':
-#         models.initialize() 
-#         port = int(os.environ.get('PORT', 8000)) 
-#         app.run(host='0.0.0.0', port=port)
+if __name__ == '__main__':
+        models.initialize() 
+        port = int(os.environ.get('PORT', 8000)) 
+        app.run(host='0.0.0.0', port=port)
