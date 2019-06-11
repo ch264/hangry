@@ -4,6 +4,8 @@
 Hangry is a platform for food lovers to share their favorite recipes and save food recipes created by other users. Users must register or login to view, create, and save recipes.  They have the ability to edit their profile information, edit and delete their created recipe or remove a recipe from their saved collection. 
 Hangry was created by Brandon Castillo, Christina Hastenrath, Nicolette Lewis and Ronni Louie.
 
+https://project-hangry.herokuapp.com/
+
 ![](assets/readmedemo.gif)
 
 ## Demo Note
